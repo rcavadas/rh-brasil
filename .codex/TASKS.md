@@ -238,3 +238,4 @@
 - [x] Criar o scaffold completo do pacote `UC-ESO` com 10 arquivos individuais.
 - [x] Alinhar os primeiros casos do pacote `UC-ESO` ao runtime real.
 - [x] Fechar atualizacao auditavel de catalogos EPI, exames ocupacionais e catalogos de treinamento de SST.
+- [x] Destravar o runtime local e concluir a suite completa da API contra Postgres real.

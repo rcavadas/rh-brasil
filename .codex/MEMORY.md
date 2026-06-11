@@ -293,3 +293,4 @@ Sistema de RH corporativo para o mercado brasileiro.
 - A camada final do `UC-JOR` tambem foi sequenciada em `docs/UC-JOR-010-gerar-espelho-de-ponto.md`, `docs/UC-JOR-011-fechar-periodo-de-ponto.md`, `docs/UC-JOR-012-reabrir-periodo-de-ponto.md`, `docs/UC-JOR-016-emitir-comprovante-de-marcacao.md` e `docs/UC-JOR-020-exportar-espelho-e-trilhas-de-auditoria.md`.
 - As rotas persistidas de integracoes da API agora possuem cobertura HTTP ponta a ponta para sync de beneficios e identidade, monitoramento, falha, retentativa e DLQ.
 - O backend agora tambem expõe atualizacao auditavel para catalogos de EPI, exames ocupacionais e catalogos de treinamento de SST, com testes de persistencia cobrindo criacao, atualizacao e auditoria.
+- O runtime local de desenvolvimento foi destravado: Docker Desktop foi iniciado, o Postgres/Redis do compose subiram, migrations foram aplicadas e a suite completa da API passou.

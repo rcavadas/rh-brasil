@@ -2612,3 +2612,17 @@
 **Riscos:** a suite relacional da API nao concluiu nesta sessao por bloqueio do `prisma generate` no engine nativo do `node_modules`; a alteracao em si ficou compilavel e tipada.
 
 **Próxima ação:** validar esses updates de SST em banco real assim que o runtime estiver disponivel; caso contrario, seguir para outro gap pequeno e objetivo de runtime.
+
+## 2026-06-11 - Runtime local destravado e API validada
+
+**Objetivo:** resolver o bloqueio de runtime local e concluir a validacao completa da API.
+
+**O que foi feito:** o Docker Desktop foi iniciado localmente, o `postgres` e o `redis` do compose de desenvolvimento subiram, as migrations do Prisma foram aplicadas no banco local e a suite completa da API foi executada com sucesso via `tsx --test` nos tres arquivos de teste do workspace `@rh/api`.
+
+**Arquivos alterados:** sem novas alteracoes de codigo neste passo de validacao; o estado foi consolidado em `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `.codex/TASKS.md`.
+
+**Validações:** `docker version`, `docker compose -f infra/docker-compose.yml up -d postgres redis`, `prisma migrate deploy` e `tsx --test --test-concurrency=1 test/authz.http.test.ts test/authz.oidc.test.ts test/slice.store.test.ts`.
+
+**Riscos:** o `npm run test -w @rh/api` continua dependendo do `pretest` com `prisma generate`, que nesta sessao apresentou um lock transitório no engine nativo; a validacao efetiva da API, porém, foi concluída com a invocacao direta da suite.
+
+**Próxima ação:** escolher o próximo gap pequeno e objetivo de runtime agora que a base local voltou a responder.
