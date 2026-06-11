@@ -1,80 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-005
 
-# Caso de Uso
+## Registrar Consentimento
 
-## UC-SEC-005 - Registrar Consentimento
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Registrar consentimento do titular quando houver base legal apropriada para tratamento de dados.
+Permitir o registro de consentimento com finalidade, escopo e vigencia.
 
 ---
 
 # Atores
 
-- Colaborador
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Titular de dados
+
+## Secundarios
+
+* Portal
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado quando aplicavel.
-- Politica de consentimento definida.
+* Politica de privacidade apresentada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o consentimento precisa ser registrado ou revogado.
+O processo inicia quando o consentimento e registrado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa privacidade > consentimento.
-2. Sistema apresenta finalidade e escopo.
-3. Usuario aceita ou revoga.
-4. Sistema registra a decisao.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Usuario recebe a solicitacao.
+
+### Etapa 2
+
+Usuario aceita ou recusa.
+
+### Etapa 3
+
+Sistema grava a decisao.
+
+### Etapa 4
+
+Sistema registra a finalidade e a vigencia.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Consentimento revogado
+
+### Condicao
+
+O titular cancela o consentimento.
+
+### Fluxo
+
+* Sistema registra a revogacao.
+
+---
+
+# Pos-condicoes
+
+* Consentimento registrado ou recusado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O consentimento deve ser rastreavel.
-- A revogacao deve ser preservada no historico.
+* O consentimento precisa ser rastreavel.
+* A finalidade deve ser declarada.
 
 ---
 
 # Entidades Envolvidas
 
-## PrivacyConsent
+## ConsentRecord
 
 ```text
 id
-subject_id
+data_subject_id
 purpose
 status
-recorded_at
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar consentimento valido.
-- Registrar revogacao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso inicia a parte LGPD de base legal e registro de vontade do titular.
+* UC-SEC-006 - Atender Solicitacao do Titular
+* UC-SEC-008 - Aplicar Politica de Retencao

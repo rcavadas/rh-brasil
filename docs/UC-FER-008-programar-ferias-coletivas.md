@@ -1,110 +1,106 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-008
 
-# Caso de Uso
+## Programar Ferias Coletivas
 
-## UC-FER-008 - Programar Ferias Coletivas
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir a programacao de ferias coletivas por empresa ou unidade, com abrangencia, periodo e auditoria.
+Permitir a programacao de ferias coletivas por empresa, filial ou unidade.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
-- Gestao autorizada
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Parametrizacao de ferias coletivas disponivel.
-- Usuario autenticado.
-- Permissao para programar ferias coletivas.
+* Politica coletiva definida.
+* Periodo e publicos elegiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a empresa decide programar ferias coletivas para um grupo de colaboradores.
+O processo inicia quando as ferias coletivas sao programadas.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Coletivas.
-2. Sistema apresenta parametros e historico.
-3. Usuario define periodo e abrangencia.
-4. Sistema valida impacto sobre os colaboradores.
-5. Sistema registra a programacao.
-6. Sistema disponibiliza notificacoes e auditoria.
+### Etapa 1
+
+Usuario define a abrangencia.
+
+### Etapa 2
+
+Sistema valida a janela coletiva.
+
+### Etapa 3
+
+Sistema registra o calendario.
+
+### Etapa 4
+
+Sistema notifica os envolvidos.
+
+### Etapa 5
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Abrangencia invalida
+## FA-01 - Sobreposicao de periodo
 
-Sistema bloqueia a programacao.
+### Condicao
 
-## FA-02 - Usuario sem permissao
+O periodo conflita com outro evento de afastamento.
 
-Sistema bloqueia a operacao.
+### Fluxo
+
+* Sistema bloqueia a programacao.
 
 ---
 
 # Pos-condicoes
 
-- Ferias coletivas programadas.
-- Historico e auditoria preservados.
+* Ferias coletivas programadas ou bloqueadas.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A programacao coletiva deve respeitar politica da empresa.
-- A programacao deve preservar rastreabilidade por unidade e competencia.
+* A programacao coletiva deve respeitar a politica operacional.
+* O historico precisa ser preservado.
 
 ---
 
 # Entidades Envolvidas
 
-## VacationCollectiveSchedule
+## CollectiveVacationPlan
 
 ```text
 id
-company_id
-unit_scope
-start_date
-end_date
+scope
+starts_at
+ends_at
 status
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/collective-schedules
-```
-
----
-
-# Testes
-
-- Programar ferias coletivas validas.
-- Bloquear abrangencia invalida.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso trata uma variante coletiva que depende das mesmas bases individuais de periodo e saldo.
+* UC-FER-002 - Controlar Periodo Concessivo
+* UC-FER-009 - Emitir Aviso de Ferias

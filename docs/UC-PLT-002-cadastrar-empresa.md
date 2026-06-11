@@ -1,80 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-002
 
-# Caso de Uso
+## Cadastrar Empresa
 
-## UC-PLT-002 - Cadastrar Empresa
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar empresas vinculadas ao tenant para operar o dominio multiempresa.
+Permitir o cadastro de empresa vinculada ao tenant.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Plataforma
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Tenant cadastrado.
-- Usuario autenticado.
+* Tenant cadastrado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando uma empresa precisa ser criada no tenant.
+O processo inicia quando a empresa e cadastrada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Empresas.
-2. Sistema apresenta o formulario.
-3. Usuario informa os dados da empresa.
-4. Sistema valida vinculo com tenant.
-5. Sistema grava a empresa.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa dados da empresa.
+
+### Etapa 2
+
+Sistema valida integridade.
+
+### Etapa 3
+
+Sistema grava a empresa.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Empresa duplicada
+
+### Condicao
+
+Ja existe empresa equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Empresa criada ou recusada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A empresa deve pertencer a um tenant.
-- Alteracoes devem preservar historico.
+* A empresa pertence a um tenant.
+* O cadastro precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformCompany
+## Company
 
 ```text
 id
 tenant_id
 name
-document
 status
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar empresa valida.
-- Bloquear sem tenant.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso vem logo depois do tenant e materializa a primeira fronteira empresarial.
+* UC-PLT-001 - Cadastrar Tenant
+* UC-PLT-003 - Cadastrar Filial

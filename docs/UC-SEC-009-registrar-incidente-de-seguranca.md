@@ -1,55 +1,86 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-009
 
-# Caso de Uso
+## Registrar Incidente de Seguranca
 
-## UC-SEC-009 - Registrar Incidente de Seguranca
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Registrar incidente de seguranca com classificacao, evidencias e trilha de resposta.
+Permitir o registro e acompanhamento de incidentes de seguranca.
 
 ---
 
 # Atores
 
-- Gestor de Seguranca
-- Administrador do Sistema
+## Primarios
+
+* Equipe de seguranca
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Incidente identificado.
-- Usuario autenticado.
+* Incidente identificado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um incidente precisa ser formalizado.
+O processo inicia quando o incidente e registrado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa seguranca > incidentes.
-2. Sistema apresenta o formulario.
-3. Usuario registra o incidente.
-4. Sistema classifica e armazena a ocorrencia.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Usuario descreve o incidente.
+
+### Etapa 2
+
+Sistema classifica severidade e impacto.
+
+### Etapa 3
+
+Sistema grava o incidente.
+
+### Etapa 4
+
+Sistema registra as acoes de resposta.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Incidente duplicado
+
+### Condicao
+
+Ja existe um registro equivalente.
+
+### Fluxo
+
+* Sistema sinaliza duplicidade.
+
+---
+
+# Pos-condicoes
+
+* Incidente registrado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O incidente deve ser rastreavel.
-- A resposta deve preservar evidencias.
+* O incidente precisa ser auditavel.
+* Dados sensiveis devem ser minimizados.
 
 ---
 
@@ -59,7 +90,6 @@ O processo inicia quando um incidente precisa ser formalizado.
 
 ```text
 id
-incident_type
 severity
 status
 reported_at
@@ -67,13 +97,7 @@ reported_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar incidente valido.
-- Bloquear falta de dados essenciais.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso formaliza a resposta a incidentes depois das regras de acesso e privacidade.
+* UC-SEC-010 - Auditar Acessos e Operacoes
+* UC-API-010 - Monitorar Integracoes

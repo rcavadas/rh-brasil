@@ -1,65 +1,94 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-006
 
-# Caso de Uso
+## Transmitir Evento S-2200
 
-## UC-ESO-006 - Transmitir Evento S-2200
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Transmitir a admissao e vinculacao do colaborador ao eSocial.
+Permitir a transmissao da admissao e vinculacao do colaborador.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de RH
+## Primarios
+
+* Motor de eSocial
+
+## Secundarios
+
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Admissao formalizada.
-- Ambiente eSocial configurado.
+* Admissao disponivel.
+* Ambiente e certificado configurados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a admissao precisa ser transmitida.
+O processo inicia quando o S-2200 e transmitido.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema monta o evento.
-2. Sistema valida os dados do colaborador.
-3. Sistema transmite o evento.
-4. Sistema registra protocolo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta os dados da admissao.
+
+### Etapa 2
+
+Sistema envia o evento.
+
+### Etapa 3
+
+Sistema grava protocolo ou pendencia.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Admissao incompleta
+
+### Condicao
+
+Os dados nao estao consolidados.
+
+### Fluxo
+
+* Sistema bloqueia o envio.
+
+---
+
+# Pos-condicoes
+
+* Evento transmitido ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A transmissao deve ser rastreavel.
-- O evento deve respeitar o contrato do vinculo.
+* A admissao precisa ser rastreavel.
+* A ordem com os demais eventos deve ser preservada.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEventTransmission
+## EsocialEvent
 
 ```text
 id
-event_code
+event_type
 status
 protocol
 sent_at
@@ -67,19 +96,7 @@ sent_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Transmitir S-2200 valido.
-- Bloquear sem admissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso transmite a admissao e vinculacao apos a formalizacao do colaborador.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual ja possui a etapa 1 de admissao e a formalizacao contratual separada, entao o S-2200 precisa ser tratado como a transmissao governamental dessa base ja formalizada.
+* UC-ATS-010 - Converter Candidato em Pre-Admissao
+* UC-ONB-001 - Criar Processo de Pre-Admissao

@@ -1,63 +1,94 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-010
 
-# Caso de Uso
+## Transmitir Desligamento ao eSocial
 
-## UC-RES-010 - Transmitir Desligamento ao eSocial
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Transmitir o desligamento ao eSocial com rastreabilidade, controle de status e preservacao do historico.
+Permitir a transmissao do desligamento ao eSocial com trilha auditavel e reprocessamento.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Analista de Folha
-- Administrador do Sistema
+## Primarios
+
+* Motor de rescisao
+
+## Secundarios
+
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Rescisao fechada ou apta para transmissao.
-- Usuario autenticado.
+* Rescisao fechada ou elegivel para transmissao.
+* Certificado e configuracao disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o desligamento precisa ser enviado ao eSocial.
+O processo inicia quando o desligamento e transmitido.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > eSocial.
-2. Sistema apresenta o status da transmissao.
-3. Usuario confirma o envio.
-4. Sistema transmite o desligamento.
-5. Sistema registra protocolo e retorno.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema prepara o evento de desligamento.
+
+### Etapa 2
+
+Sistema envia ao eSocial.
+
+### Etapa 3
+
+Sistema grava o protocolo ou pendencia.
+
+### Etapa 4
+
+Sistema permite reprocessamento quando aplicavel.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Transmissao falha
+
+### Condicao
+
+O governo nao responde ou rejeita o evento.
+
+### Fluxo
+
+* Sistema sinaliza erro e mantém o historico.
+
+---
+
+# Pos-condicoes
+
+* Transmissao registrada ou falha sinalizada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A transmissao deve ser rastreavel.
-- O reprocessamento deve preservar o historico.
+* A transmissao deve respeitar o estado da rescisao.
+* O reprocessamento precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationEsocialTransmission
+## RescissionTransmission
 
 ```text
 id
@@ -69,13 +100,7 @@ sent_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Transmitir desligamento valido.
-- Bloquear sem rescisao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o pacote de rescisao ao transmitir o desligamento ao eSocial.
+* UC-ESO-009 - Transmitir Evento S-1299
+* UC-RES-009 - Fechar Rescisao

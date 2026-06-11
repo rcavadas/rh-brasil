@@ -183,6 +183,15 @@
 - [x] Detalhar UC-LMS-001 a UC-LMS-010.
 - [x] Detalhar UC-PER-001 a UC-PER-010.
 - [x] Detalhar UC-CAR-001 a UC-CAR-010.
+- [x] Detalhar UC-FER-001 a UC-FER-010.
+- [x] Detalhar UC-RES-001 a UC-RES-010.
+- [x] Detalhar UC-BEN-001 a UC-BEN-010.
+- [x] Detalhar UC-SST-001 a UC-SST-010.
+- [x] Detalhar UC-ESO-001 a UC-ESO-010.
+- [x] Detalhar UC-SEC-001 a UC-SEC-010.
+- [x] Detalhar UC-API-001 a UC-API-010.
+- [x] Detalhar UC-PLT-001 a UC-PLT-010.
+- [x] Detalhar UC-DEC-001 a UC-DEC-010.
 - [x] Iniciar a analise do pacote `UC-ADM` como primeira decomposicao da fase de casos de uso.
 - [x] Iniciar a analise do pacote `UC-JOR` como segunda decomposicao da fase de casos de uso.
 - [x] Iniciar a analise do pacote `UC-FOL` como terceira decomposicao da fase de casos de uso.

@@ -1,79 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-001
 
-# Caso de Uso
+## Cadastrar Tenant
 
-## UC-PLT-001 - Cadastrar Tenant
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar um tenant na plataforma SaaS, definindo a unidade base de isolamento multiempresa.
+Permitir o cadastro de um tenant como fronteira primária da plataforma SaaS.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Plataforma
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Permissao administrativa.
+* Usuario autenticado.
+* Permissao de plataforma habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um novo tenant precisa ser criado.
+O processo inicia quando um tenant e cadastrado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Tenants.
-2. Sistema apresenta o formulario.
-3. Usuario informa dados do tenant.
-4. Sistema valida unicidade.
-5. Sistema grava o tenant.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa nome e identificador.
+
+### Etapa 2
+
+Sistema valida duplicidade.
+
+### Etapa 3
+
+Sistema grava o tenant.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Tenant duplicado
+
+### Condicao
+
+Ja existe tenant equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Tenant criado ou recusado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O tenant e a fronteira principal do isolamento.
-- Alteracoes devem preservar historico.
+* O tenant e a fronteira principal de dados.
+* O cadastro precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformTenant
+## Tenant
 
 ```text
 id
-code
 name
 status
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar tenant valido.
-- Bloquear codigo duplicado.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre a base do multi-tenant e define a unidade estrutural da plataforma.
+* UC-PLT-002 - Cadastrar Empresa
+* UC-PLT-004 - Configurar Isolamento de Dados

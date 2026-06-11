@@ -1,50 +1,58 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-003
 
-# Caso de Uso
+## Consultar Saldo de Ferias
 
-## UC-FER-003 - Consultar Saldo de Ferias
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir a consulta do saldo de ferias disponivel, com vencimentos, periodos e pendencias associadas.
+Permitir a consulta do saldo disponivel, vencimentos e periodo atual de ferias.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Gestor autorizado
-- Colaborador
+## Primarios
+
+* Colaborador
+* Gestor de RH
+
+## Secundarios
+
+* Portal administrativo
+* Motor de ferias
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Periodo aquisitivo apurado.
-- Usuario autenticado.
-- Permissao de consulta.
+* Colaborador ativo.
+* Saldo calculado ou estimado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o usuario precisa verificar o saldo de ferias de um colaborador.
+O processo inicia quando o saldo de ferias e consultado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Saldo.
-2. Sistema apresenta saldo disponivel.
-3. Sistema apresenta vencimentos e bloqueios.
-4. Usuario consulta detalhes.
-5. Sistema registra auditoria de consulta quando aplicavel.
+### Etapa 1
+
+Sistema recupera o saldo acumulado.
+
+### Etapa 2
+
+Sistema apresenta periodo aquisitivo e concessivo.
+
+### Etapa 3
+
+Sistema exibe vencimentos e historico basico.
+
+### Etapa 4
+
+Sistema registra auditoria quando exigido.
 
 ---
 
@@ -52,25 +60,27 @@ O processo inicia quando o usuario precisa verificar o saldo de ferias de um col
 
 ## FA-01 - Saldo indisponivel
 
-Sistema informa pendencia de apuracao.
+### Condicao
 
-## FA-02 - Usuario sem permissao
+Nao ha calculo consolidado.
 
-Sistema bloqueia a consulta.
+### Fluxo
+
+* Sistema sinaliza a indisponibilidade parcial.
 
 ---
 
 # Pos-condicoes
 
-- Saldo consultado.
-- Auditoria registrada quando aplicavel.
+* Saldo consultado.
+* Auditoria registrada quando aplicavel.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O saldo deve refletir o periodo aquisitivo e concessivo.
-- A consulta deve respeitar o nivel de acesso.
+* A consulta deve respeitar finalidade e acesso.
+* O saldo deve refletir o historico do colaborador.
 
 ---
 
@@ -81,29 +91,14 @@ Sistema bloqueia a consulta.
 ```text
 id
 employee_id
-days_available
-days_due
-status
+available_days
+expiry_at
+updated_at
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-GET /api/v1/vacations/balance/{employeeId}
-```
-
----
-
-# Testes
-
-- Consultar saldo valido.
-- Bloquear consulta sem permissao.
-- Exibir pendencia de apuracao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso depende da apuracao e do controle concessivo para expor o saldo correto ao usuario.
+* UC-FER-001 - Apurar Periodo Aquisitivo
+* UC-FER-004 - Solicitar Ferias

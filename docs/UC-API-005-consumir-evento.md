@@ -1,79 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-005
 
-# Caso de Uso
+## Consumir Evento
 
-## UC-API-005 - Consumir Evento
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Consumir eventos externos com controle de duplicidade, falha e auditoria.
+Permitir a recepcao e processamento de eventos externos.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de Integrações
+## Primarios
+
+* Integracao consumidora
+
+## Secundarios
+
+* Motor de integracoes
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Webhook ou fila disponivel.
-- Usuario autenticado quando aplicavel.
+* Evento publicado ou recebido.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um evento externo chega para processamento.
+O processo inicia quando o evento e consumido.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema recebe o evento.
-2. Sistema valida assinatura.
-3. Sistema processa o payload.
-4. Sistema registra resultado.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema recebe o evento.
+
+### Etapa 2
+
+Sistema valida assinatura e schema.
+
+### Etapa 3
+
+Sistema processa a mensagem.
+
+### Etapa 4
+
+Sistema grava o resultado.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Evento invalido
+
+### Condicao
+
+O payload nao e valido.
+
+### Fluxo
+
+* Sistema rejeita o consumo.
+
+---
+
+# Pos-condicoes
+
+* Evento consumido ou rejeitado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O consumo deve ser idempotente.
-- O payload deve ser validado.
+* O consumo precisa ser idempotente.
+* A origem do evento deve ser preservada.
 
 ---
 
 # Entidades Envolvidas
 
-## IntegrationEventConsumption
+## EventConsumption
 
 ```text
 id
 integration_id
 event_type
 status
-received_at
+consumed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Consumir evento valido.
-- Bloquear assinatura invalida.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha o lado de entrada dos eventos externos.
+* UC-API-004 - Publicar Evento
+* UC-API-010 - Monitorar Integracoes

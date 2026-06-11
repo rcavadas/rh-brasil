@@ -1,80 +1,106 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-008
 
-# Caso de Uso
+## Gerar Documentos Rescisorios
 
-## UC-RES-008 - Gerar Documentos Rescisorios
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerar termos, guias e comprovantes rescisorios com rastreabilidade e vinculo ao desligamento.
+Permitir a geracao de termos, guias e comprovantes da rescisao.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Motor de rescisao
+
+## Secundarios
+
+* GED
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Rescisao calculada.
-- Usuario autenticado.
+* Rescisao calculada ou em andamento.
+* Templates documentais disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando os documentos rescisorios precisam ser emitidos.
+O processo inicia quando os documentos rescisorios sao gerados.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > Documentos.
-2. Sistema apresenta documentos disponiveis.
-3. Usuario confirma a geracao.
-4. Sistema produz os documentos.
-5. Sistema registra assinatura ou aceite quando aplicavel.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica os documentos necessarios.
+
+### Etapa 2
+
+Sistema gera os artefatos.
+
+### Etapa 3
+
+Sistema anexa as memorias e evidencias.
+
+### Etapa 4
+
+Sistema registra a disponibilidade para assinatura.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Template ausente
+
+### Condicao
+
+Nao existe modelo para algum documento.
+
+### Fluxo
+
+* Sistema sinaliza a pendencia.
+
+---
+
+# Pos-condicoes
+
+* Documentos gerados.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Os documentos devem refletir os calculos rescisorios.
-- A trilha documental deve ser preservada.
+* Os documentos devem manter assinatura e versionamento.
+* A geracao precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationDocument
+## RescissionDocument
 
 ```text
 id
 termination_request_id
 document_type
-file_reference
 status
+signed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Gerar documentos validos.
-- Bloquear sem calculo.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso formaliza os artefatos da rescisao depois dos calculos e antes do fechamento.
+* UC-GED-003 - Gerar Documento Automaticamente
+* UC-RES-009 - Fechar Rescisao

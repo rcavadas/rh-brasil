@@ -1,80 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-005
 
-# Caso de Uso
+## Configurar Parametrizacoes por Tenant
 
-## UC-PLT-005 - Configurar Parametrizacoes por Tenant
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Configurar parametros operacionais por tenant sem violar o isolamento entre clientes.
+Permitir a configuracao de parametrizacoes operacionais por tenant.
 
 ---
 
 # Atores
 
-- Gestor de Plataforma
-- Administrador do Sistema
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Tenant cadastrado.
-- Usuario autenticado.
+* Tenant existente.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um parametro por tenant precisa ser criado ou alterado.
+O processo inicia quando as parametrizacoes sao definidas.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Parametrizacoes.
-2. Sistema apresenta os parametros.
-3. Usuario altera o valor.
-4. Sistema valida o escopo.
-5. Sistema grava a parametrizacao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario ajusta as preferencias.
+
+### Etapa 2
+
+Sistema valida consistencia.
+
+### Etapa 3
+
+Sistema grava a configuracao.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Parametro invalido
+
+### Condicao
+
+O parametro viola a politica.
+
+### Fluxo
+
+* Sistema bloqueia o salvamento.
+
+---
+
+# Pos-condicoes
+
+* Parametrizacoes atualizadas.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Parametros devem ser versionados.
-- O escopo deve respeitar o tenant.
+* As parametrizacoes precisam ser reversiveis.
+* O historico deve ser preservado.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformTenantSetting
+## TenantSettings
 
 ```text
 id
 tenant_id
-setting_key
-setting_value
-status
+key
+value
+updated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Configurar parametro valido.
-- Bloquear escopo fora do tenant.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso consolida a variabilidade permitida por tenant sem quebrar o isolamento.
+* UC-PLT-004 - Configurar Isolamento de Dados
+* UC-PLT-006 - Monitorar Disponibilidade

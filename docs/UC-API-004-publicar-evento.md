@@ -1,61 +1,90 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-004
 
-# Caso de Uso
+## Publicar Evento
 
-## UC-API-004 - Publicar Evento
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Publicar eventos para integrações externas com rastreabilidade e controle de status.
+Permitir a publicacao de eventos para consumidores externos.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de Integrações
+## Primarios
+
+* Sistema produtor
+
+## Secundarios
+
+* Webhook
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Contrato configurado.
-- Evento disponivel.
+* Integracao configurada.
+* Evento elegivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um evento precisa ser publicado.
+O processo inicia quando o evento e publicado.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema monta o evento.
-2. Sistema valida contrato.
-3. Sistema publica o evento.
-4. Sistema registra retorno.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema prepara a mensagem.
+
+### Etapa 2
+
+Sistema envia para os consumidores.
+
+### Etapa 3
+
+Sistema grava o estado da publicacao.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Falha de entrega
+
+### Condicao
+
+O consumidor nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a falha e preserva o historico.
+
+---
+
+# Pos-condicoes
+
+* Evento publicado ou sinalizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O evento deve ser idempotente.
-- A publicação deve ser rastreavel.
+* A publicacao deve ser auditavel.
+* O payload precisa ser protegido.
 
 ---
 
 # Entidades Envolvidas
 
-## IntegrationEventPublication
+## EventPublication
 
 ```text
 id
@@ -67,13 +96,7 @@ published_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Publicar evento valido.
-- Bloquear sem contrato.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso representa a saida de eventos para sistemas externos.
+* UC-API-003 - Configurar Webhook
+* UC-API-005 - Consumir Evento

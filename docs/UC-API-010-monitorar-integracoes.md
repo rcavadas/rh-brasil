@@ -1,56 +1,82 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-010
 
-# Caso de Uso
+## Monitorar Integracoes
 
-## UC-API-010 - Monitorar Integracoes
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Monitorar as integracoes ativas com indicadores de status, falha e reprocessamento.
+Permitir o monitoramento do estado, tentativas e falhas das integracoes.
 
 ---
 
 # Atores
 
-- Analista de Integrações
-- Gestor de Segurança
-- Administrador do Sistema
+## Primarios
+
+* Administrador de integracoes
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Integracoes cadastradas.
-- Usuario autenticado.
+* Integracoes registradas.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a operacao precisa acompanhar a saude das integracoes.
+O processo inicia quando o monitoramento e consultado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > Monitoramento.
-2. Sistema apresenta a lista e os status.
-3. Usuario filtra por integrações ou falhas.
-4. Sistema consolida os indicadores.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona a integracao.
+
+### Etapa 2
+
+Sistema apresenta o estado consolidado.
+
+### Etapa 3
+
+Sistema exibe tentativas, falhas e pendencias.
+
+### Etapa 4
+
+Sistema registra a consulta quando aplicavel.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Integracao sem eventos
+
+### Condicao
+
+Nao ha atividade recente.
+
+### Fluxo
+
+* Sistema sinaliza inatividade.
+
+---
+
+# Pos-condicoes
+
+* Monitoramento consultado.
+* Auditoria registrada quando aplicavel.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O monitoramento deve ser auditavel.
-- A visibilidade deve respeitar o escopo do usuario.
+* O monitoramento precisa ser auditavel.
+* Segredos e dados sensiveis nao podem aparecer no painel.
 
 ---
 
@@ -62,18 +88,13 @@ O processo inicia quando a operacao precisa acompanhar a saude das integracoes.
 id
 integration_id
 status
-captured_at
+attempts
+updated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Monitorar integracao valida.
-- Bloquear escopo sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o pacote ao expor o estado operacional das integracoes.
+* UC-API-004 - Publicar Evento
+* UC-SEC-010 - Auditar Acessos e Operacoes

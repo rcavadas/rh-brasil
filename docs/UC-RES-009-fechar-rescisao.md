@@ -1,80 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-009
 
-# Caso de Uso
+## Fechar Rescisao
 
-## UC-RES-009 - Fechar Rescisao
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir o fechamento operacional do processo de rescisao depois da validacao dos calculos e documentos.
+Permitir o fechamento operacional do processo de rescisao.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Analista de Folha
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* Motor de rescisao
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Rescisao calculada.
-- Documentos gerados.
-- Usuario autenticado.
+* Calculos concluidos.
+* Documentos gerados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a rescisao precisa ser encerrada formalmente.
+O processo inicia quando a rescisao e fechada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > Fechar.
-2. Sistema valida pendencias.
-3. Usuario confirma o fechamento.
-4. Sistema bloqueia a rescisao para novas alteracoes.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema valida os calculos e documentos.
+
+### Etapa 2
+
+Usuario confirma o fechamento.
+
+### Etapa 3
+
+Sistema muda o estado para fechado.
+
+### Etapa 4
+
+Sistema registra a trilha final.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Pendencia aberta
+
+### Condicao
+
+Ainda ha calculo ou documento pendente.
+
+### Fluxo
+
+* Sistema bloqueia o fechamento.
+
+---
+
+# Pos-condicoes
+
+* Rescisao fechada ou bloqueada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O fechamento nao pode apagar historico.
-- Reaberturas devem seguir fluxo autorizado.
+* O fechamento nao pode apagar historico.
+* A memoria de calculo precisa permanecer acessivel.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationClosure
+## RescissionClose
 
 ```text
 id
 termination_request_id
-closed_at
-closed_by
 status
+closed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Fechar rescisao valida.
-- Bloquear sem calculo.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso bloqueia a rescisao depois dos calculos e documentos, preparando a transmissao final.
+* UC-RES-008 - Gerar Documentos Rescisorios
+* UC-RES-010 - Transmitir Desligamento ao eSocial

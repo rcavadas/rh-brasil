@@ -1,85 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-010
 
-# Caso de Uso
+## Conciliar Totalizadores do eSocial
 
-## UC-ESO-010 - Conciliar Totalizadores do eSocial
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Conciliar totalizadores e divergencias entre o ambiente local e o retorno do eSocial.
+Permitir a conciliacao dos totalizadores enviados com os dados locais.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de eSocial
+
+## Secundarios
+
+* Motor de eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Eventos transmitidos.
-- Retornos disponiveis.
+* Eventos transmitidos ou fechados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando os totalizadores precisam ser conciliados.
+O processo inicia quando a conciliacao e executada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa eSocial > Conciliacao.
-2. Sistema apresenta divergencias.
-3. Usuario analisa o retorno.
-4. Sistema consolida o resultado.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema coleta os totalizadores.
+
+### Etapa 2
+
+Sistema compara com a base local.
+
+### Etapa 3
+
+Sistema identifica divergencias.
+
+### Etapa 4
+
+Sistema registra o resultado.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Divergencia encontrada
+
+### Condicao
+
+Os totalizadores nao batem.
+
+### Fluxo
+
+* Sistema sinaliza a divergencia e preserva o historico.
+
+---
+
+# Pos-condicoes
+
+* Conciliacao executada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A conciliacao deve preservar historico.
-- Divergencias devem ser rastreaveis.
+* A conciliacao nao pode corromper o historico local.
+* O resultado precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialReconciliationSnapshot
+## EsocialReconciliation
 
 ```text
 id
-event_code
+tenant_id
 status
-captured_at
+divergence_count
+reconciled_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Conciliar retorno valido.
-- Bloquear sem eventos.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o pacote ao confrontar o retorno do governo com o estado local.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual possui transmissao minima, reprocessamento e trilha de auditoria, entao a conciliacao deve ser a camada que detecta divergencias sem quebrar o historico local.
+* UC-ESO-009 - Transmitir Evento S-1299
+* UC-SEC-010 - Auditar Acessos e Operacoes

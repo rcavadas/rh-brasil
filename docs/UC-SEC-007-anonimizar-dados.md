@@ -1,79 +1,103 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-007
 
-# Caso de Uso
+## Anonimizar Dados
 
-## UC-SEC-007 - Anonimizar Dados
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Aplicar anonimização ou mascaramento em dados conforme finalidade, base legal e politica de seguranca.
+Permitir a anonimização de dados quando aplicavel por finalidade ou obrigacao.
 
 ---
 
 # Atores
 
-- Gestor de Seguranca
-- Analista de RH
+## Primarios
+
+* Compliance
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Dados elegiveis.
-- Politica de anonimização definida.
+* Regra de anonimização definida.
 
 ---
 
 # Gatilho
 
-O processo inicia quando dados precisam ser protegidos para uso restrito ou estatistico.
+O processo inicia quando os dados sao anonimizado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario seleciona o escopo.
-2. Sistema apresenta a politica.
-3. Usuario confirma a anonimização.
-4. Sistema aplica mascaramento.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica o conjunto elegivel.
+
+### Etapa 2
+
+Sistema aplica o mascaramento ou anonimização.
+
+### Etapa 3
+
+Sistema registra a alteracao.
+
+### Etapa 4
+
+Sistema preserva a trilha minima.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Dados fora de escopo
+
+### Condicao
+
+O conjunto nao pode ser anonimizado.
+
+### Fluxo
+
+* Sistema bloqueia a operacao.
+
+---
+
+# Pos-condicoes
+
+* Dados anonimizado ou bloqueados.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A anonimização deve ser reversivel apenas quando permitido.
-- Dados sensiveis devem ser protegidos.
+* A anonimização deve respeitar a finalidade.
+* A trilha minima precisa ser preservada.
 
 ---
 
 # Entidades Envolvidas
 
-## PrivacyAnonymizationJob
+## AnonymizationJob
 
 ```text
 id
-scope
-masking_level
+dataset_name
 status
-created_at
+executed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Anonimizar escopo valido.
-- Bloquear escopo proibido.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso aplica mascaramento e protecao sobre dados elegiveis.
+* UC-SEC-006 - Atender Solicitacao do Titular
+* UC-SEC-008 - Aplicar Politica de Retencao

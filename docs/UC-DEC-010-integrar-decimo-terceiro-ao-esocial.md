@@ -1,10 +1,10 @@
-# UC-ESO-003
+# UC-DEC-010
 
-## Transmitir Evento S-1000
+## Integrar Decimo Terceiro ao eSocial
 
 ### Objetivo
 
-Permitir a transmissao do evento inicial do empregador ao eSocial.
+Permitir a integracao do decimo terceiro ao eSocial com rastreabilidade.
 
 ---
 
@@ -12,7 +12,7 @@ Permitir a transmissao do evento inicial do empregador ao eSocial.
 
 ## Primarios
 
-* Motor de eSocial
+* Motor de 13o
 
 ## Secundarios
 
@@ -23,14 +23,13 @@ Permitir a transmissao do evento inicial do empregador ao eSocial.
 
 # Pre-condicoes
 
-* Ambiente configurado.
-* Certificado valido.
+* 13o calculado ou fechado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o S-1000 e transmitido.
+O processo inicia quando o 13o e integrado ao eSocial.
 
 ---
 
@@ -38,7 +37,7 @@ O processo inicia quando o S-1000 e transmitido.
 
 ### Etapa 1
 
-Sistema monta o evento.
+Sistema monta os eventos necessarios.
 
 ### Etapa 2
 
@@ -46,7 +45,7 @@ Sistema envia ao eSocial.
 
 ### Etapa 3
 
-Sistema grava protocolo ou pendencia.
+Sistema grava o protocolo ou pendencia.
 
 ### Etapa 4
 
@@ -60,35 +59,35 @@ Sistema registra auditoria.
 
 ### Condicao
 
-O eSocial rejeita o envio.
+O eSocial rejeita a transmissao.
 
 ### Fluxo
 
-* Sistema sinaliza o erro e preserva o historico.
+* Sistema sinaliza a divergencia.
 
 ---
 
 # Pos-condicoes
 
-* Evento transmitido ou rejeitado.
+* Integracao realizada ou bloqueada.
 * Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-* O evento deve preservar ordem e rastreabilidade.
+* A transmissao deve ser rastreavel.
 * O reprocessamento precisa ser possivel.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEvent
+## ThirteenthSalaryIntegration
 
 ```text
 id
-event_type
+tenant_id
 status
 protocol
 sent_at
@@ -98,5 +97,5 @@ sent_at
 
 # Casos Relacionados
 
-* UC-ESO-004 - Transmitir Evento S-1005
-* UC-ESO-010 - Conciliar Totalizadores do eSocial
+* UC-ESO-007 - Transmitir Evento S-1200
+* UC-ESO-009 - Transmitir Evento S-1299

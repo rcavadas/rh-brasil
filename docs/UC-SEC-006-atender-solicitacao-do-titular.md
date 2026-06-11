@@ -1,63 +1,93 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-006
 
-# Caso de Uso
+## Atender Solicitacao do Titular
 
-## UC-SEC-006 - Atender Solicitacao do Titular
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Atender solicitacoes do titular de dados de forma auditavel, com rastreabilidade e escopo controlado.
+Permitir o atendimento de solicitacoes do titular de dados.
 
 ---
 
 # Atores
 
-- Colaborador
-- Analista de RH
-- Administrador do Sistema
-- Auditor
+## Primarios
+
+* Titular de dados
+
+## Secundarios
+
+* Compliance
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Solicitacao registrada.
-- Politica de atendimento definida.
+* Solicitacao validada.
 
 ---
 
 # Gatilho
 
-O titular solicita atendimento de um direito relacionado aos seus dados.
+O processo inicia quando a solicitacao do titular e atendida.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema registra a solicitacao.
-2. RH valida identidade e escopo.
-3. Sistema localiza os dados.
-4. RH executa a resposta.
-5. Sistema registra evidencia e auditoria.
+### Etapa 1
+
+Sistema recebe a solicitacao.
+
+### Etapa 2
+
+Compliance valida a legitimidade.
+
+### Etapa 3
+
+Sistema executa a resposta adequada.
+
+### Etapa 4
+
+Sistema registra a conclusao.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Solicitacao invalida
+
+### Condicao
+
+Nao ha base legal para atendimento.
+
+### Fluxo
+
+* Sistema encerra com sinalizacao.
+
+---
+
+# Pos-condicoes
+
+* Solicitacao atendida ou recusada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Solicitacoes devem ser rastreaveis.
-- A resposta deve respeitar prazo e escopo.
+* O atendimento precisa ser rastreavel.
+* A resposta deve respeitar a finalidade.
 
 ---
 
 # Entidades Envolvidas
 
-## PrivacyDataSubjectRequest
+## DataSubjectRequest
 
 ```text
 id
@@ -69,13 +99,7 @@ created_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar solicitacao valida.
-- Bloquear identidade nao verificada.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso complementa o consentimento ao operacionalizar os direitos do titular.
+* UC-SEC-005 - Registrar Consentimento
+* UC-SEC-007 - Anonimizar Dados

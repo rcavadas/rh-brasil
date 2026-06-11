@@ -28,6 +28,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - `docs/PRODUCT.md`, `docs/ARCHITECTURE.md` e `.codex/OPEN_QUESTIONS.md` foram atualizados para tratar a especificacao catalogada como concluida e a implementacao como pendente; depois, a trilha minima de eSocial da admissao passou a existir no runtime.
 - Os pacotes UC-ADM, UC-FOL, UC-BEN, UC-FER, UC-DEC, UC-RES, UC-SST, UC-ESO, UC-COL, UC-GST, UC-WFL, UC-GED, UC-ATS, UC-ONB, UC-LMS, UC-PER e UC-CAR receberam READMEs de pacote para cobrir o esboço documental completo.
 - Os pacotes UC-GST, UC-WFL, UC-GED, UC-ATS, UC-ONB, UC-LMS, UC-PER e UC-CAR foram detalhados em nivel individual, cobrindo portal do gestor, workflow, gestao documental, ATS, onboarding, LMS, avaliacao de desempenho e cargos/salarios/carreira.
+- Os pacotes UC-FER, UC-RES, UC-BEN, UC-SST, UC-ESO, UC-SEC, UC-API, UC-PLT e UC-DEC foram detalhados em nivel individual, cobrindo ferias, rescisao, beneficios, SST, eSocial, seguranca, integracoes, plataforma e 13o salario.
 - `docs/MATRIZ-TECNICA-ESBOCO.md` foi criado para orientar a discussao tecnica e a priorizacao do MVP.
 - `docs/TOPICO-01-FUNDACAO-DA-PLATAFORMA.md` foi criado para detalhar a base tecnica, o estilo arquitetural e os requisitos de operacao inicial.
 - `docs/TOPICO-02-MODELO-DE-DADOS-CENTRAL.md` foi criado para detalhar o modelo de dados central, entidades, relacoes e regras de integridade.

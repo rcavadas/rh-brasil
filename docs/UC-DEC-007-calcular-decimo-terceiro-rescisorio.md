@@ -1,10 +1,10 @@
-# UC-RES-005
+# UC-DEC-007
 
-## Calcular Ferias Rescisorias
+## Calcular Decimo Terceiro Rescisorio
 
 ### Objetivo
 
-Permitir o calculo de ferias vencidas e proporcionais na rescisao.
+Permitir o calculo do 13o proporcional devido na rescisao.
 
 ---
 
@@ -12,11 +12,11 @@ Permitir o calculo de ferias vencidas e proporcionais na rescisao.
 
 ## Primarios
 
-* Motor de rescisao
+* Motor de 13o
 
 ## Secundarios
 
-* Folha de pagamento
+* Rescisao
 * Auditoria
 
 ---
@@ -24,13 +24,12 @@ Permitir o calculo de ferias vencidas e proporcionais na rescisao.
 # Pre-condicoes
 
 * Desligamento registrado.
-* Periodos de ferias apurados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando as ferias rescisorias sao calculadas.
+O processo inicia quando o 13o rescisorio e calculado.
 
 ---
 
@@ -38,11 +37,11 @@ O processo inicia quando as ferias rescisorias sao calculadas.
 
 ### Etapa 1
 
-Sistema apura ferias vencidas e proporcionais.
+Sistema apura os avos proporcionais.
 
 ### Etapa 2
 
-Sistema aplica adicionais e medias.
+Sistema calcula a verba.
 
 ### Etapa 3
 
@@ -56,40 +55,40 @@ Sistema registra auditoria.
 
 # Fluxos Alternativos
 
-## FA-01 - Periodo conflitante
+## FA-01 - Base insuficiente
 
 ### Condicao
 
-Nao ha base confiavel para o periodo.
+Nao ha historico suficiente.
 
 ### Fluxo
 
-* Sistema sinaliza a inconsistência.
+* Sistema sinaliza a pendencia.
 
 ---
 
 # Pos-condicoes
 
-* Ferias rescisorias calculadas.
+* 13o rescisorio calculado.
 * Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-* O calculo deve respeitar o historico de ferias.
+* O calculo deve respeitar o desligamento.
 * A memoria precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## RescissionVacationCalculation
+## ThirteenthSalaryTermination
 
 ```text
 id
 termination_request_id
-vacation_type
+months
 amount
 calculated_at
 ```
@@ -98,5 +97,5 @@ calculated_at
 
 # Casos Relacionados
 
-* UC-FER-006 - Calcular Ferias
 * UC-RES-006 - Calcular Decimo Terceiro Proporcional
+* UC-DEC-010 - Integrar Decimo Terceiro ao eSocial

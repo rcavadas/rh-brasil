@@ -1,66 +1,97 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-002
 
-# Caso de Uso
+## Gerenciar Permissoes
 
-## UC-SEC-002 - Gerenciar Permissoes
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar permissoes granulares associadas a perfis, papeis e modulos.
+Permitir a configuracao de permissoes granulares por perfil, recurso e acao.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Seguranca
+## Primarios
+
+* Administrador de seguranca
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Perfil cadastrado.
-- Usuario autenticado.
+* Perfil de acesso existente.
 
 ---
 
 # Gatilho
 
-O processo inicia quando uma permissao precisa ser concedida ou revogada.
+O processo inicia quando as permissoes sao configuradas.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Seguranca > Permissoes.
-2. Sistema apresenta permissoes disponiveis.
-3. Usuario seleciona regras.
-4. Sistema valida consistencia.
-5. Sistema grava a permissão.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona o perfil.
+
+### Etapa 2
+
+Sistema apresenta recursos e acoes.
+
+### Etapa 3
+
+Usuario define as permissoes.
+
+### Etapa 4
+
+Sistema grava a politica.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Permissao conflitante
+
+### Condicao
+
+A permissao conflita com outra regra.
+
+### Fluxo
+
+* Sistema bloqueia o salvamento.
+
+---
+
+# Pos-condicoes
+
+* Permissoes configuradas.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Permissoes devem ser auditaveis.
-- Revogacoes nao podem apagar historico.
+* A permissao precisa respeitar tenant e finalidade.
+* O historico deve ser preservado.
 
 ---
 
 # Entidades Envolvidas
 
-## SecurityPermission
+## AccessPermission
 
 ```text
 id
-profile_id
+role_id
 resource
 action
 status
@@ -68,13 +99,7 @@ status
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Conceder permissao valida.
-- Bloquear inconsistencias.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso vem logo depois dos perfis, porque detalha os acessos granulares por recurso e acao.
+* UC-SEC-001 - Gerenciar Perfis de Acesso
+* UC-SEC-004 - Configurar SSO

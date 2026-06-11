@@ -1,85 +1,100 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-002
 
-# Caso de Uso
+## Gerenciar Certificado Digital
 
-## UC-ESO-002 - Gerenciar Certificado Digital
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar certificados digitais usados nas transmissoes do eSocial.
+Permitir o cadastro, controle de validade e uso do certificado digital do eSocial.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Seguranca
+## Primarios
+
+* Gestor de eSocial
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ambiente configurado.
-- Usuario autenticado.
+* Ambiente eSocial configurado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o certificado precisa ser cadastrado ou renovado.
+O processo inicia quando o certificado e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa eSocial > Certificado.
-2. Sistema apresenta a validade.
-3. Usuario informa o certificado.
-4. Sistema valida o arquivo e a vigencia.
-5. Sistema grava a configuracao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario cadastra o certificado.
+
+### Etapa 2
+
+Sistema valida validade e permissao.
+
+### Etapa 3
+
+Sistema grava o certificado.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Certificado expirado
+
+### Condicao
+
+O certificado nao esta valido.
+
+### Fluxo
+
+* Sistema bloqueia o uso.
+
+---
+
+# Pos-condicoes
+
+* Certificado controlado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O certificado deve ter validade monitorada.
-- Segredos nao podem ser expostos.
+* O certificado precisa de vigencia e rotacao.
+* O uso deve ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialDigitalCertificate
+## DigitalCertificate
 
 ```text
 id
 tenant_id
+serial_number
 expires_at
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar certificado valido.
-- Bloquear certificado expirado.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso vem logo depois do ambiente e habilita a autenticacao criptografica das transmissoes.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual depende de um certificado valido para o fluxo governamental, mas o contrato de gerencia de validade, renovacao e rotacao ainda precisa permanecer explicitado como caso de uso próprio.
+* UC-ESO-001 - Configurar Ambiente eSocial
+* UC-ESO-003 - Transmitir Evento S-1000

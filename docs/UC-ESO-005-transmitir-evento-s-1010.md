@@ -1,65 +1,93 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-005
 
-# Caso de Uso
+## Transmitir Evento S-1010
 
-## UC-ESO-005 - Transmitir Evento S-1010
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Transmitir a tabela de rubricas ao eSocial.
+Permitir a transmissao da tabela de rubricas.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de Folha
+## Primarios
+
+* Motor de eSocial
+
+## Secundarios
+
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Rubricas cadastradas.
-- Ambiente eSocial configurado.
+* Tabelas iniciais disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a tabela de rubricas precisa ser enviada.
+O processo inicia quando o S-1010 e transmitido.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema monta a tabela.
-2. Sistema valida as rubricas.
-3. Sistema transmite o evento.
-4. Sistema registra protocolo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta a tabela de rubricas.
+
+### Etapa 2
+
+Sistema envia o evento.
+
+### Etapa 3
+
+Sistema grava o retorno.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Rubrica inconsistente
+
+### Condicao
+
+A tabela local nao e compativel.
+
+### Fluxo
+
+* Sistema sinaliza divergencia.
+
+---
+
+# Pos-condicoes
+
+* Evento transmitido ou sinalizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- As rubricas devem estar consistentes com a folha.
-- A transmissao deve ser rastreavel.
+* A transmissao precisa respeitar a base da folha.
+* A tabela deve ser versionada.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEventTransmission
+## EsocialEvent
 
 ```text
 id
-event_code
+event_type
 status
 protocol
 sent_at
@@ -67,19 +95,7 @@ sent_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Transmitir S-1010 valido.
-- Bloquear rubrica inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a tabela de rubricas para o eSocial.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual ja possui o pacote FOL com rubricas e incidencias, entao o S-1010 precisa refletir a classificacao local e manter compatibilidade com os calculos de folha.
+* UC-ESO-004 - Transmitir Evento S-1005
+* UC-ESO-007 - Transmitir Evento S-1200

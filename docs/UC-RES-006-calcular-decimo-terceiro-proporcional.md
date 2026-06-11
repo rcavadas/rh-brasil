@@ -1,78 +1,102 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-006
 
-# Caso de Uso
+## Calcular Decimo Terceiro Proporcional
 
-## UC-RES-006 - Calcular Decimo Terceiro Proporcional
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Calcular o decimo terceiro proporcional e seus reflexos na rescisao.
+Permitir o calculo do 13o proporcional na rescisao.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
+## Primarios
+
+* Motor de rescisao
+
+## Secundarios
+
+* Folha de pagamento
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Desligamento registrado.
-- Usuario autenticado.
+* Desligamento registrado.
+* Competencias disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o 13o proporcional precisa ser apurado na rescisao.
+O processo inicia quando o 13o proporcional e calculado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > 13o Proporcional.
-2. Sistema identifica avos e medias aplicaveis.
-3. Sistema calcula valores proporcionais.
-4. Sistema registra memoria de calculo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema apura os avos devidos.
+
+### Etapa 2
+
+Sistema aplica medias e adicionais.
+
+### Etapa 3
+
+Sistema grava a memoria de calculo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Avo invalido
+
+### Condicao
+
+Nao ha base suficiente para o avo.
+
+### Fluxo
+
+* Sistema sinaliza a divergencia.
+
+---
+
+# Pos-condicoes
+
+* 13o proporcional calculado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O calculo deve ser coerente com a competencia de desligamento.
-- O historico de avos deve ser preservado.
+* O calculo deve respeitar a competencia de desligamento.
+* O historico deve ser preservado.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationThirteenthCalculation
+## RescissionThirteenthSalary
 
 ```text
 id
 termination_request_id
+months
 amount
 calculated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Calcular 13o proporcional valido.
-- Bloquear sem base.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a camada de calculo proporcional antes do FGTS rescisorio e dos documentos.
+* UC-FOL-008 - Calcular IRRF
+* UC-RES-007 - Calcular FGTS Rescisorio

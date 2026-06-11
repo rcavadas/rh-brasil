@@ -1,80 +1,103 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-001
 
-# Caso de Uso
+## Cadastrar Integracao
 
-## UC-API-001 - Cadastrar Integracao
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar uma integracao externa com escopo, finalidade e metadados de operacao.
+Permitir o cadastro de uma integracao externa com finalidade, escopo e protocolo de auditabilidade.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Analista de Integrações
+## Primarios
+
+* Administrador de integracoes
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Permissao para integrar sistemas.
+* Usuario autenticado.
+* Tenant ativo validado.
+* Permissao de integracoes habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando uma nova integracao precisa ser cadastrada.
+O processo inicia quando uma integracao e cadastrada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > Cadastro.
-2. Sistema apresenta o formulario.
-3. Usuario informa dados da integracao.
-4. Sistema valida contrato e escopo.
-5. Sistema grava o cadastro.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa nome, finalidade e destino.
+
+### Etapa 2
+
+Sistema valida duplicidade.
+
+### Etapa 3
+
+Sistema grava o cadastro.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Integracao duplicada
+
+### Condicao
+
+Ja existe integracao equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Integracao criada ou recusada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Integracoes devem ser rastreaveis por tenant.
-- Alteracoes devem preservar historico.
+* A integracao pertence ao tenant.
+* A finalidade precisa ser declarada.
 
 ---
 
 # Entidades Envolvidas
 
-## ExternalIntegration
+## IntegrationDefinition
 
 ```text
 id
 tenant_id
 name
-integration_type
+purpose
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar integracao valida.
-- Bloquear contrato inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre o pacote de integracoes ao cadastrar o contrato base de um sistema externo.
+* UC-API-002 - Configurar API REST
+* UC-API-010 - Monitorar Integracoes

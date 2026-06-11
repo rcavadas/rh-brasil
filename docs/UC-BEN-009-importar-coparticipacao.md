@@ -1,80 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-009
 
-# Caso de Uso
+## Importar Coparticipacao
 
-## UC-BEN-009 - Importar Coparticipacao
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Importar valores de coparticipacao e rateios relacionados aos beneficios.
+Permitir a importacao de valores de coparticipacao e rateios por competencia.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Operadora de saude
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Dados de coparticipacao disponiveis.
-- Usuario autenticado.
+* Plano de saude ativo.
+* Arquivo ou lote disponivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a coparticipacao precisa ser importada.
+O processo inicia quando a coparticipacao e importada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Beneficios > Coparticipacao.
-2. Sistema apresenta arquivo ou lote disponivel.
-3. Usuario confirma a importacao.
-4. Sistema valida valores e rateios.
-5. Sistema registra a importacao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema recebe o arquivo.
+
+### Etapa 2
+
+Sistema valida estrutura e integridade.
+
+### Etapa 3
+
+Sistema importa os valores.
+
+### Etapa 4
+
+Sistema grava a memoria de importacao.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Arquivo invalido
+
+### Condicao
+
+O layout nao e reconhecido.
+
+### Fluxo
+
+* Sistema rejeita a importacao.
+
+---
+
+# Pos-condicoes
+
+* Coparticipacao importada ou rejeitada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A importacao deve ser rastreavel.
-- O valor importado deve ser consistente com o beneficio.
+* A importacao deve preservar a origem.
+* Os valores precisam ser conciliaveis.
 
 ---
 
 # Entidades Envolvidas
 
-## BenefitCopayImport
+## CopayImportBatch
 
 ```text
 id
-benefit_id
-source_reference
+source
 status
 imported_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Importar coparticipacao valida.
-- Bloquear arquivo inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a camada de entrada financeira do pacote de beneficios.
+* UC-BEN-008 - Gerenciar Plano de Saude
+* UC-BEN-010 - Integrar Beneficios com Folha

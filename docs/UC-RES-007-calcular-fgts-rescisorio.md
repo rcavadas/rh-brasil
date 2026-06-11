@@ -1,78 +1,102 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-007
 
-# Caso de Uso
+## Calcular FGTS Rescisorio
 
-## UC-RES-007 - Calcular FGTS Rescisorio
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Calcular o FGTS rescisorio e os reflexos fundiarios do desligamento.
+Permitir o calculo do FGTS rescisorio e multa quando aplicavel.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
+## Primarios
+
+* Motor de rescisao
+
+## Secundarios
+
+* Folha de pagamento
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Desligamento registrado.
-- Usuario autenticado.
+* Desligamento registrado.
+* Base fundiaria disponivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o FGTS rescisorio precisa ser apurado.
+O processo inicia quando o FGTS rescisorio e calculado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > FGTS Rescisorio.
-2. Sistema identifica bases aplicaveis.
-3. Sistema calcula reflexos fundiarios e multa quando cabivel.
-4. Sistema registra memoria de calculo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema apura a base fundiaria.
+
+### Etapa 2
+
+Sistema calcula multa e reflexos.
+
+### Etapa 3
+
+Sistema grava a memoria de calculo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Base fundiaria ausente
+
+### Condicao
+
+Nao ha dados suficientes para o calculo.
+
+### Fluxo
+
+* Sistema bloqueia a conclusao.
+
+---
+
+# Pos-condicoes
+
+* FGTS rescisorio calculado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O calculo deve ser coerente com o tipo de desligamento.
-- A memoria de calculo deve ser preservada.
+* O calculo deve respeitar a regra fundiaria vigente.
+* A memoria precisa ser auditavel.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationFgtsCalculation
+## RescissionFgt
 
 ```text
 id
 termination_request_id
-amount
+base_amount
+penalty_amount
 calculated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Calcular FGTS rescisorio valido.
-- Bloquear sem base.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra a camada de calculo financeiro antes da geracao dos documentos.
+* UC-RES-006 - Calcular Decimo Terceiro Proporcional
+* UC-RES-008 - Gerar Documentos Rescisorios

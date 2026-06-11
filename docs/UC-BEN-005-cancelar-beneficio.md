@@ -1,79 +1,104 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-005
 
-# Caso de Uso
+## Cancelar Beneficio
 
-## UC-BEN-005 - Cancelar Beneficio
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cancelar um beneficio e registrar os efeitos posteriores sem apagar o historico.
+Permitir o cancelamento do beneficio com preservacao de historico e efeitos posteriores.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Motor de beneficios
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Beneficio concedido ou suspenso.
-- Usuario autenticado.
+* Beneficio concedido ou suspenso.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o beneficio precisa ser encerrado.
+O processo inicia quando o beneficio e cancelado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa a concessao.
-2. Sistema apresenta os dados.
-3. Usuario confirma o cancelamento.
-4. Sistema registra o encerramento.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona o beneficio.
+
+### Etapa 2
+
+Sistema solicita motivo e data de efeito.
+
+### Etapa 3
+
+Sistema atualiza o status para cancelado.
+
+### Etapa 4
+
+Sistema preserva o historico.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Beneficio ja cancelado
+
+### Condicao
+
+O beneficio nao esta ativo.
+
+### Fluxo
+
+* Sistema bloqueia o cancelamento.
+
+---
+
+# Pos-condicoes
+
+* Beneficio cancelado ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O cancelamento deve preservar historico.
-- O cancelamento nao deve apagar concessoes anteriores.
+* O cancelamento nao pode remover historico.
+* Os efeitos posteriores precisam ser previsiveis.
 
 ---
 
 # Entidades Envolvidas
 
-## EmployeeBenefitCancellation
+## BenefitCancellation
 
 ```text
 id
-grant_id
-cancelled_at
-cancelled_by
+benefit_grant_id
 reason
+cancelled_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cancelar beneficio valido.
-- Bloquear sem concessao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra a concessao sem apagar o historico do beneficio.
+* UC-BEN-004 - Suspender Beneficio
+* UC-BEN-010 - Integrar Beneficios com Folha

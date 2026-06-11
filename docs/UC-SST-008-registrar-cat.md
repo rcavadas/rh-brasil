@@ -1,79 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-008
 
-# Caso de Uso
+## Registrar CAT
 
-## UC-SST-008 - Registrar CAT
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Registrar comunicacao de acidente de trabalho com trilha e evidencias.
+Permitir o registro da Comunicacao de Acidente de Trabalho com trilha e evidencias.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Auditoria
+* eSocial
 
 ---
 
 # Pre-condicoes
 
-- Ocorrencia identificada.
-- Usuario autenticado.
+* Evento de acidente ou ocorrencia reconhecido.
 
 ---
 
 # Gatilho
 
-O processo inicia quando uma CAT precisa ser registrada.
+O processo inicia quando a CAT e registrada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > CAT.
-2. Sistema apresenta o formulario.
-3. Usuario informa os dados da ocorrencia.
-4. Sistema valida o registro.
-5. Sistema grava a CAT.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa os dados da ocorrencia.
+
+### Etapa 2
+
+Sistema valida campos obrigatorios.
+
+### Etapa 3
+
+Sistema grava a CAT.
+
+### Etapa 4
+
+Sistema prepara a transmissao quando aplicavel.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Dados insuficientes
+
+### Condicao
+
+Nao ha base minima para a CAT.
+
+### Fluxo
+
+* Sistema bloqueia o registro.
+
+---
+
+# Pos-condicoes
+
+* CAT registrada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A CAT deve ser rastreavel.
-- A evidencia deve ser preservada.
+* A CAT carrega dados sensiveis e deve ser protegida.
+* O evento precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## WorkAccidentReport
+## WorkAccidentNotice
 
 ```text
 id
 employee_id
-incident_date
+incident_at
 status
+reported_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar CAT valida.
-- Bloquear sem dados essenciais.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso registra a comunicacao de acidente e fecha a trilha de ocorrencia.
+* UC-SST-007 - Emitir ASO
+* UC-SST-009 - Controlar Entrega de EPI

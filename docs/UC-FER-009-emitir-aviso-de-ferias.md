@@ -1,76 +1,88 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-009
 
-# Caso de Uso
+## Emitir Aviso de Ferias
 
-## UC-FER-009 - Emitir Aviso de Ferias
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir a emissao do aviso formal de ferias, com trilha de auditoria e vinculacao ao periodo aprovado.
+Permitir a emissao formal do aviso de ferias com trilha e evidencias.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* GED
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ferias aprovadas ou programadas.
-- Usuario autenticado.
-- Permissao para emitir aviso.
+* Ferias aprovadas.
+* Datas consolidadas.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o aviso formal de ferias precisa ser gerado.
+O processo inicia quando o aviso de ferias e emitido.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Aviso.
-2. Sistema apresenta periodo e dados do colaborador.
-3. Usuario confirma a emissao.
-4. Sistema gera o aviso.
-5. Sistema registra assinatura ou aceite quando aplicavel.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema gera o aviso.
+
+### Etapa 2
+
+Sistema apresenta as datas e dados legais.
+
+### Etapa 3
+
+Sistema registra a evidencia de emissao.
+
+### Etapa 4
+
+Sistema disponibiliza o documento.
+
+### Etapa 5
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Ferias nao aprovadas
+## FA-01 - Aviso indisponivel
 
-Sistema bloqueia a emissao.
+### Condicao
 
-## FA-02 - Usuario sem permissao
+Os dados nao estao consolidados.
 
-Sistema bloqueia a operacao.
+### Fluxo
+
+* Sistema bloqueia a emissao.
 
 ---
 
 # Pos-condicoes
 
-- Aviso emitido.
-- Evidencia registrada.
+* Aviso emitido ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O aviso deve refletir o periodo aprovado.
-- O documento deve ser auditavel.
+* O aviso precisa ser rastreavel e versionado.
+* A emissao depende da aprovacao previa.
 
 ---
 
@@ -82,27 +94,13 @@ Sistema bloqueia a operacao.
 id
 vacation_request_id
 issued_at
-issued_by
 status
+document_id
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/requests/{id}/notice
-```
-
----
-
-# Testes
-
-- Emitir aviso valido.
-- Bloquear sem aprovacao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso formaliza a comunicacao do periodo aprovado antes da integracao com folha.
+* UC-FER-005 - Aprovar Ferias
+* UC-GED-003 - Gerar Documento Automaticamente

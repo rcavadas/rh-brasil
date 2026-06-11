@@ -1,57 +1,83 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-002
 
-# Caso de Uso
+## Definir Motivo de Desligamento
 
-## UC-RES-002 - Definir Motivo de Desligamento
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Classificar o motivo do desligamento e aplicar as regras associadas ao encerramento do vinculo.
+Permitir a classificacao do motivo de desligamento com regras associadas.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Business Partner
-- Administrador do Sistema
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* Motor de rescisao
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Desligamento registrado.
-- Usuario autenticado.
+* Desligamento registrado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o motivo do desligamento precisa ser definido ou ajustado.
+O processo inicia quando o motivo e definido.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa o desligamento em aberto.
-2. Sistema apresenta os motivos disponiveis.
-3. Usuario seleciona o motivo.
-4. Sistema valida a classificacao.
-5. Sistema registra o motivo e historico.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona a categoria do desligamento.
+
+### Etapa 2
+
+Sistema valida a classificacao.
+
+### Etapa 3
+
+Sistema grava o motivo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Motivo invalido
+
+### Condicao
+
+O motivo nao se enquadra na politica.
+
+### Fluxo
+
+* Sistema bloqueia a alteracao.
+
+---
+
+# Pos-condicoes
+
+* Motivo definido ou recusado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O motivo deve ser rastreavel.
-- O motivo deve ser coerente com o tipo de desligamento.
+* O motivo pode impactar verbas, prazos e documentos.
+* A classificacao deve ser rastreavel.
 
 ---
 
@@ -62,19 +88,14 @@ O processo inicia quando o motivo do desligamento precisa ser definido ou ajusta
 ```text
 id
 termination_request_id
-reason_code
-description
+category
+notes
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Definir motivo valido.
-- Bloquear classificacao invalida.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso complementa o registro do desligamento ao classificar o motivo e habilitar os calculos subsequentes.
+* UC-RES-001 - Registrar Desligamento
+* UC-RES-003 - Calcular Aviso Previo

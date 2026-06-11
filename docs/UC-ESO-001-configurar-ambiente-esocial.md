@@ -1,85 +1,103 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-001
 
-# Caso de Uso
+## Configurar Ambiente eSocial
 
-## UC-ESO-001 - Configurar Ambiente eSocial
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Configurar o ambiente do eSocial para transmissao, homologacao e operacao.
+Permitir a configuracao inicial do ambiente eSocial, com tenant, perfis e parametros de transmissao.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Seguranca
+## Primarios
+
+* Gestor de eSocial
+
+## Secundarios
+
+* Motor de eventos
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Ambiente governamental disponivel.
+* Usuario autenticado.
+* Tenant ativo validado.
+* Permissao de eSocial habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o ambiente eSocial precisa ser configurado.
+O processo inicia quando o ambiente eSocial e configurado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa eSocial > Ambiente.
-2. Sistema apresenta os parametros.
-3. Usuario informa a configuracao.
-4. Sistema valida o contrato.
-5. Sistema grava o ambiente.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa os parametros iniciais.
+
+### Etapa 2
+
+Sistema valida consistencia de ambiente.
+
+### Etapa 3
+
+Sistema grava a configuracao.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Parametro invalido
+
+### Condicao
+
+Um parametro obrigatorio esta ausente.
+
+### Fluxo
+
+* Sistema bloqueia a gravacao.
+
+---
+
+# Pos-condicoes
+
+* Ambiente configurado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O ambiente deve ser rastreavel.
-- Alteracoes devem preservar historico.
+* A configuracao precisa ser versionada por tenant.
+* O contrato do ambiente deve ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEnvironmentConfig
+## EsocialEnvironment
 
 ```text
 id
 tenant_id
 environment_type
 status
+updated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Configurar ambiente valido.
-- Bloquear contrato inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre o motor regulatorio do eSocial ao definir o ambiente de transmissao.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual ja possui um contrato minimo de eSocial para transmissao de admissao, desligamento e reprocessamento explicito, mas a configuracao formal do ambiente ainda precisa ser tratada como camada documental e operacional separada.
+* UC-ESO-002 - Gerenciar Certificado Digital
+* UC-ESO-003 - Transmitir Evento S-1000

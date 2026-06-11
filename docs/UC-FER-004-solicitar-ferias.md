@@ -1,82 +1,90 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-004
 
-# Caso de Uso
+## Solicitar Ferias
 
-## UC-FER-004 - Solicitar Ferias
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir a solicitacao de ferias pelo colaborador ou pelo gestor autorizado, com validacao de saldo, periodo e regras operacionais.
+Permitir a solicitacao de ferias pelo colaborador ou gestor com validacao de saldo e janela concessiva.
 
 ---
 
 # Atores
 
-- Colaborador
-- Gestor autorizado
-- Analista de RH
+## Primarios
+
+* Colaborador
+* Gestor
+
+## Secundarios
+
+* Portal administrativo
+* Motor de ferias
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Saldo de ferias disponivel.
-- Usuario autenticado.
-- Permissao para solicitar ferias.
+* Colaborador elegivel.
+* Saldo e janela concessiva disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o colaborador ou o gestor precisa abrir uma solicitacao de ferias.
+O processo inicia quando a solicitacao de ferias e criada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Solicitar.
-2. Sistema apresenta saldo e periodos disponiveis.
-3. Usuario informa datas e opcao de abono quando aplicavel.
-4. Sistema valida saldo, conflitos e janela concessiva.
-5. Sistema registra a solicitacao.
-6. Sistema encaminha para aprovacao.
-7. Sistema registra auditoria.
+### Etapa 1
+
+Usuario escolhe periodo e fracionamento.
+
+### Etapa 2
+
+Sistema valida saldo, janela e conflitos.
+
+### Etapa 3
+
+Sistema grava a solicitacao.
+
+### Etapa 4
+
+Sistema atualiza o estado de aprovacao.
+
+### Etapa 5
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Saldo insuficiente
+## FA-01 - Conflito de datas
 
-Sistema bloqueia a solicitacao.
+### Condicao
 
-## FA-02 - Conflito de datas
+O periodo conflita com outro afastamento.
 
-Sistema bloqueia ou alerta conforme politica.
+### Fluxo
 
-## FA-03 - Usuario sem permissao
-
-Sistema bloqueia a operacao.
+* Sistema bloqueia a solicitacao.
 
 ---
 
 # Pos-condicoes
 
-- Solicitacao criada.
-- Fluxo de aprovacao iniciado.
+* Solicitacao criada ou recusada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A solicitacao deve respeitar saldo e janela concessiva.
-- A solicitacao deve permanecer auditavel.
+* A solicitacao deve respeitar saldo e janela concessiva.
+* O fracionamento precisa seguir a politica aplicavel.
 
 ---
 
@@ -87,30 +95,15 @@ Sistema bloqueia a operacao.
 ```text
 id
 employee_id
-start_date
-end_date
+starts_at
+ends_at
 status
-with_abono
+created_at
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/requests
-```
-
----
-
-# Testes
-
-- Solicitar ferias valida.
-- Bloquear sem saldo.
-- Bloquear conflito de datas.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso inicia a trilha operacional de ferias depois da leitura de saldo e janela concessiva.
+* UC-FER-005 - Aprovar Ferias
+* UC-GST-002 - Aprovar Ferias

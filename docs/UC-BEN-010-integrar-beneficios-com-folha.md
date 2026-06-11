@@ -1,55 +1,88 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-010
 
-# Caso de Uso
+## Integrar Beneficios com Folha
 
-## UC-BEN-010 - Integrar Beneficios com Folha
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir o reflexo dos beneficios na folha com consistencia, rastreabilidade e auditoria.
+Permitir o reflexo de beneficios e descontos na folha de pagamento.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
+## Primarios
+
+* Motor de beneficios
+
+## Secundarios
+
+* Folha de pagamento
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Beneficios concedidos ou importados.
-- Usuario autenticado.
+* Beneficios concedidos ou importados.
+* Competencia de folha disponivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando os beneficios precisam refletir na folha.
+O processo inicia quando os beneficios sao integrados a folha.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Beneficios > Integracao com Folha.
-2. Sistema apresenta as concessoes e importacoes disponiveis.
-3. Usuario confirma a integracao.
-4. Sistema envia reflexos para a folha.
-5. Sistema registra memoria e auditoria.
+### Etapa 1
+
+Sistema consolida os beneficios elegiveis.
+
+### Etapa 2
+
+Sistema aplica os descontos ou creditos.
+
+### Etapa 3
+
+Sistema grava o reflexo por competencia.
+
+### Etapa 4
+
+Sistema registra o recibo sintetico.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Dados conflitantes
+
+### Condicao
+
+O beneficio conflita com outra regra da folha.
+
+### Fluxo
+
+* Sistema sinaliza a divergencia.
+
+---
+
+# Pos-condicoes
+
+* Integração de beneficios realizada ou bloqueada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A integracao deve refletir apenas beneficios validos.
-- O reflexo deve ser rastreavel.
+* A integração precisa evitar duplicidade de descontos.
+* Dados sensiveis devem ser protegidos.
 
 ---
 
@@ -60,20 +93,14 @@ O processo inicia quando os beneficios precisam refletir na folha.
 ```text
 id
 benefit_id
-payroll_sheet_id
+competency
 status
-sent_at
+integrated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Integrar beneficio valido.
-- Bloquear sem concessao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o pacote ao refletir os beneficios na folha e preservar rastreabilidade.
+* UC-BEN-003 - Conceder Beneficio ao Colaborador
+* UC-FOL-005 - Processar Adiantamento Salarial

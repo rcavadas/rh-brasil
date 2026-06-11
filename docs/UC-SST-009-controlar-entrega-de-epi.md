@@ -1,80 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-009
 
-# Caso de Uso
+## Controlar Entrega de EPI
 
-## UC-SST-009 - Controlar Entrega de EPI
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Controlar entrega, ciencia e vencimento de EPI para colaboradores.
+Permitir o controle de entrega, ciencia e devolucao de EPI.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- EPI cadastrado.
-- Colaborador ativo.
+* EPI catalogado.
+* Colaborador elegivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um EPI precisa ser entregue ou renovado.
+O processo inicia quando o EPI e entregue.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > EPI.
-2. Sistema apresenta o controle.
-3. Usuario registra a entrega.
-4. Sistema valida o item e o colaborador.
-5. Sistema grava a entrega.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona o colaborador e o equipamento.
+
+### Etapa 2
+
+Sistema registra a entrega.
+
+### Etapa 3
+
+Colaborador confirma a ciencia.
+
+### Etapa 4
+
+Sistema controla validade e devolucao.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - EPI indisponivel
+
+### Condicao
+
+O equipamento nao esta em estoque.
+
+### Fluxo
+
+* Sistema sinaliza a indisponibilidade.
+
+---
+
+# Pos-condicoes
+
+* EPI controlado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A entrega deve ser rastreavel.
-- O vencimento deve ser controlado.
+* O controle deve manter rastreabilidade por entrega.
+* A ciencia do colaborador e obrigatoria quando aplicavel.
 
 ---
 
 # Entidades Envolvidas
 
-## PersonalProtectionEquipmentDelivery
+## PersonalProtectiveEquipment
 
 ```text
 id
-employee_id
-equipment_name
-delivery_date
+tenant_id
+name
 status
+stock_status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar entrega valida.
-- Bloquear sem colaborador.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso cobre a logistica e rastreabilidade de equipamentos de protecao.
+* UC-SST-008 - Registrar CAT
+* UC-SST-010 - Controlar Treinamentos Obrigatorios de SST

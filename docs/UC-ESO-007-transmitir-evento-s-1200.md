@@ -1,65 +1,93 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-007
 
-# Caso de Uso
+## Transmitir Evento S-1200
 
-## UC-ESO-007 - Transmitir Evento S-1200
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Transmitir a remuneracao e os eventos de folha ao eSocial.
+Permitir a transmissao da remuneracao e folha ao eSocial.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de Folha
+## Primarios
+
+* Motor de eSocial
+
+## Secundarios
+
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Folha calculada.
-- Ambiente eSocial configurado.
+* Folha processada ou elegivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a remuneracao precisa ser transmitida.
+O processo inicia quando o S-1200 e transmitido.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema monta o evento.
-2. Sistema valida a competencia.
-3. Sistema transmite o evento.
-4. Sistema registra protocolo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta a remuneracao.
+
+### Etapa 2
+
+Sistema envia o evento.
+
+### Etapa 3
+
+Sistema grava o protocolo ou pendencia.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Folha divergente
+
+### Condicao
+
+Os valores nao batem com a base local.
+
+### Fluxo
+
+* Sistema sinaliza a divergencia.
+
+---
+
+# Pos-condicoes
+
+* Evento transmitido ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O evento deve ser coerente com a folha.
-- A transmissao deve ser rastreavel.
+* A remuneração deve refletir a folha vigente.
+* A transmissao deve ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEventTransmission
+## EsocialEvent
 
 ```text
 id
-event_code
+event_type
 status
 protocol
 sent_at
@@ -67,19 +95,7 @@ sent_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Transmitir S-1200 valido.
-- Bloquear folha inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso publica a remuneracao da competencia depois do processamento da folha.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual ja possui o pacote FOL consolidado e a ponte para o eSocial, entao o S-1200 deve ser validado como transmissao da competencia ja calculada e conferida.
+* UC-FOL-003 - Processar Folha Mensal
+* UC-FER-010 - Integrar Ferias com Folha

@@ -1,79 +1,103 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-001
 
-# Caso de Uso
+## Gerenciar Perfis de Acesso
 
-## UC-SEC-001 - Gerenciar Perfis de Acesso
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar perfis de acesso do sistema, definindo conjuntos de permissoes por funcao ou papel.
+Permitir o cadastro e manutenção de perfis de acesso por tenant.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Seguranca
+## Primarios
+
+* Administrador de seguranca
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Permissao administrativa.
+* Usuario autenticado.
+* Tenant ativo validado.
+* Permissao administrativa habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um perfil de acesso precisa ser criado ou alterado.
+O processo inicia quando um perfil de acesso e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Seguranca > Perfis.
-2. Sistema apresenta os perfis existentes.
-3. Usuario cadastra ou altera o perfil.
-4. Sistema valida unicidade e escopo.
-5. Sistema grava o perfil.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa nome e escopo do perfil.
+
+### Etapa 2
+
+Sistema valida duplicidade.
+
+### Etapa 3
+
+Sistema grava o perfil.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Perfil duplicado
+
+### Condicao
+
+Ja existe perfil equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Perfil criado ou recusado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Perfis devem ser rastreaveis.
-- Alteracoes devem manter historico.
+* Perfis devem ser versionados por tenant.
+* A alteracao precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## SecurityAccessProfile
+## AccessRole
 
 ```text
 id
-code
-description
+tenant_id
+name
 status
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar perfil valido.
-- Bloquear codigo duplicado.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre a camada transversal de seguranca ao definir os perfis base do sistema.
+* UC-SEC-002 - Gerenciar Permissoes
+* UC-SEC-010 - Auditar Acessos e Operacoes

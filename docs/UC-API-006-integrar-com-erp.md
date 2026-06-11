@@ -1,79 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-006
 
-# Caso de Uso
+## Integrar com ERP
 
-## UC-API-006 - Integrar com ERP
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Integrar o produto com sistemas ERP para troca de dados operacionais e financeiros.
+Permitir a integracao com ERP para sincronizacao de dados e eventos.
 
 ---
 
 # Atores
 
-- Analista de Integrações
-- Administrador do Sistema
+## Primarios
+
+* Motor de integracoes
+
+## Secundarios
+
+* ERP externo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Integracao cadastrada.
-- Contrato ERP definido.
+* Contrato de integracao configurado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o ERP precisa receber ou enviar dados.
+O processo inicia quando a integracao com ERP e executada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > ERP.
-2. Sistema apresenta a configuracao.
-3. Usuario confirma o fluxo.
-4. Sistema envia ou recebe dados.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta o payload.
+
+### Etapa 2
+
+Sistema envia ao ERP.
+
+### Etapa 3
+
+Sistema grava o retorno.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - ERP indisponivel
+
+### Condicao
+
+O destino nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a falha e preserva o historico.
+
+---
+
+# Pos-condicoes
+
+* Integracao executada ou bloqueada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A integracao deve ser rastreavel.
-- O fluxo deve suportar reprocessamento controlado.
+* A integracao precisa ser conciliavel.
+* O contrato tecnico deve ser preservado.
 
 ---
 
 # Entidades Envolvidas
 
-## ErpIntegrationRequest
+## ExternalIntegrationRequest
 
 ```text
 id
 integration_id
-direction
+target_type
 status
-sent_at
+executed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Integrar ERP valido.
-- Bloquear sem contrato.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre as integrações externas prioritarias de negocio.
+* UC-API-004 - Publicar Evento
+* UC-API-010 - Monitorar Integracoes

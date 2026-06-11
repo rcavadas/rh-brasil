@@ -1,79 +1,100 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-004
 
-# Caso de Uso
+## Configurar Isolamento de Dados
 
-## UC-PLT-004 - Configurar Isolamento de Dados
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Configurar o isolamento de dados entre tenants, empresas e dominios sensiveis.
+Permitir a configuracao do isolamento de dados entre tenants, empresas e filiais.
 
 ---
 
 # Atores
 
-- Gestor de Plataforma
-- Administrador do Sistema
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Tenant cadastrado.
-- Usuario autenticado.
+* Tenant, empresa ou filial existentes.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a politica de isolamento precisa ser definida ou ajustada.
+O processo inicia quando o isolamento e configurado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Isolamento.
-2. Sistema apresenta as opcoes.
-3. Usuario define a politica.
-4. Sistema valida o contrato.
-5. Sistema grava a configuracao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario define a fronteira.
+
+### Etapa 2
+
+Sistema valida o escopo.
+
+### Etapa 3
+
+Sistema grava a politica.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Escopo inconsistente
+
+### Condicao
+
+O escopo conflita com outra regra.
+
+### Fluxo
+
+* Sistema bloqueia a configuracao.
+
+---
+
+# Pos-condicoes
+
+* Isolamento configurado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O isolamento deve ser verificavel em runtime.
-- Alteracoes devem preservar historico.
+* O isolamento deve ser verificavel em runtime.
+* A politica precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformIsolationPolicy
+## DataIsolationPolicy
 
 ```text
 id
 tenant_id
-policy_type
+scope
 status
+updated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Configurar isolamento valido.
-- Bloquear politica inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso reforca a fronteira de segregacao entre tenants e dominios sensiveis.
+* UC-PLT-001 - Cadastrar Tenant
+* UC-PLT-005 - Configurar Parametrizacoes por Tenant

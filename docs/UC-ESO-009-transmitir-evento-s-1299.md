@@ -1,85 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-009
 
-# Caso de Uso
+## Transmitir Evento S-1299
 
-## UC-ESO-009 - Transmitir Evento S-1299
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Transmitir o fechamento do periodo ao eSocial.
+Permitir o fechamento do periodo no eSocial.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de Folha
+## Primarios
+
+* Motor de eSocial
+
+## Secundarios
+
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Periodo apto para fechamento.
-- Ambiente configurado.
+* Eventos periodicos enviados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o periodo precisa ser fechado no eSocial.
+O processo inicia quando o S-1299 e transmitido.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema monta o evento.
-2. Sistema valida o fechamento.
-3. Sistema transmite o evento.
-4. Sistema registra protocolo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema valida pendencias.
+
+### Etapa 2
+
+Sistema envia o fechamento.
+
+### Etapa 3
+
+Sistema grava o protocolo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Pendencia aberta
+
+### Condicao
+
+Ainda ha evento periodico pendente.
+
+### Fluxo
+
+* Sistema bloqueia o fechamento.
+
+---
+
+# Pos-condicoes
+
+* Periodo fechado ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O evento deve respeitar a ordem do calendario.
-- A transmissao deve ser rastreavel.
+* O fechamento depende da conciliacao de pendencias.
+* O historico deve ser mantido.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEventTransmission
+## EsocialClosing
 
 ```text
 id
-event_code
+tenant_id
 status
 protocol
-sent_at
+closed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Transmitir S-1299 valido.
-- Bloquear periodo inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o periodo antes da conciliacao final.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual ja trata fechamento de periodo em folga e folha, entao o S-1299 deve seguir o mesmo contrato de bloqueio e rastreabilidade.
+* UC-ESO-010 - Conciliar Totalizadores do eSocial
+* UC-RES-010 - Transmitir Desligamento ao eSocial

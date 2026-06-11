@@ -1,79 +1,103 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-001
 
-# Caso de Uso
+## Cadastrar Ambiente de Trabalho
 
-## UC-SST-001 - Cadastrar Ambiente de Trabalho
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar ambientes de trabalho para contextualizar riscos e obrigações de SST.
+Permitir o cadastro de ambientes de trabalho com contexto ocupacional, lotacao e vigencia.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Permissao para gerir SST.
+* Usuario autenticado.
+* Tenant ativo validado.
+* Permissao de SST habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um novo ambiente de trabalho precisa ser cadastrado.
+O processo inicia quando um ambiente de trabalho e cadastrado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > Ambientes.
-2. Sistema apresenta o formulario.
-3. Usuario informa os dados do ambiente.
-4. Sistema valida a consistencia.
-5. Sistema grava o ambiente.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa nome, local e contexto.
+
+### Etapa 2
+
+Sistema valida duplicidade e vigencia.
+
+### Etapa 3
+
+Sistema salva o ambiente.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Ambiente duplicado
+
+### Condicao
+
+Ja existe ambiente equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Ambiente criado ou recusado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O ambiente deve ser rastreavel por tenant.
-- Alteracoes devem preservar historico.
+* O ambiente deve ser versionado por tenant.
+* A vigencia precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## OccupationalEnvironment
+## WorkEnvironment
 
 ```text
 id
 tenant_id
 name
+location
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar ambiente valido.
-- Bloquear duplicidade.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre a base ocupacional do produto e contextualiza riscos e exigencias de SST.
+* UC-SST-002 - Cadastrar Riscos Ocupacionais
+* UC-SST-003 - Gerenciar PGR

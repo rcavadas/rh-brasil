@@ -1,80 +1,106 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-010
 
-# Caso de Uso
+## Controlar Treinamentos Obrigatorios de SST
 
-## UC-SST-010 - Controlar Treinamentos Obrigatorios de SST
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Controlar treinamentos obrigatorios de SST com vigencia, obrigatoriedade e historico.
+Permitir o controle de treinamentos obrigatorios de SST, com vencimentos e reciclagem.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* LMS
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Treinamento cadastrado.
-- Usuario autenticado.
+* Treinamentos catalogados.
+* Regras de obrigatoriedade definidas.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o treinamento obrigatorio precisa ser controlado.
+O processo inicia quando o treinamento obrigatorio e controlado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > Treinamentos.
-2. Sistema apresenta o treinamento.
-3. Usuario registra ou atualiza a participacao.
-4. Sistema valida vigencia.
-5. Sistema grava o controle.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica o treinamento exigido.
+
+### Etapa 2
+
+Sistema vincula ao colaborador.
+
+### Etapa 3
+
+Sistema monitora vencimentos e reciclagem.
+
+### Etapa 4
+
+Sistema atualiza o status.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Treinamento vencido
+
+### Condicao
+
+O vencimento foi ultrapassado.
+
+### Fluxo
+
+* Sistema sinaliza a reciclagem pendente.
+
+---
+
+# Pos-condicoes
+
+* Treinamento controlado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O treinamento deve ser rastreavel.
-- O vencimento deve ser controlado.
+* O vencimento deve ser rastreavel.
+* A obrigatoriedade precisa respeitar a politica do tenant.
 
 ---
 
 # Entidades Envolvidas
 
-## SafetyTrainingControl
+## MandatorySstTraining
 
 ```text
 id
 employee_id
 training_name
-valid_until
+expires_at
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Controlar treinamento valido.
-- Bloquear sem colaborador.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o pacote ao controlar vigencia e obrigatoriedade dos treinamentos.
+* UC-LMS-007 - Controlar Reciclagem Obrigatoria
+* UC-SST-006 - Registrar Exame Ocupacional

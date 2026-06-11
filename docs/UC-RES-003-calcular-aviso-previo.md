@@ -1,81 +1,102 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-003
 
-# Caso de Uso
+## Calcular Aviso Previo
 
-## UC-RES-003 - Calcular Aviso Previo
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Calcular aviso previo trabalhado ou indenizado, de acordo com o tipo de desligamento e a politica aplicavel.
+Permitir o calculo do aviso previo trabalhado ou indenizado.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
+## Primarios
+
+* Motor de rescisao
+
+## Secundarios
+
+* Folha de pagamento
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Desligamento definido.
-- Motivo classificado.
-- Usuario autenticado.
+* Desligamento registrado.
+* Motivo definido.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o aviso previo precisa ser apurado.
+O processo inicia quando o aviso previo e calculado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > Aviso Previo.
-2. Sistema apresenta dados do desligamento.
-3. Usuario confirma o calculo.
-4. Sistema apura aviso trabalhado ou indenizado.
-5. Sistema registra memoria de calculo.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica o tipo de aviso.
+
+### Etapa 2
+
+Sistema calcula o periodo ou a indenizacao.
+
+### Etapa 3
+
+Sistema grava a memoria de calculo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Aviso dispensado
+
+### Condicao
+
+A politica nao exige aviso previo.
+
+### Fluxo
+
+* Sistema sinaliza a dispensa.
+
+---
+
+# Pos-condicoes
+
+* Aviso calculado ou dispensado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O aviso deve respeitar o tipo de desligamento.
-- A memoria de calculo deve ser preservada.
+* O calculo deve respeitar a politica legal aplicavel.
+* A memoria precisa ser preservada.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationNoticeCalculation
+## RescissionNotice
 
 ```text
 id
 termination_request_id
-notice_type
+type
+days
 amount
-calculated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Calcular aviso valido.
-- Bloquear desligamento sem motivo.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso vem depois da classificacao do desligamento e antes dos demais calculos rescisorios.
+* UC-RES-004 - Calcular Saldo de Salario
+* UC-RES-009 - Fechar Rescisao

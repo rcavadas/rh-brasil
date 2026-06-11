@@ -1,78 +1,104 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-007
 
-# Caso de Uso
+## Emitir ASO
 
-## UC-SST-007 - Emitir ASO
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Emitir o atestado de saude ocupacional com base no exame e no contexto do colaborador.
+Permitir a emissao do atestado de saude ocupacional com base em exame valido.
 
 ---
 
 # Atores
 
-- Medicina Ocupacional
-- Analista de SST
+## Primarios
+
+* Profissional de saude
+
+## Secundarios
+
+* SST
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Exame ocupacional registrado.
-- Usuario autenticado.
+* Exame ocupacional registrado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o ASO precisa ser emitido.
+O processo inicia quando o ASO e emitido.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > ASO.
-2. Sistema apresenta os exames.
-3. Usuario confirma a emissao.
-4. Sistema gera o ASO.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema recupera o exame.
+
+### Etapa 2
+
+Usuario emite o atestado.
+
+### Etapa 3
+
+Sistema grava a evidencia.
+
+### Etapa 4
+
+Sistema associa o ASO ao colaborador.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Exame inapto
+
+### Condicao
+
+O exame nao permite emissao.
+
+### Fluxo
+
+* Sistema bloqueia a emissao.
+
+---
+
+# Pos-condicoes
+
+* ASO emitido ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O ASO deve ser rastreavel.
-- Dados sensiveis devem ser protegidos.
+* O ASO deve ser preservado como evidencia.
+* O resultado medico e restrito.
 
 ---
 
 # Entidades Envolvidas
 
-## OccupationalHealthCertificate
+## OccupationalAso
 
 ```text
 id
-exam_id
+occupational_exam_id
 status
 issued_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Emitir ASO valido.
-- Bloquear sem exame.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso formaliza o atestado a partir do exame ocupacional.
+* UC-SST-006 - Registrar Exame Ocupacional
+* UC-SST-008 - Registrar CAT

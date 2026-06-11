@@ -1,63 +1,96 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-003
 
-# Caso de Uso
+## Conceder Beneficio ao Colaborador
 
-## UC-BEN-003 - Conceder Beneficio ao Colaborador
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Conceder um beneficio a um colaborador elegivel com trilha de auditoria.
+Permitir a concessao operacional do beneficio a um colaborador elegivel.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Portal administrativo
+* Motor de beneficios
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Beneficio cadastrado.
-- Elegibilidade configurada.
-- Colaborador ativo.
+* Beneficio cadastrado.
+* Elegibilidade configurada.
+* Colaborador elegivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o beneficio precisa ser concedido ao colaborador.
+O processo inicia quando o beneficio e concedido.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Beneficios > Concessao.
-2. Sistema apresenta elegibilidades.
-3. Usuario seleciona o colaborador e o beneficio.
-4. Sistema valida elegibilidade.
-5. Sistema registra a concessao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona o colaborador e beneficio.
+
+### Etapa 2
+
+Sistema valida a elegibilidade.
+
+### Etapa 3
+
+Sistema grava a concessao.
+
+### Etapa 4
+
+Sistema registra o historico.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Colaborador inelegivel
+
+### Condicao
+
+O colaborador nao atende os criterios.
+
+### Fluxo
+
+* Sistema bloqueia a concessao.
+
+---
+
+# Pos-condicoes
+
+* Beneficio concedido ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A concessao deve respeitar elegibilidade.
-- A concessao deve ser auditavel.
+* A concessao precisa manter historico.
+* A elegibilidade deve ser revalidada no ato.
 
 ---
 
 # Entidades Envolvidas
 
-## EmployeeBenefitGrant
+## BenefitGrant
 
 ```text
 id
@@ -69,13 +102,7 @@ granted_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Conceder beneficio valido.
-- Bloquear sem elegibilidade.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso aplica a elegibilidade em uma concessao concreta ao colaborador.
+* UC-BEN-004 - Suspender Beneficio
+* UC-BEN-010 - Integrar Beneficios com Folha

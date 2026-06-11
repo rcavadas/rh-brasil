@@ -1,81 +1,103 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-001
 
-# Caso de Uso
+## Cadastrar Beneficio
 
-## UC-BEN-001 - Cadastrar Beneficio
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar e manter o catalogo de beneficios disponiveis por empresa ou tenant.
+Permitir o cadastro do catalogo de beneficios corporativos por tenant.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Empresa configurada.
-- Usuario autenticado.
-- Permissao para cadastrar beneficios.
+* Usuario autenticado.
+* Tenant ativo validado.
+* Permissao de gestao de beneficios habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a empresa precisa criar ou alterar um beneficio disponivel.
+O processo inicia quando um beneficio e cadastrado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Beneficios > Catalogo.
-2. Sistema apresenta o formulario.
-3. Usuario informa dados do beneficio.
-4. Sistema valida unicidade e classificacao.
-5. Sistema grava o beneficio.
-6. Sistema registra historico e auditoria.
+### Etapa 1
+
+Usuario informa nome, tipo e finalidade.
+
+### Etapa 2
+
+Sistema valida duplicidade e escopo.
+
+### Etapa 3
+
+Sistema salva o catalogo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Beneficio duplicado
+
+### Condicao
+
+Ja existe beneficio equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Beneficio criado ou recusado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O beneficio deve ter identificacao unica por empresa.
-- Alteracoes devem preservar historico.
+* O beneficio pertence ao tenant.
+* A finalidade precisa ser declarada.
 
 ---
 
 # Entidades Envolvidas
 
-## BenefitCatalogItem
+## BenefitCatalog
 
 ```text
 id
-company_id
-code
-description
+tenant_id
+name
+purpose
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar beneficio valido.
-- Bloquear codigo duplicado.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre o pacote de beneficios e define o catalogo base que os demais casos consomem.
+* UC-BEN-002 - Configurar Elegibilidade de Beneficio
+* UC-BEN-003 - Conceder Beneficio ao Colaborador

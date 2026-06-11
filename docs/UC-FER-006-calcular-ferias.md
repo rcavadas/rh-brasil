@@ -1,78 +1,88 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-006
 
-# Caso de Uso
+## Calcular Ferias
 
-## UC-FER-006 - Calcular Ferias
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir o calculo de ferias, medias e verbas correlatas, com memoria de calculo, controle de vigencia e reflexo em folha.
+Permitir o calculo de ferias, medias e verbas correlatas por competencia.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Motor de ferias
+
+## Secundarios
+
+* Folha de pagamento
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Solicitacao de ferias aprovada.
-- Usuario autenticado.
-- Permissao para calcular ferias.
+* Ferias aprovadas.
+* Dados de remuneracao disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o RH precisa calcular o valor de ferias de um colaborador.
+O processo inicia quando o calculo de ferias e executado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Calcular.
-2. Sistema apresenta dados da solicitacao.
-3. Usuario confirma o calculo.
-4. Sistema consolida bases e medias.
-5. Sistema calcula valores e reflexos aplicaveis.
-6. Sistema registra memoria de calculo.
-7. Sistema registra auditoria.
+### Etapa 1
+
+Sistema recupera a base de calculo.
+
+### Etapa 2
+
+Sistema apura medias e adicionais.
+
+### Etapa 3
+
+Sistema calcula verbas de ferias.
+
+### Etapa 4
+
+Sistema grava a memoria de calculo.
+
+### Etapa 5
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Dados incompletos
+## FA-01 - Base inconsistente
 
-Sistema bloqueia o calculo.
+### Condicao
 
-## FA-02 - Usuario sem permissao
+A base de remuneracao nao esta valida.
 
-Sistema bloqueia a operacao.
+### Fluxo
+
+* Sistema sinaliza a inconsistência.
 
 ---
 
 # Pos-condicoes
 
-- Ferias calculadas.
-- Memoria de calculo registrada.
+* Calculo de ferias registrado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O calculo deve respeitar o periodo concedido.
-- A memoria de calculo deve ser preservada.
+* O calculo deve ser rastreavel por competencia.
+* Medias e descontos dependem da politica do periodo.
 
 ---
 
@@ -82,31 +92,15 @@ Sistema bloqueia a operacao.
 
 ```text
 id
-request_id
+vacation_request_id
 gross_amount
-discount_amount
 net_amount
 calculated_at
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/requests/{id}/calculation
-```
-
----
-
-# Testes
-
-- Calcular ferias validas.
-- Bloquear sem dados.
-- Preservar memoria de calculo.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso consome a solicitacao aprovada e prepara o reflexo financeiro do periodo concedido.
+* UC-FER-007 - Calcular Abono Pecuniario
+* UC-FER-010 - Integrar Ferias com Folha

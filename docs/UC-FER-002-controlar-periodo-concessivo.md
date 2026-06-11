@@ -1,109 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-002
 
-# Caso de Uso
+## Controlar Periodo Concessivo
 
-## UC-FER-002 - Controlar Periodo Concessivo
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Controlar o periodo concessivo de ferias, seus vencimentos e alertas, garantindo conformidade operacional.
+Permitir o controle do periodo concessivo, vencimentos e janela de utilizacao das ferias.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* Motor de ferias
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Periodo aquisitivo apurado.
-- Usuario autenticado.
-- Permissao para consultar ferias.
+* Periodo aquisitivo apurado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o RH precisa monitorar prazos concessivos e vencimentos de ferias.
+O processo inicia quando o periodo concessivo e monitorado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Periodo Concessivo.
-2. Sistema apresenta periodos e prazos.
-3. Usuario consulta alertas e status.
-4. Sistema identifica vencimentos proximos ou expirados.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema calcula a janela concessiva.
+
+### Etapa 2
+
+Sistema sinaliza vencimentos proximos.
+
+### Etapa 3
+
+Sistema bloqueia uso fora da janela.
+
+### Etapa 4
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Periodo vencido
+## FA-01 - Janela expirada
 
-Sistema sinaliza alerta operacional.
+### Condicao
 
-## FA-02 - Periodo sem apuracao
+O periodo concessivo venceu.
 
-Sistema bloqueia a consulta ou marca pendencia.
+### Fluxo
+
+* Sistema sinaliza risco operacional e legal.
 
 ---
 
 # Pos-condicoes
 
-- Periodo concessivo monitorado.
-- Alertas disponiveis.
+* Periodo concessivo monitorado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O periodo concessivo deve respeitar o periodo aquisitivo.
-- Vencimentos devem ser alertados antes do limite operacional.
+* A janela concessiva deve ser calculada por competencia.
+* O vencimento precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## VacationConcessionPeriod
+## VacationConcessiveWindow
 
 ```text
 id
 employee_id
-acquisition_period_id
-valid_from
-valid_to
+starts_at
+ends_at
 status
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-GET /api/v1/vacations/concession-periods
-```
-
----
-
-# Testes
-
-- Consultar prazo valido.
-- Sinalizar vencimento.
-- Bloquear consulta sem apuracao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso vem logo depois da apuracao do periodo aquisitivo e fecha o controle de prazo do dominio de ferias.
+* UC-FER-001 - Apurar Periodo Aquisitivo
+* UC-FER-004 - Solicitar Ferias

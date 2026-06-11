@@ -1,78 +1,100 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-006
 
-# Caso de Uso
+## Monitorar Disponibilidade
 
-## UC-PLT-006 - Monitorar Disponibilidade
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Monitorar a disponibilidade da plataforma e dos servicos criticos.
+Permitir o monitoramento de disponibilidade da plataforma e dos servicos.
 
 ---
 
 # Atores
 
-- Gestor de Plataforma
-- Administrador do Sistema
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Operacao
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Servicos ativos.
-- Usuario autenticado.
+* Servicos operacionais disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a disponibilidade precisa ser verificada.
+O processo inicia quando a disponibilidade e monitorada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Disponibilidade.
-2. Sistema apresenta o estado dos servicos.
-3. Usuario filtra por componente.
-4. Sistema consolida o status.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema coleta os indicadores.
+
+### Etapa 2
+
+Sistema avalia o estado.
+
+### Etapa 3
+
+Sistema apresenta alertas.
+
+### Etapa 4
+
+Sistema registra a consulta quando aplicavel.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Serviço indisponivel
+
+### Condicao
+
+Um serviço nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a indisponibilidade.
+
+---
+
+# Pos-condicoes
+
+* Disponibilidade monitorada.
+* Auditoria registrada quando aplicavel.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O monitoramento deve ser auditavel.
-- O estado deve refletir a realidade operacional.
+* O monitoramento deve ser auditavel.
+* A falha precisa ser visivel sem expor segredos.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformAvailabilitySnapshot
+## AvailabilitySnapshot
 
 ```text
 id
-component
+service_name
 status
-captured_at
+checked_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Monitorar componente valido.
-- Bloquear escopo sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre a camada operacional da plataforma apos a configuracao estrutural.
+* UC-PLT-007 - Executar Backup
+* UC-PLT-009 - Monitorar Performance

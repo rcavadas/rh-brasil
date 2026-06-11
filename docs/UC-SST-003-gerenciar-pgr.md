@@ -1,80 +1,104 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-003
 
-# Caso de Uso
+## Gerenciar PGR
 
-## UC-SST-003 - Gerenciar PGR
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar o Programa de Gerenciamento de Riscos com versao, vigencia e rastreabilidade.
+Permitir o gerenciamento do Programa de Gerenciamento de Riscos.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Riscos cadastrados.
-- Usuario autenticado.
+* Riscos ocupacionais cadastrados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o PGR precisa ser criado ou atualizado.
+O processo inicia quando o PGR e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > PGR.
-2. Sistema apresenta o programa.
-3. Usuario define vigencia e escopo.
-4. Sistema valida consistencia.
-5. Sistema grava o PGR.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario abre o PGR.
+
+### Etapa 2
+
+Sistema apresenta o escopo e as versoes.
+
+### Etapa 3
+
+Usuario atualiza o documento.
+
+### Etapa 4
+
+Sistema grava a nova versao.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - PGR sem base
+
+### Condicao
+
+Nao ha riscos mapeados suficientes.
+
+### Fluxo
+
+* Sistema sinaliza a pendencia.
+
+---
+
+# Pos-condicoes
+
+* PGR atualizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O PGR deve ser versionado.
-- Alteracoes devem preservar historico.
+* O PGR deve ser versionado por vigencia.
+* O historico nao pode ser apagado.
 
 ---
 
 # Entidades Envolvidas
 
-## PgrProgram
+## RiskManagementProgram
 
 ```text
 id
 tenant_id
-valid_from
-valid_to
+version
 status
+effective_from
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Gerenciar PGR valido.
-- Bloquear sem riscos.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso consolida o programa de riscos sobre os ambientes mapeados.
+* UC-SST-002 - Cadastrar Riscos Ocupacionais
+* UC-SST-004 - Gerenciar PCMSO

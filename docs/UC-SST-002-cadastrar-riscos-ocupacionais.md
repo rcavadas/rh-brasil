@@ -1,56 +1,87 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-002
 
-# Caso de Uso
+## Cadastrar Riscos Ocupacionais
 
-## UC-SST-002 - Cadastrar Riscos Ocupacionais
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar riscos ocupacionais associados a ambientes de trabalho.
+Permitir o mapeamento de riscos ocupacionais por ambiente de trabalho.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Motor de SST
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ambiente cadastrado.
-- Usuario autenticado.
+* Ambiente de trabalho cadastrado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando riscos precisam ser mapeados.
+O processo inicia quando os riscos sao cadastrados.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > Riscos.
-2. Sistema apresenta os ambientes.
-3. Usuario informa os riscos.
-4. Sistema valida a consistencia.
-5. Sistema grava o mapeamento.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona o ambiente.
+
+### Etapa 2
+
+Sistema apresenta os riscos disponiveis.
+
+### Etapa 3
+
+Usuario define intensidade e frequencia.
+
+### Etapa 4
+
+Sistema grava o risco.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Risco inconsistente
+
+### Condicao
+
+O risco nao e compativel com o ambiente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Riscos cadastrados.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O risco deve estar vinculado ao ambiente.
-- Historico deve ser preservado.
+* Riscos precisam ser versionados por ambiente.
+* A classificação deve ser rastreavel.
 
 ---
 
@@ -60,7 +91,7 @@ O processo inicia quando riscos precisam ser mapeados.
 
 ```text
 id
-environment_id
+work_environment_id
 name
 severity
 status
@@ -68,13 +99,7 @@ status
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar risco valido.
-- Bloquear sem ambiente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso vem logo depois do ambiente e estabelece o mapa de riscos do dominio.
+* UC-SST-003 - Gerenciar PGR
+* UC-SST-004 - Gerenciar PCMSO

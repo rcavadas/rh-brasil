@@ -1,77 +1,89 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-010
 
-# Caso de Uso
+## Integrar Ferias com Folha
 
-## UC-FER-010 - Integrar Ferias com Folha
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir o reflexo das ferias na folha e nos eventos correlatos, garantindo consistencia entre calculo, pagamento e transmissao.
+Permitir o reflexo das ferias na folha e no eSocial com trilha auditavel.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Motor de ferias
+
+## Secundarios
+
+* Folha de pagamento
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ferias calculadas.
-- Usuario autenticado.
-- Permissao para integrar com folha.
+* Ferias calculadas e aprovadas.
+* Calendario de pagamento disponivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando as ferias precisam refletir na folha ou em eventos correlatos.
+O processo inicia quando as ferias sao integradas a folha.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Integracao com Folha.
-2. Sistema apresenta as ferias disponiveis para integracao.
-3. Usuario confirma a integracao.
-4. Sistema envia reflexos para folha e eventos correlatos.
-5. Sistema registra resultado e memoria de processamento.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema prepara os eventos de reflexo.
+
+### Etapa 2
+
+Sistema envia os dados para folha.
+
+### Etapa 3
+
+Sistema registra o reflexo no eSocial quando aplicavel.
+
+### Etapa 4
+
+Sistema grava o recibo sintetico.
+
+### Etapa 5
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Ferias nao calculadas
+## FA-01 - Integração falha
 
-Sistema bloqueia a integracao.
+### Condicao
 
-## FA-02 - Usuario sem permissao
+O destino de folha ou eSocial nao responde.
 
-Sistema bloqueia a operacao.
+### Fluxo
+
+* Sistema sinaliza a falha e preserva o historico.
 
 ---
 
 # Pos-condicoes
 
-- Reflexos encaminhados para folha.
-- Historico e auditoria preservados.
+* Integração registrada ou falha sinalizada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A integracao deve refletir apenas ferias calculadas.
-- O reflexo deve ser rastreavel.
+* O reflexo em folha precisa ser consistente com a aprovacao.
+* A transmissao ao eSocial deve permanecer rastreavel.
 
 ---
 
@@ -82,28 +94,14 @@ Sistema bloqueia a operacao.
 ```text
 id
 vacation_request_id
-payroll_sheet_id
 status
+payload_hash
 sent_at
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/requests/{id}/payroll-integration
-```
-
----
-
-# Testes
-
-- Integrar ferias calculadas.
-- Bloquear sem calculo.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra a trilha do dominio de ferias ao refletir o resultado na folha e nos eventos correlatos.
+* UC-FER-006 - Calcular Ferias
+* UC-ESO-007 - Transmitir Evento S-1200

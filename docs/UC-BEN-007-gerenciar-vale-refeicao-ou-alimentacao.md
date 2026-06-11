@@ -1,80 +1,107 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-007
 
-# Caso de Uso
+## Gerenciar Vale-Refeicao ou Alimentacao
 
-## UC-BEN-007 - Gerenciar Vale-Refeicao ou Alimentacao
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar vale-refeicao ou vale-alimentacao com fornecedores, elegibilidade e manutencao operacional.
+Permitir a gestao de VR ou VA com fornecedores, concessao e ajustes.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Portal administrativo
+* Motor de beneficios
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Beneficio cadastrado.
-- Usuario autenticado.
+* Beneficio de VR ou VA cadastrado.
+* Colaborador elegivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o beneficio de VR ou VA precisa ser concedido ou ajustado.
+O processo inicia quando o beneficio de refeicao ou alimentacao e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa o beneficio de VR/VA.
-2. Sistema apresenta contratos e parametros.
-3. Usuario define a manutencao.
-4. Sistema aplica as regras.
-5. Sistema registra a alteracao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario define o modelo e o valor.
+
+### Etapa 2
+
+Sistema valida a elegibilidade.
+
+### Etapa 3
+
+Sistema grava a concessao ou ajuste.
+
+### Etapa 4
+
+Sistema registra eventuais descontos.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Fornecedor indisponivel
+
+### Condicao
+
+O fornecedor nao esta cadastrado.
+
+### Fluxo
+
+* Sistema sinaliza a pendencia.
+
+---
+
+# Pos-condicoes
+
+* VR/VA gerenciado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A manutencao deve respeitar elegibilidade e fornecedor.
-- A concessao deve ser rastreavel.
+* O beneficio pode ser repassado por competencia.
+* A politica de desconto deve ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## MealBenefitAllocation
+## MealBenefit
 
 ```text
 id
 employee_id
-benefit_id
-provider
+mode
 amount
+status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Gerenciar VR/VA valido.
-- Bloquear sem elegibilidade.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso segue o mesmo padrao de manutencao operacional do VT, com foco em fornecedores e parametros.
+* UC-BEN-003 - Conceder Beneficio ao Colaborador
+* UC-BEN-010 - Integrar Beneficios com Folha

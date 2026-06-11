@@ -1,78 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-009
 
-# Caso de Uso
+## Monitorar Performance
 
-## UC-PLT-009 - Monitorar Performance
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Monitorar performance da plataforma para identificar gargalos e degradacoes.
+Permitir o monitoramento de performance e capacidade da plataforma.
 
 ---
 
 # Atores
 
-- Gestor de Plataforma
-- Administrador do Sistema
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Operacao
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Telemetria disponivel.
-- Usuario autenticado.
+* Indicadores de telemetria disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a performance precisa ser avaliada.
+O processo inicia quando a performance e monitorada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Performance.
-2. Sistema apresenta metricas.
-3. Usuario seleciona o intervalo.
-4. Sistema consolida os dados.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema coleta metricas.
+
+### Etapa 2
+
+Sistema calcula tendencias.
+
+### Etapa 3
+
+Sistema apresenta o painel.
+
+### Etapa 4
+
+Sistema registra a consulta quando aplicavel.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Dados insuficientes
+
+### Condicao
+
+Nao ha metricas suficientes.
+
+### Fluxo
+
+* Sistema sinaliza a lacuna.
+
+---
+
+# Pos-condicoes
+
+* Performance monitorada.
+* Auditoria registrada quando aplicavel.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A visibilidade deve respeitar o escopo.
-- A telemetria deve ser auditavel.
+* O monitoramento deve ser auditavel.
+* Dados sensiveis nao podem ser expostos.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformPerformanceSnapshot
+## PerformanceSnapshot
 
 ```text
 id
-metric_name
-metric_value
+service_name
+metric
+value
 captured_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Monitorar performance valida.
-- Bloquear escopo sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a camada de observabilidade operacional da plataforma.
+* UC-PLT-006 - Monitorar Disponibilidade
+* UC-PLT-010 - Auditar Governanca da Plataforma

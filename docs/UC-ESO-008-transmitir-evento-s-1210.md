@@ -1,65 +1,93 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-ESO-008
 
-# Caso de Uso
+## Transmitir Evento S-1210
 
-## UC-ESO-008 - Transmitir Evento S-1210
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Transmitir pagamentos e rendimentos ao eSocial.
+Permitir a transmissao de pagamentos e rendimentos ao eSocial.
 
 ---
 
 # Atores
 
-- Sistema
-- Analista de Folha
+## Primarios
+
+* Motor de eSocial
+
+## Secundarios
+
+* eSocial
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Pagamentos disponiveis.
-- Ambiente configurado.
+* Pagamentos disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando pagamentos precisam ser enviados.
+O processo inicia quando o S-1210 e transmitido.
 
 ---
 
 # Fluxo Principal
 
-1. Sistema monta o evento.
-2. Sistema valida os pagamentos.
-3. Sistema transmite o evento.
-4. Sistema registra protocolo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta os pagamentos.
+
+### Etapa 2
+
+Sistema envia o evento.
+
+### Etapa 3
+
+Sistema grava o retorno.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Pagamento incompleto
+
+### Condicao
+
+Nao ha dados suficientes para o envio.
+
+### Fluxo
+
+* Sistema bloqueia a transmissao.
+
+---
+
+# Pos-condicoes
+
+* Evento transmitido ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O evento deve ser rastreavel.
-- O pagamento deve ser coerente com a folha.
+* O pagamento deve ser consistente com a folha.
+* O protocolo precisa ser preservado.
 
 ---
 
 # Entidades Envolvidas
 
-## EsocialEventTransmission
+## EsocialEvent
 
 ```text
 id
-event_code
+event_type
 status
 protocol
 sent_at
@@ -67,19 +95,7 @@ sent_at
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Transmitir S-1210 valido.
-- Bloquear pagamento inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso transmite pagamentos e rendimentos como complemento da remuneracao.
-
----
-
-# Estado de Implementacao
-
-O runtime executavel atual precisa manter coerencia entre pagamentos, folha e transmissao, entao o S-1210 deve refletir o fluxo de pagamentos autorizado.
+* UC-FOL-009 - Gerar Holerite
+* UC-ESO-007 - Transmitir Evento S-1200

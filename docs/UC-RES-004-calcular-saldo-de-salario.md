@@ -1,78 +1,102 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-RES-004
 
-# Caso de Uso
+## Calcular Saldo de Salario
 
-## UC-RES-004 - Calcular Saldo de Salario
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Calcular o saldo salarial proporcional da competencia de desligamento.
+Permitir o calculo do saldo salarial proporcional da competencia.
 
 ---
 
 # Atores
 
-- Analista de Folha
-- Analista de RH
+## Primarios
+
+* Motor de rescisao
+
+## Secundarios
+
+* Folha de pagamento
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Desligamento registrado.
-- Usuario autenticado.
+* Desligamento registrado.
+* Competencia disponivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o saldo salarial precisa ser apurado.
+O processo inicia quando o saldo de salario e calculado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Rescisao > Saldo Salarial.
-2. Sistema consolida os dias trabalhados da competencia.
-3. Sistema calcula o saldo proporcional.
-4. Sistema registra memoria de calculo.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica os dias trabalhados.
+
+### Etapa 2
+
+Sistema apura o valor proporcional.
+
+### Etapa 3
+
+Sistema grava a memoria de calculo.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Base de salario ausente
+
+### Condicao
+
+Nao ha salario valido no historico.
+
+### Fluxo
+
+* Sistema bloqueia o calculo.
+
+---
+
+# Pos-condicoes
+
+* Saldo salarial calculado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O saldo deve respeitar a data de desligamento.
-- O calculo deve ser auditavel.
+* O saldo deve refletir a competencia corrente.
+* O historico salarial nao pode ser perdido.
 
 ---
 
 # Entidades Envolvidas
 
-## TerminationSalaryBalance
+## SalaryBalance
 
 ```text
 id
 termination_request_id
+base_salary
+days_worked
 amount
-calculated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Calcular saldo valido.
-- Bloquear sem desligamento.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso integra a camada de calculo rescisorio e depende da data de desligamento e do historico da competencia.
+* UC-RES-003 - Calcular Aviso Previo
+* UC-RES-005 - Calcular Ferias Rescisorias

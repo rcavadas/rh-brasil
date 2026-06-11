@@ -1,80 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-004
 
-# Caso de Uso
+## Configurar SSO
 
-## UC-SEC-004 - Configurar SSO
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Configurar SSO para acesso ao sistema com base em identidade centralizada.
+Permitir a configuracao de Single Sign-On com provedor externo.
 
 ---
 
 # Atores
 
-- Gestor de Seguranca
-- Administrador do Sistema
+## Primarios
+
+* Administrador de seguranca
+
+## Secundarios
+
+* IdP
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Provedor de identidade disponivel.
+* Provedor de identidade disponivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a configuracao de SSO precisa ser alterada ou criada.
+O processo inicia quando o SSO e configurado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Seguranca > SSO.
-2. Sistema apresenta os dados do provedor.
-3. Usuario informa parametros.
-4. Sistema valida o contrato.
-5. Sistema grava a configuracao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa os dados do provedor.
+
+### Etapa 2
+
+Sistema valida endpoints e certificados.
+
+### Etapa 3
+
+Sistema grava a configuracao.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Provedor indisponivel
+
+### Condicao
+
+O IdP nao responde.
+
+### Fluxo
+
+* Sistema bloqueia a ativacao.
+
+---
+
+# Pos-condicoes
+
+* SSO configurado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- SSO deve permanecer rastreavel.
-- Alteracoes devem preservar historico.
+* A alteracao afeta autenticacao e acessos.
+* O contrato deve ser versionado.
 
 ---
 
 # Entidades Envolvidas
 
-## SecuritySsoConfig
+## SingleSignOnConfig
 
 ```text
 id
-provider
+tenant_id
 issuer
-client_id
 status
+updated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Configurar SSO valido.
-- Bloquear contrato inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a camada de identidade centralizada junto com MFA.
+* UC-SEC-003 - Configurar MFA
+* UC-API-009 - Integrar com Provedor de Identidade

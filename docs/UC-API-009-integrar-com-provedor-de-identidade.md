@@ -1,55 +1,83 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-009
 
-# Caso de Uso
+## Integrar com Provedor de Identidade
 
-## UC-API-009 - Integrar com Provedor de Identidade
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Integrar com provedor de identidade para autenticacao, autorizacao e provisionamento basicos.
+Permitir a integracao com provedor de identidade para autenticacao e provisionamento.
 
 ---
 
 # Atores
 
-- Analista de Integrações
-- Gestor de Seguranca
+## Primarios
+
+* Motor de integracoes
+
+## Secundarios
+
+* IdP externo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Integracao cadastrada.
-- Provedor de identidade disponivel.
+* Contrato de integracao configurado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a integracao com identidade precisa ser configurada ou ajustada.
+O processo inicia quando a integracao com IdP e executada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > Identidade.
-2. Sistema apresenta a configuracao.
-3. Usuario valida os parametros.
-4. Sistema grava a integracao.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta o payload.
+
+### Etapa 2
+
+Sistema envia ao IdP.
+
+### Etapa 3
+
+Sistema grava o retorno.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - IdP indisponivel
+
+### Condicao
+
+O provedor nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a falha e preserva o historico.
+
+---
+
+# Pos-condicoes
+
+* Integracao executada ou bloqueada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A integracao deve respeitar SSO e MFA.
-- Segredos devem ser protegidos.
+* A alteracao do contrato afeta autenticacao e acessos.
+* O uso precisa ser rastreavel.
 
 ---
 
@@ -60,20 +88,13 @@ O processo inicia quando a integracao com identidade precisa ser configurada ou 
 ```text
 id
 integration_id
-issuer
-client_id
 status
+executed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Integrar provedor valido.
-- Bloquear contrato inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso conecta o pacote de integracoes com a camada de seguranca e SSO.
+* UC-SEC-004 - Configurar SSO
+* UC-API-010 - Monitorar Integracoes

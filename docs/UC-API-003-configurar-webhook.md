@@ -1,80 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-003
 
-# Caso de Uso
+## Configurar Webhook
 
-## UC-API-003 - Configurar Webhook
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Configurar webhooks para publicacao e recebimento de eventos externos.
+Permitir a configuracao de webhooks para notificacao de eventos externos.
 
 ---
 
 # Atores
 
-- Analista de Integrações
-- Administrador do Sistema
+## Primarios
+
+* Administrador de integracoes
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Integracao cadastrada.
-- Usuario autenticado.
+* Integracao cadastrada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um webhook precisa ser criado ou alterado.
+O processo inicia quando o webhook e configurado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > Webhooks.
-2. Sistema apresenta o formulario.
-3. Usuario define URL e assinatura.
-4. Sistema valida o contrato.
-5. Sistema grava o webhook.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa URL e assinatura.
+
+### Etapa 2
+
+Sistema valida o endpoint.
+
+### Etapa 3
+
+Sistema grava a configuracao.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Endpoint invalido
+
+### Condicao
+
+O destino nao responde.
+
+### Fluxo
+
+* Sistema bloqueia a ativacao.
+
+---
+
+# Pos-condicoes
+
+* Webhook configurado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Webhooks devem ser idempotentes.
-- Segredos nao devem ser expostos.
+* O webhook precisa ser idempotente.
+* Segredos devem permanecer protegidos.
 
 ---
 
 # Entidades Envolvidas
 
-## WebhookContract
+## WebhookConfig
 
 ```text
 id
 integration_id
-url
-secret_ref
+target_url
+secret_status
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Configurar webhook valido.
-- Bloquear URL inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso complementa a API REST ao definir callbacks e contratos de evento.
+* UC-API-002 - Configurar API REST
+* UC-API-004 - Publicar Evento

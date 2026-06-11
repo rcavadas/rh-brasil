@@ -1,80 +1,100 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-007
 
-# Caso de Uso
+## Executar Backup
 
-## UC-PLT-007 - Executar Backup
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Executar backup da plataforma com escopo, rastreabilidade e artefatos preservados.
+Permitir a execucao de backup da plataforma ou de componentes especificos.
 
 ---
 
 # Atores
 
-- Gestor de Plataforma
-- Administrador do Sistema
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Operacao
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ambiente disponivel.
-- Usuario autenticado.
+* Politica de backup definida.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um backup precisa ser gerado.
+O processo inicia quando o backup e executado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Backup.
-2. Sistema apresenta o escopo.
-3. Usuario confirma a execucao.
-4. Sistema gera o backup.
-5. Sistema registra o manifesto.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica os componentes.
+
+### Etapa 2
+
+Sistema cria o snapshot.
+
+### Etapa 3
+
+Sistema grava o manifesto.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Origem indisponivel
+
+### Condicao
+
+Um componente nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a falha.
+
+---
+
+# Pos-condicoes
+
+* Backup executado ou sinalizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O backup deve ser rastreavel.
-- O manifesto deve ser preservado.
+* O backup precisa ser testavel e previsivel.
+* A integridade do snapshot deve ser preservada.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformBackupSnapshot
+## BackupJob
 
 ```text
 id
-tenant_scope
-artifact_ref
+scope
 status
 created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Executar backup valido.
-- Bloquear sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso formaliza a capacidade minima de recuperacao da plataforma.
+* UC-PLT-006 - Monitorar Disponibilidade
+* UC-PLT-008 - Executar Restauracao

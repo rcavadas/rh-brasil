@@ -1,125 +1,104 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-001
 
-# Caso de Uso
+## Apurar Periodo Aquisitivo
 
-## UC-FER-001 - Apurar Periodo Aquisitivo
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Apurar e manter o periodo aquisitivo de ferias por colaborador, com historico, vigencia e consistencia para os demais casos do dominio.
+Permitir o calculo e controle do periodo aquisitivo de ferias por colaborador.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Analista de Folha
-- Administrador do Sistema
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* Portal administrativo
+* Motor de ferias
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Colaborador cadastrado e vinculo ativo.
-- Usuario autenticado.
-- Usuario com permissao para consultar ou manter ferias.
+* Colaborador ativo.
+* Historico contratual disponivel.
+* Tenant ativo validado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o RH precisa registrar ou recalcular o periodo aquisitivo de ferias.
+O processo inicia quando o periodo aquisitivo precisa ser apurado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Ferias > Periodo Aquisitivo.
-2. Sistema apresenta periodos existentes.
-3. Usuario consulta ou registra o periodo.
-4. Sistema valida datas e consistencia com o historico do colaborador.
-5. Sistema grava ou atualiza o periodo.
-6. Sistema registra historico e auditoria.
+### Etapa 1
+
+Sistema identifica o vinculo e a data de admissao.
+
+### Etapa 2
+
+Sistema calcula o inicio e o fim do periodo aquisitivo.
+
+### Etapa 3
+
+Sistema grava o resultado apurado.
+
+### Etapa 4
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Periodo inconsistente
+## FA-01 - Historico insuficiente
 
-Sistema bloqueia o cadastro ou a atualizacao.
+### Condicao
 
-## FA-02 - Colaborador inexistente
+Nao ha dados suficientes para apuracao.
 
-Sistema bloqueia a operacao.
+### Fluxo
+
+* Sistema sinaliza pendencia de historico.
 
 ---
 
 # Pos-condicoes
 
-- Periodo aquisitivo registrado ou atualizado.
-- Historico preservado.
+* Periodo aquisitivo apurado ou sinalizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O periodo aquisitivo deve manter historico.
-- O periodo deve ser coerente com o vinculo ativo.
-- Alteracoes nao podem sobrescrever registros anteriores.
+* O periodo aquisitivo deve ser calculado por colaborador.
+* A apuracao precisa ser rastreavel por competencia.
 
 ---
 
 # Entidades Envolvidas
 
-## VacationAcquisitionPeriod
+## VacationAccrualPeriod
 
 ```text
 id
 employee_id
-period_start
-period_end
+starts_at
+ends_at
 status
 ```
 
-## VacationAcquisitionPeriodHistory
-
-```text
-id
-acquisition_period_id
-change_type
-changed_by
-changed_at
-```
-
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/acquisition-periods
-```
-
-```http
-GET /api/v1/vacations/acquisition-periods/{id}
-```
-
----
-
-# Testes
-
-- Apurar periodo valido.
-- Bloquear periodo inconsistente.
-- Preservar historico.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre o pacote de ferias e estabelece a base temporal que os demais casos consomem.
+* UC-FER-002 - Controlar Periodo Concessivo
+* UC-FER-003 - Consultar Saldo de Ferias

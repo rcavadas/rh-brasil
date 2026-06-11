@@ -1,80 +1,104 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-004
 
-# Caso de Uso
+## Gerenciar PCMSO
 
-## UC-SST-004 - Gerenciar PCMSO
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar o Programa de Controle Medico de Saude Ocupacional com vigencia e historico.
+Permitir o gerenciamento do Programa de Controle Medico de Saude Ocupacional.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ambiente e riscos cadastrados.
-- Usuario autenticado.
+* Ambiente e riscos cadastrados.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o PCMSO precisa ser criado ou ajustado.
+O processo inicia quando o PCMSO e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > PCMSO.
-2. Sistema apresenta o programa.
-3. Usuario informa a vigencia.
-4. Sistema valida a consistencia.
-5. Sistema grava o PCMSO.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario abre o programa.
+
+### Etapa 2
+
+Sistema apresenta a vigencia e o responsavel tecnico.
+
+### Etapa 3
+
+Usuario atualiza o documento.
+
+### Etapa 4
+
+Sistema grava a nova versao.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Documento invalido
+
+### Condicao
+
+O conteudo nao atende a politica.
+
+### Fluxo
+
+* Sistema bloqueia a publicacao.
+
+---
+
+# Pos-condicoes
+
+* PCMSO atualizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O PCMSO deve ser versionado.
-- Alteracoes devem preservar historico.
+* O PCMSO deve permanecer versionado.
+* O documento precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## PcmsoProgram
+## OccupationalHealthProgram
 
 ```text
 id
 tenant_id
-valid_from
-valid_to
-status
+type
+version
+effective_from
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Gerenciar PCMSO valido.
-- Bloquear sem ambiente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso complementa o PGR com o programa medico ocupacional.
+* UC-SST-003 - Gerenciar PGR
+* UC-SST-005 - Gerenciar LTCAT

@@ -1,78 +1,89 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-FER-005
 
-# Caso de Uso
+## Aprovar Ferias
 
-## UC-FER-005 - Aprovar Ferias
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Permitir a aprovacao, rejeicao ou ajuste de solicitacoes de ferias, mantendo trilha de auditoria e coerencia com o periodo concedido.
+Permitir a aprovacao, rejeicao ou ajuste de uma solicitacao de ferias.
 
 ---
 
 # Atores
 
-- Gestor
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de RH
+
+## Secundarios
+
+* Motor de ferias
+* Workflow e aprovacoes
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Solicitacao de ferias existente.
-- Usuario autenticado.
-- Permissao para aprovar ferias.
+* Solicitacao de ferias pendente.
+* Permissao de aprovacao habilitada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando uma solicitacao de ferias precisa de decisao.
+O processo inicia quando a solicitacao entra em aprovacao.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa a fila de solicitacoes.
-2. Sistema apresenta detalhes da solicitacao.
-3. Usuario aprova, rejeita ou ajusta.
-4. Sistema valida impacto no saldo e nas datas.
-5. Sistema registra a decisao.
-6. Sistema atualiza o status da solicitacao.
-7. Sistema registra auditoria.
+### Etapa 1
+
+Gestor analisa a solicitacao.
+
+### Etapa 2
+
+Sistema apresenta saldo, janela e impactos.
+
+### Etapa 3
+
+Gestor aprova, rejeita ou ajusta.
+
+### Etapa 4
+
+Sistema atualiza o status.
+
+### Etapa 5
+
+Sistema registra auditoria.
 
 ---
 
 # Fluxos Alternativos
 
-## FA-01 - Solicitacao inconsistente
+## FA-01 - Reprovacao com justificativa
 
-Sistema bloqueia a aprovacao.
+### Condicao
 
-## FA-02 - Usuario sem permissao
+A solicitacao e rejeitada.
 
-Sistema bloqueia a operacao.
+### Fluxo
+
+* Sistema exige justificativa.
 
 ---
 
 # Pos-condicoes
 
-- Solicitacao aprovada, rejeitada ou ajustada.
-- Historico preservado.
+* Ferias aprovadas, rejeitadas ou ajustadas.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- Toda aprovacao deve ser auditavel.
-- Ajustes devem respeitar saldo e janela concessiva.
+* A decisao deve respeitar a politica de ferias.
+* A justificativa precisa ser armazenada quando aplicavel.
 
 ---
 
@@ -82,30 +93,16 @@ Sistema bloqueia a operacao.
 
 ```text
 id
-request_id
-approved_by
-status
-decision_at
+vacation_request_id
+approver_subject
+decision
+reason
+decided_at
 ```
 
 ---
 
-# APIs Sugeridas
+# Casos Relacionados
 
-```http
-POST /api/v1/vacations/requests/{id}/approval
-```
-
----
-
-# Testes
-
-- Aprovar solicitacao valida.
-- Rejeitar solicitacao.
-- Bloquear sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a decisao operacional da solicitacao antes do calculo, do aviso e da integracao com folha.
+* UC-FER-004 - Solicitar Ferias
+* UC-GST-002 - Aprovar Ferias

@@ -1,56 +1,87 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-005
 
-# Caso de Uso
+## Gerenciar LTCAT
 
-## UC-SST-005 - Gerenciar LTCAT
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar o laudo tecnico de condicoes ambientais do trabalho com vigencia e historico.
+Permitir o gerenciamento do laudo tecnico de condicoes ambientais do trabalho.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Administrador do Sistema
+## Primarios
+
+* Gestor de SST
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Ambiente e riscos cadastrados.
-- Usuario autenticado.
+* Ambiente de trabalho cadastrado.
+* Responsavel tecnico definido.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o LTCAT precisa ser criado ou atualizado.
+O processo inicia quando o LTCAT e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > LTCAT.
-2. Sistema apresenta os dados.
-3. Usuario informa a vigencia.
-4. Sistema valida o escopo.
-5. Sistema grava o laudo.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario abre o laudo.
+
+### Etapa 2
+
+Sistema apresenta a versao vigente.
+
+### Etapa 3
+
+Usuario atualiza o documento.
+
+### Etapa 4
+
+Sistema registra a nova versao.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Laudo inexistente
+
+### Condicao
+
+Nao ha documento para o ambiente.
+
+### Fluxo
+
+* Sistema sinaliza a pendencia.
+
+---
+
+# Pos-condicoes
+
+* LTCAT atualizado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O laudo deve ser versionado.
-- Alteracoes devem preservar historico.
+* O laudo deve ser versionado.
+* A relacao com o ambiente precisa ser rastreavel.
 
 ---
 
@@ -60,21 +91,15 @@ O processo inicia quando o LTCAT precisa ser criado ou atualizado.
 
 ```text
 id
-tenant_id
-valid_from
-valid_to
+work_environment_id
+version
 status
+effective_from
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Gerenciar LTCAT valido.
-- Bloquear sem riscos.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso formaliza o laudo tecnico que sustenta obrigações correlatas.
+* UC-SST-004 - Gerenciar PCMSO
+* UC-SST-006 - Registrar Exame Ocupacional

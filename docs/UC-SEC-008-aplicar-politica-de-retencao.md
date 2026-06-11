@@ -1,78 +1,104 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-008
 
-# Caso de Uso
+## Aplicar Politica de Retencao
 
-## UC-SEC-008 - Aplicar Politica de Retencao
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Aplicar politicas de retencao por finalidade, tipo de dado e prazo de guarda.
+Permitir a aplicacao de politicas de retencao por classe documental e finalidade.
 
 ---
 
 # Atores
 
-- Gestor de Seguranca
-- Administrador do Sistema
+## Primarios
+
+* Compliance
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Politica de retencao definida.
-- Usuario autenticado.
+* Politica definida.
 
 ---
 
 # Gatilho
 
-O processo inicia quando dados precisam ser mantidos ou expurgados conforme a politica.
+O processo inicia quando a politica de retencao e aplicada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa retencao.
-2. Sistema apresenta regras vigentes.
-3. Usuario confirma a aplicacao.
-4. Sistema executa a politica.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema identifica os itens elegiveis.
+
+### Etapa 2
+
+Sistema aplica retenção, anonimização ou descarte autorizado.
+
+### Etapa 3
+
+Sistema registra a decisao.
+
+### Etapa 4
+
+Sistema preserva a trilha minima.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Legal hold ativo
+
+### Condicao
+
+O item esta sob preservacao obrigatoria.
+
+### Fluxo
+
+* Sistema suspende a acao.
+
+---
+
+# Pos-condicoes
+
+* Politica aplicada ou suspensa.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A retencao deve ser por finalidade.
-- O expurgo deve ser rastreavel.
+* A retencao precisa ser versionada.
+* A politica deve respeitar base legal e finalidade.
 
 ---
 
 # Entidades Envolvidas
 
-## PrivacyRetentionPolicy
+## RetentionRule
 
 ```text
 id
-scope
-retention_days
+subject_type
+purpose
+rule_expression
 status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Aplicar politica valida.
-- Bloquear regra inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a disciplina de guarda e expurgo por finalidade.
+* UC-SEC-007 - Anonimizar Dados
+* UC-GED-008 - Aplicar Politica de Retencao

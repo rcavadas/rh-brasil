@@ -1,78 +1,100 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-008
 
-# Caso de Uso
+## Integrar com Operadora de Beneficios
 
-## UC-API-008 - Integrar com Operadora de Beneficios
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Integrar com operadoras de beneficios para troca de informacoes de adesao, manutencao e cobranca.
+Permitir a integracao com operadora de beneficios para concessao e conciliacao.
 
 ---
 
 # Atores
 
-- Analista de Integrações
-- Analista de RH
+## Primarios
+
+* Motor de integracoes
+
+## Secundarios
+
+* Operadora externa
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Integracao cadastrada.
-- Contrato da operadora definido.
+* Contrato de integracao configurado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a operadora precisa receber ou enviar dados.
+O processo inicia quando a integracao com a operadora e executada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > Operadora de Beneficios.
-2. Sistema apresenta a configuracao.
-3. Usuario confirma a operacao.
-4. Sistema troca os dados.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta o payload.
+
+### Etapa 2
+
+Sistema envia a operadora.
+
+### Etapa 3
+
+Sistema grava o retorno.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Operadora indisponivel
+
+### Condicao
+
+A operadora nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a falha e preserva o historico.
+
+---
+
+# Pos-condicoes
+
+* Integracao executada ou bloqueada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A integracao deve respeitar elegibilidade e coparticipacao.
-- O fluxo deve ser rastreavel.
+* A conciliacao precisa ser rastreavel.
+* Dados sensiveis devem ser protegidos.
 
 ---
 
 # Entidades Envolvidas
 
-## BenefitOperatorIntegrationRequest
+## BenefitProviderIntegration
 
 ```text
 id
 integration_id
 status
-sent_at
+executed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Integrar operadora valida.
-- Bloquear sem contrato.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso fecha a trilha de beneficios externos junto do ERP e do banco.
+* UC-API-007 - Integrar com Banco
+* UC-API-010 - Monitorar Integracoes

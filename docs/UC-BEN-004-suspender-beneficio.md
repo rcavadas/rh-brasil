@@ -1,80 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-004
 
-# Caso de Uso
+## Suspender Beneficio
 
-## UC-BEN-004 - Suspender Beneficio
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Suspender temporariamente um beneficio com rastreabilidade e preservacao do historico.
+Permitir a suspensao temporaria de um beneficio com rastreabilidade.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Administrador do Sistema
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Motor de beneficios
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Beneficio concedido.
-- Usuario autenticado.
+* Beneficio concedido.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um beneficio precisa ser suspenso temporariamente.
+O processo inicia quando o beneficio e suspenso.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa a concessao ativa.
-2. Sistema apresenta opcoes de suspensao.
-3. Usuario informa motivo e periodo.
-4. Sistema valida impacto.
-5. Sistema registra a suspensao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario seleciona o beneficio ativo.
+
+### Etapa 2
+
+Sistema solicita motivo e vigencia.
+
+### Etapa 3
+
+Sistema atualiza o status.
+
+### Etapa 4
+
+Sistema preserva o historico.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Suspensao invalida
+
+### Condicao
+
+Nao ha beneficio ativo para suspender.
+
+### Fluxo
+
+* Sistema bloqueia a operacao.
+
+---
+
+# Pos-condicoes
+
+* Beneficio suspenso ou bloqueado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A suspensao deve preservar historico.
-- A suspensao deve ser reversivel quando aplicavel.
+* A suspensao deve ser temporaria e rastreavel.
+* O historico nao pode ser apagado.
 
 ---
 
 # Entidades Envolvidas
 
-## EmployeeBenefitSuspension
+## BenefitSuspension
 
 ```text
 id
-grant_id
-start_date
-end_date
+benefit_grant_id
 reason
+starts_at
+ends_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Suspender beneficio valido.
-- Bloquear concessao inexistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso trata a manutencao temporaria de uma concessao ativa.
+* UC-BEN-005 - Cancelar Beneficio
+* UC-BEN-010 - Integrar Beneficios com Folha

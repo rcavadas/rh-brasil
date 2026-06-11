@@ -1,81 +1,105 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-010
 
-# Caso de Uso
+## Auditar Acessos e Operacoes
 
-## UC-SEC-010 - Auditar Acessos e Operacoes
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Consultar trilhas de auditoria de acessos, operacoes e eventos sensiveis com filtros e evidencias autorizadas.
+Permitir a consulta da trilha de acessos e operacoes sensiveis.
 
 ---
 
 # Atores
 
-- Auditor
-- Gestor de Seguranca
-- Administrador do Sistema
+## Primarios
+
+* Auditor ou compliance
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Trilha de auditoria disponivel.
-- Usuario autenticado.
+* Eventos de auditoria disponiveis.
+* Usuario autenticado.
 
 ---
 
 # Gatilho
 
-O auditor precisa revisar acessos ou operacoes realizadas.
+O processo inicia quando a auditoria e consultada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario abre a consulta de auditoria.
-2. Sistema apresenta filtros.
-3. Usuario seleciona os filtros.
-4. Sistema consolida os eventos.
-5. Sistema exibe a trilha autorizada.
-6. Sistema registra o acesso.
+### Etapa 1
+
+Usuario define o recorte.
+
+### Etapa 2
+
+Sistema recupera os eventos.
+
+### Etapa 3
+
+Sistema apresenta a trilha consolidada.
+
+### Etapa 4
+
+Sistema preserva a finalidade e o mascaramento.
+
+### Etapa 5
+
+Sistema registra a consulta quando aplicavel.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Recorte sem dados
+
+### Condicao
+
+Nao ha eventos para o periodo.
+
+### Fluxo
+
+* Sistema sinaliza a ausencia.
+
+---
+
+# Pos-condicoes
+
+* Auditoria consultada.
+* Consulta registrada quando aplicavel.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A trilha deve ser imutavel.
-- Exportacoes devem usar mascaramento estrito quando aplicavel.
+* A trilha deve ser preservada.
+* A consulta precisa respeitar finalidade e acesso.
 
 ---
 
 # Entidades Envolvidas
 
-## SecurityAuditEvent
+## AuditLog
 
 ```text
 id
-subject
+actor_subject
 action
-resource
+resource_type
 created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Consultar trilha valida.
-- Bloquear sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra a trilha transversal ao expor a auditoria autorizada do sistema.
+* UC-SEC-009 - Registrar Incidente de Seguranca
+* UC-GED-010 - Auditar Movimentacao Documental

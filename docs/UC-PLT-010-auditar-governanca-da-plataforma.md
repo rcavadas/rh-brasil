@@ -1,56 +1,86 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-010
 
-# Caso de Uso
+## Auditar Governanca da Plataforma
 
-## UC-PLT-010 - Auditar Governanca da Plataforma
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Auditar a governanca da plataforma, incluindo configuracoes, acessos e eventos operacionais.
+Permitir a auditoria da governanca operacional, isolamento e parametrizacoes da plataforma.
 
 ---
 
 # Atores
 
-- Gestor de Plataforma
-- Gestor de Seguranca
-- Administrador do Sistema
+## Primarios
+
+* Auditor da plataforma
+
+## Secundarios
+
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Trilha disponivel.
-- Usuario autenticado.
+* Eventos de governanca disponiveis.
 
 ---
 
 # Gatilho
 
-O processo inicia quando a governanca da plataforma precisa ser revisada.
+O processo inicia quando a governanca e auditada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Governanca.
-2. Sistema apresenta os eventos.
-3. Usuario filtra o escopo.
-4. Sistema consolida a trilha.
-5. Sistema registra auditoria do acesso.
+### Etapa 1
+
+Usuario seleciona o recorte.
+
+### Etapa 2
+
+Sistema recupera os eventos.
+
+### Etapa 3
+
+Sistema consolida o historico.
+
+### Etapa 4
+
+Sistema preserva mascaramento e finalidade.
+
+### Etapa 5
+
+Sistema registra a consulta quando aplicavel.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Recorte sem eventos
+
+### Condicao
+
+Nao ha eventos no periodo.
+
+### Fluxo
+
+* Sistema sinaliza a ausencia.
+
+---
+
+# Pos-condicoes
+
+* Governanca auditada.
+* Consulta registrada quando aplicavel.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A trilha deve ser imutavel.
-- Exportacoes devem respeitar mascaramento e escopo.
+* A governanca precisa ser rastreavel.
+* O recorte nao pode expor dados indevidos.
 
 ---
 
@@ -60,21 +90,14 @@ O processo inicia quando a governanca da plataforma precisa ser revisada.
 
 ```text
 id
-event_type
-resource
-status
-captured_at
+actor_subject
+action
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Auditar governanca valida.
-- Bloquear sem permissao.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso encerra o pacote ao expor a governanca e auditoria da plataforma.
+* UC-PLT-004 - Configurar Isolamento de Dados
+* UC-PLT-009 - Monitorar Performance

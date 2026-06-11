@@ -1,56 +1,88 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SST-006
 
-# Caso de Uso
+## Registrar Exame Ocupacional
 
-## UC-SST-006 - Registrar Exame Ocupacional
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Registrar exames ocupacionais vinculados ao colaborador e ao contexto de SST.
+Permitir o registro de exames ocupacionais com resultado, vigencia e vinculo opcional a ambiente.
 
 ---
 
 # Atores
 
-- Analista de SST
-- Medicina Ocupacional
+## Primarios
+
+* Profissional de saude
+
+## Secundarios
+
+* SST
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Colaborador ativo.
-- Ambiente e riscos cadastrados.
+* Colaborador ativo.
+* Exame previsto.
 
 ---
 
 # Gatilho
 
-O processo inicia quando um exame ocupacional precisa ser registrado.
+O processo inicia quando o exame ocupacional e registrado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa SST > Exames.
-2. Sistema apresenta o cadastro.
-3. Usuario informa os dados do exame.
-4. Sistema valida o contexto.
-5. Sistema grava o exame.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa o tipo do exame.
+
+### Etapa 2
+
+Sistema valida o colaborador e a vigencia.
+
+### Etapa 3
+
+Sistema grava o resultado.
+
+### Etapa 4
+
+Sistema vincula a evidencia.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Exame incompleto
+
+### Condicao
+
+Ha campos obrigatorios ausentes.
+
+### Fluxo
+
+* Sistema bloqueia o envio.
+
+---
+
+# Pos-condicoes
+
+* Exame registrado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O exame deve ser rastreavel.
-- Dados sensiveis devem ser protegidos.
+* Exames contêm dados sensiveis e exigem controle de acesso.
+* A vigencia deve ser preservada.
 
 ---
 
@@ -61,20 +93,14 @@ O processo inicia quando um exame ocupacional precisa ser registrado.
 ```text
 id
 employee_id
-environment_id
 exam_type
-status
+result
+performed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Registrar exame valido.
-- Bloquear colaborador invalido.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso abre a camada de saude ocupacional associada ao colaborador.
+* UC-SST-007 - Emitir ASO
+* UC-SST-010 - Controlar Treinamentos Obrigatorios de SST

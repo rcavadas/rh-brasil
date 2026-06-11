@@ -1,55 +1,83 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-API-007
 
-# Caso de Uso
+## Integrar com Banco
 
-## UC-API-007 - Integrar com Banco
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Integrar com banco para rotinas financeiras e operacionais autorizadas.
+Permitir a integracao com banco para remessas, retornos ou sincronizacoes operacionais.
 
 ---
 
 # Atores
 
-- Analista de Integrações
-- Administrador do Sistema
+## Primarios
+
+* Motor de integracoes
+
+## Secundarios
+
+* Banco externo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Integracao cadastrada.
-- Contrato bancario definido.
+* Contrato de integracao configurado.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o banco precisa receber ou enviar dados.
+O processo inicia quando a integracao com banco e executada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Integracoes > Banco.
-2. Sistema apresenta parametros.
-3. Usuario confirma o fluxo.
-4. Sistema realiza a operacao.
-5. Sistema registra auditoria.
+### Etapa 1
+
+Sistema monta a mensagem.
+
+### Etapa 2
+
+Sistema envia ao banco.
+
+### Etapa 3
+
+Sistema grava o retorno.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Banco indisponivel
+
+### Condicao
+
+O canal nao responde.
+
+### Fluxo
+
+* Sistema sinaliza a falha e preserva o historico.
+
+---
+
+# Pos-condicoes
+
+* Integracao executada ou bloqueada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A integracao deve ser rastreavel.
-- Segredos devem permanecer protegidos.
+* A remessa precisa ser conciliavel.
+* O reprocessamento deve ser rastreavel.
 
 ---
 
@@ -61,18 +89,12 @@ O processo inicia quando o banco precisa receber ou enviar dados.
 id
 integration_id
 status
-sent_at
+executed_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Integrar banco valido.
-- Bloquear sem contrato.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso complementa o fluxo financeiro externo do produto.
+* UC-API-006 - Integrar com ERP
+* UC-API-010 - Monitorar Integracoes

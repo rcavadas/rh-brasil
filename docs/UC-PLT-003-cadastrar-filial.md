@@ -1,80 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-PLT-003
 
-# Caso de Uso
+## Cadastrar Filial
 
-## UC-PLT-003 - Cadastrar Filial
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Cadastrar filiais vinculadas a uma empresa para compor a estrutura organizacional.
+Permitir o cadastro de filial vinculada a empresa e tenant.
 
 ---
 
 # Atores
 
-- Administrador do Sistema
-- Gestor de Plataforma
+## Primarios
+
+* Administrador da plataforma
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Empresa cadastrada.
-- Usuario autenticado.
+* Empresa cadastrada.
 
 ---
 
 # Gatilho
 
-O processo inicia quando uma filial precisa ser criada.
+O processo inicia quando a filial e cadastrada.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Plataforma > Filiais.
-2. Sistema apresenta o formulario.
-3. Usuario informa os dados da filial.
-4. Sistema valida o vinculo com a empresa.
-5. Sistema grava a filial.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario informa dados da filial.
+
+### Etapa 2
+
+Sistema valida duplicidade e relacao.
+
+### Etapa 3
+
+Sistema grava a filial.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Filial duplicada
+
+### Condicao
+
+Ja existe filial equivalente.
+
+### Fluxo
+
+* Sistema bloqueia o cadastro.
+
+---
+
+# Pos-condicoes
+
+* Filial criada ou recusada.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- A filial deve pertencer a uma empresa.
-- Alteracoes devem preservar historico.
+* A filial deve pertencer a uma empresa.
+* O cadastro precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## PlatformBranch
+## Branch
 
 ```text
 id
 company_id
 name
-document
 status
+created_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Cadastrar filial valida.
-- Bloquear sem empresa.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso completa a hierarquia estrutural da empresa dentro do tenant.
+* UC-PLT-002 - Cadastrar Empresa
+* UC-PLT-004 - Configurar Isolamento de Dados

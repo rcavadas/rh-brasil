@@ -1,80 +1,107 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-BEN-006
 
-# Caso de Uso
+## Gerenciar Vale-Transporte
 
-## UC-BEN-006 - Gerenciar Vale-Transporte
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Gerenciar a concessao e o desconto do vale-transporte por colaborador.
+Permitir a gestao operacional do vale-transporte, incluindo rotas, concessao e desconto.
 
 ---
 
 # Atores
 
-- Analista de RH
-- Analista de Folha
+## Primarios
+
+* Gestor de beneficios
+
+## Secundarios
+
+* Portal administrativo
+* Motor de beneficios
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Colaborador elegivel.
-- Usuario autenticado.
+* Beneficio de VT cadastrado.
+* Colaborador elegivel.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o vale-transporte precisa ser concedido ou atualizado.
+O processo inicia quando o vale-transporte e gerenciado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa o beneficio de VT.
-2. Sistema apresenta dados do colaborador.
-3. Usuario informa rotas e parametros.
-4. Sistema calcula ou atualiza o desconto.
-5. Sistema registra a concessao.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario define origem, destino e quantidade.
+
+### Etapa 2
+
+Sistema valida elegibilidade.
+
+### Etapa 3
+
+Sistema grava a concessao ou atualizacao.
+
+### Etapa 4
+
+Sistema registra o desconto aplicavel.
+
+### Etapa 5
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Rota invalida
+
+### Condicao
+
+A rota informada nao e valida.
+
+### Fluxo
+
+* Sistema bloqueia a concessao.
+
+---
+
+# Pos-condicoes
+
+* VT gerenciado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- O VT deve respeitar elegibilidade e desconto.
-- A manutencao deve ser rastreavel.
+* O desconto deve ser previsivel na folha.
+* A rota precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## TransportationBenefitAllocation
+## TransportationBenefit
 
 ```text
 id
 employee_id
-benefit_id
-route
-discount_amount
+origin
+destination
+status
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Gerenciar VT valido.
-- Bloquear colaborador inelegivel.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso materializa um beneficio de uso corrente com impacto direto na folha.
+* UC-BEN-003 - Conceder Beneficio ao Colaborador
+* UC-BEN-010 - Integrar Beneficios com Folha

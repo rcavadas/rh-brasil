@@ -1,79 +1,101 @@
-# Sistema de RH para o Mercado Brasileiro
+# UC-SEC-003
 
-# Caso de Uso
+## Configurar MFA
 
-## UC-SEC-003 - Configurar MFA
+### Objetivo
 
-### Versao
-
-1.0
-
----
-
-# Objetivo
-
-Configurar autenticacao multifator para perfis ou usuarios elegiveis.
+Permitir a configuracao de autenticação multifator para usuarios ou grupos.
 
 ---
 
 # Atores
 
-- Gestor de Seguranca
-- Administrador do Sistema
+## Primarios
+
+* Administrador de seguranca
+
+## Secundarios
+
+* Portal administrativo
+* Auditoria
 
 ---
 
 # Pre-condicoes
 
-- Usuario autenticado.
-- Politica de seguranca disponivel.
+* Perfil ou grupo definido.
 
 ---
 
 # Gatilho
 
-O processo inicia quando o MFA precisa ser habilitado ou ajustado.
+O processo inicia quando o MFA e configurado.
 
 ---
 
 # Fluxo Principal
 
-1. Usuario acessa Seguranca > MFA.
-2. Sistema apresenta politicas disponiveis.
-3. Usuario define a configuracao.
-4. Sistema valida a aplicacao.
-5. Sistema grava a politica.
-6. Sistema registra auditoria.
+### Etapa 1
+
+Usuario define a politica.
+
+### Etapa 2
+
+Sistema valida o escopo.
+
+### Etapa 3
+
+Sistema grava a configuracao.
+
+### Etapa 4
+
+Sistema registra auditoria.
+
+---
+
+# Fluxos Alternativos
+
+## FA-01 - Escopo invalido
+
+### Condicao
+
+O grupo nao existe.
+
+### Fluxo
+
+* Sistema bloqueia a configuracao.
+
+---
+
+# Pos-condicoes
+
+* MFA configurado.
+* Auditoria registrada.
 
 ---
 
 # Regras de Negocio Relacionadas
 
-- MFA deve ser auditavel.
-- Alteracoes devem respeitar politica vigente.
+* O MFA deve ser coerente com o portal e o BFF.
+* A politica precisa ser rastreavel.
 
 ---
 
 # Entidades Envolvidas
 
-## SecurityMfaPolicy
+## MultiFactorPolicy
 
 ```text
 id
+tenant_id
 scope
-method
 status
+updated_at
 ```
 
 ---
 
-# Testes
+# Casos Relacionados
 
-- Configurar MFA valida.
-- Bloquear politica inconsistente.
-
----
-
-# Sequenciamento no Catalogo Mestre
-
-Este caso de uso reforca a fronteira de autenticacao depois de perfis e permissoes.
+* UC-SEC-001 - Gerenciar Perfis de Acesso
+* UC-SEC-004 - Configurar SSO
