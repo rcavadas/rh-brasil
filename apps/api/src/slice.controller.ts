@@ -1118,6 +1118,36 @@ class CreateOccupationalHealthEpiCatalogDto {
   notes?: string;
 }
 
+class UpdateOccupationalHealthEpiCatalogDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  active?: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class DeliverOccupationalHealthEpiDto {
   @IsString()
   @IsNotEmpty()
@@ -1185,6 +1215,44 @@ class CreateOccupationalHealthExamDto {
   notes?: string;
 }
 
+class UpdateOccupationalHealthExamDto {
+  @IsOptional()
+  @IsString()
+  employeeId?: string;
+
+  @IsOptional()
+  @IsString()
+  environmentId?: string;
+
+  @IsOptional()
+  @IsString()
+  examType?: string;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  scheduledAt?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  performedAt?: string;
+
+  @IsOptional()
+  @IsString()
+  result?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  expiresAt?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreateOccupationalHealthAsoDto {
   @IsString()
   @IsNotEmpty()
@@ -1230,6 +1298,44 @@ class CreateOccupationalHealthTrainingCatalogDto {
 
   @IsISO8601()
   validFrom!: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class UpdateOccupationalHealthTrainingCatalogDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  mandatory?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  active?: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
 
   @IsOptional()
   @IsISO8601()
@@ -1542,6 +1648,30 @@ export class SliceController {
   }
 
   @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/epi-catalogs/:epiCatalogId')
+  updateOccupationalHealthEpiCatalog(
+    @Param('tenantId') tenantId: string,
+    @Param('epiCatalogId') epiCatalogId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthEpiCatalogDto,
+  ) {
+    return this.store.updateOccupationalHealthEpiCatalog(
+      tenantId,
+      epiCatalogId,
+      {
+        companyId: body.companyId,
+        code: body.code,
+        name: body.name,
+        active: body.active,
+        validFrom: body.validFrom,
+        validUntil: body.validUntil,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
   @Post(':tenantId/sst/epi-assignments')
   deliverOccupationalHealthEpi(
     @Param('tenantId') tenantId: string,
@@ -1600,6 +1730,32 @@ export class SliceController {
   }
 
   @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/exams/:examId')
+  updateOccupationalHealthExam(
+    @Param('tenantId') tenantId: string,
+    @Param('examId') examId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthExamDto,
+  ) {
+    return this.store.updateOccupationalHealthExam(
+      tenantId,
+      examId,
+      {
+        employeeId: body.employeeId,
+        environmentId: body.environmentId,
+        examType: body.examType,
+        status: body.status,
+        scheduledAt: body.scheduledAt,
+        performedAt: body.performedAt,
+        result: body.result,
+        expiresAt: body.expiresAt,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
   @Post(':tenantId/sst/exams/:examId/aso')
   issueOccupationalHealthAso(
     @Param('tenantId') tenantId: string,
@@ -1654,6 +1810,32 @@ export class SliceController {
   @Get(':tenantId/sst/training-catalogs')
   listOccupationalHealthTrainingCatalogs(@Param('tenantId') tenantId: string) {
     return this.store.listOccupationalHealthTrainingCatalogs(tenantId);
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/training-catalogs/:trainingCatalogId')
+  updateOccupationalHealthTrainingCatalog(
+    @Param('tenantId') tenantId: string,
+    @Param('trainingCatalogId') trainingCatalogId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthTrainingCatalogDto,
+  ) {
+    return this.store.updateOccupationalHealthTrainingCatalog(
+      tenantId,
+      trainingCatalogId,
+      {
+        companyId: body.companyId,
+        code: body.code,
+        title: body.title,
+        description: body.description,
+        mandatory: body.mandatory,
+        active: body.active,
+        validFrom: body.validFrom,
+        validUntil: body.validUntil,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
   }
 
   @Roles('admin', 'rh')

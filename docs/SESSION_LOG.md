@@ -2598,3 +2598,17 @@
 **Riscos:** validacao end-to-end continua bloqueada pelo engine Docker local indisponivel; a alteracao em si ficou compilavel e tipada.
 
 **Próxima ação:** seguir para outro gap pequeno e objetivo de runtime, se houver continuidade solicitada.
+
+## 2026-06-11 - Atualizacao auditavel de SST complementar
+
+**Objetivo:** fechar a camada de atualizacao auditavel dos cadastros de SST que ainda estavam em create/list.
+
+**O que foi feito:** `apps/api/src/slice.controller.ts` e `apps/api/src/slice.store.ts` passaram a expor `PATCH` auditavel para `sst/epi-catalogs/:epiCatalogId`, `sst/exams/:examId` e `sst/training-catalogs/:trainingCatalogId`; os testes de persistencia foram expandidos para cobrir criacao, atualizacao e auditoria desses cadastros.
+
+**Arquivos alterados:** `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `npm run typecheck -w @rh/api` e `npm run build -w @rh/api`.
+
+**Riscos:** a suite relacional da API nao concluiu nesta sessao por bloqueio do `prisma generate` no engine nativo do `node_modules`; a alteracao em si ficou compilavel e tipada.
+
+**Próxima ação:** validar esses updates de SST em banco real assim que o runtime estiver disponivel; caso contrario, seguir para outro gap pequeno e objetivo de runtime.

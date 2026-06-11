@@ -88,3 +88,4 @@
 - Observabilidade, backup, restore e telemetria operacional agora existem no runtime local do compose; o que ainda nao existe e a politica completa do ambiente alvo.
 - A trilha minima de eSocial da admissao existe no runtime, mas o contrato governamental final, a conciliacao e a politica de reprocessamento ainda precisam de validacao operacional.
 - O reprocessamento explicito de eSocial para admissao e desligamento ja existe, mas a politica final de retentativas, DLQ e conciliacao com o governo ainda precisa de validacao operacional.
+- A atualizacao auditavel de catalogos de EPI, exames ocupacionais e catalogos de treinamento de SST foi tipada e compilada, mas a suite relacional desta sessao nao concluiu porque o `prisma generate` encontrou bloqueio de rename no engine nativo do `node_modules`.

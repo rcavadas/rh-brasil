@@ -53,6 +53,7 @@ O slice inicial ja expÃµe um contrato real em:
 - `GET /api/v1/tenants/:tenantId/sst/cats`
 - `POST /api/v1/tenants/:tenantId/sst/epi-catalogs`
 - `GET /api/v1/tenants/:tenantId/sst/epi-catalogs`
+- `PATCH /api/v1/tenants/:tenantId/sst/epi-catalogs/:epiCatalogId`
 - `POST /api/v1/tenants/:tenantId/sst/epi-assignments`
 - `GET /api/v1/tenants/:tenantId/sst/epi-assignments`
 - `POST /api/v1/tenants/:tenantId/sst/environments`
@@ -63,10 +64,12 @@ O slice inicial ja expÃµe um contrato real em:
 - `PATCH /api/v1/tenants/:tenantId/sst/environments/:environmentId/risks/:riskId`
 - `POST /api/v1/tenants/:tenantId/sst/exams`
 - `GET /api/v1/tenants/:tenantId/sst/exams`
+- `PATCH /api/v1/tenants/:tenantId/sst/exams/:examId`
 - `POST /api/v1/tenants/:tenantId/sst/exams/:examId/aso`
 - `GET /api/v1/tenants/:tenantId/sst/exams/:examId/aso`
 - `POST /api/v1/tenants/:tenantId/sst/training-catalogs`
 - `GET /api/v1/tenants/:tenantId/sst/training-catalogs`
+- `PATCH /api/v1/tenants/:tenantId/sst/training-catalogs/:trainingCatalogId`
 - `POST /api/v1/tenants/:tenantId/sst/training-assignments`
 - `GET /api/v1/tenants/:tenantId/sst/training-assignments`
 - `POST /api/v1/tenants/:tenantId/sst/training-assignments/:assignmentId/complete`

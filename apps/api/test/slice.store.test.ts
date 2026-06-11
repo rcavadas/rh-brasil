@@ -506,6 +506,18 @@ test('slice relacional manages occupational health cats and epi', async () => {
     'oidc-user-1',
   );
 
+  const updatedEpiCatalog = await store.updateOccupationalHealthEpiCatalog(
+    tenant.id,
+    epiCatalog.id,
+    {
+      name: 'Capacete de seguranca revisado',
+      active: false,
+      validUntil: '2026-12-31T00:00:00.000Z',
+      notes: 'Uso obrigatorio revisado',
+    },
+    'oidc-user-1',
+  );
+
   const epiAssignment = await store.deliverOccupationalHealthEpi(
     tenant.id,
     {
@@ -526,9 +538,11 @@ test('slice relacional manages occupational health cats and epi', async () => {
 
   assert.equal(cat.reportNumber, 'CAT-001');
   assert.equal(epiCatalog.code, 'EPI-001');
+  assert.equal(updatedEpiCatalog.name, 'Capacete de seguranca revisado');
   assert.equal(epiAssignment.epiCatalogId, epiCatalog.id);
   assert.equal(cats.length, 1);
   assert.equal(epiCatalogs.length, 1);
+  assert.equal(epiCatalogs[0]?.active, false);
   assert.equal(epiAssignments.length, 1);
   assert.equal(events.at(-1)?.action, 'occupational_health.epi.delivered');
 
@@ -572,6 +586,16 @@ test('slice relacional manages occupational health exams and aso', async () => {
     'oidc-user-1',
   );
 
+  const updatedExam = await store.updateOccupationalHealthExam(
+    tenant.id,
+    exam.id,
+    {
+      result: 'fit with restrictions',
+      notes: 'Exame admissional atualizado',
+    },
+    'oidc-user-1',
+  );
+
   const aso = await store.issueOccupationalHealthAso(
     tenant.id,
     exam.id,
@@ -590,7 +614,9 @@ test('slice relacional manages occupational health exams and aso', async () => {
 
   assert.equal(exams.length, 1);
   assert.equal(exams[0]?.examType, 'admission');
+  assert.equal(exams[0]?.result, 'fit with restrictions');
   assert.equal(exams[0]?.aso?.result, 'fit');
+  assert.equal(updatedExam.result, 'fit with restrictions');
   assert.equal(aso.issuer, 'Medico do trabalho');
   assert.equal(fetchedAso.examId, exam.id);
   assert.equal(events.at(-1)?.action, 'occupational_health.aso.issued');
@@ -744,6 +770,18 @@ test('slice relacional manages occupational health training catalogs and assignm
     'oidc-user-1',
   );
 
+  const updatedCatalog = await store.updateOccupationalHealthTrainingCatalog(
+    tenant.id,
+    catalog.id,
+    {
+      title: 'Treinamento de seguranca operacional revisado',
+      description: 'Treinamento basico de SST atualizado',
+      active: false,
+      notes: 'Treinamento inicial revisado',
+    },
+    'oidc-user-1',
+  );
+
   const assignment = await store.assignOccupationalHealthTraining(
     tenant.id,
     {
@@ -772,8 +810,10 @@ test('slice relacional manages occupational health training catalogs and assignm
   const events = await store.listAuditEvents(tenant.id);
 
   assert.equal(catalog.code, 'TRN-001');
+  assert.equal(updatedCatalog.title, 'Treinamento de seguranca operacional revisado');
   assert.equal(assignment.status, 'assigned');
   assert.equal(catalogs.length, 1);
+  assert.equal(catalogs[0]?.active, false);
   assert.equal(assignments.length, 1);
   assert.equal(completed.status, 'completed');
   assert.equal(completed.completedBy, 'oidc-user-1');
