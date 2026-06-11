@@ -2388,3 +2388,17 @@
 **Riscos:** os contratos externos reais de beneficios, identidade e banco ainda dependem de validacao operacional fora do ambiente local.
 
 **Próxima ação:** expandir o mesmo padrao de validacao para os demais fluxos que ainda tiverem apenas cobertura parcial.
+
+## 2026-06-11 - Reorientacao do alvo Docker da stack
+
+**Objetivo:** registrar o host Docker compartilhado correto para a stack do sistema e evitar novo uso do Docker Desktop local como referencia.
+
+**O que foi feito:** a documentacao operacional passou a tratar `172.17.0.3` como host Docker compartilhado do sistema; `docs/INFRASTRUCTURE.md`, `docs/TESTING.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `docs/RISKS.md` foram sincronizados com essa informacao.
+
+**Arquivos alterados:** `docs/INFRASTRUCTURE.md`, `docs/TESTING.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão documental e alinhamento da stack de runtime para o host compartilhado informado; tentativa de SSH em `172.17.0.3` com a chave local disponível resultou em `Permission denied (publickey,password)`.
+
+**Riscos:** o endereço foi registrado sem identificar porta/protocolo, entao a validacao executavel ainda precisa usar o contexto operacional correto já conhecido pelo ambiente.
+
+**Próxima ação:** repetir os smokes e a suite da API contra o host compartilhado do sistema quando o contexto de execucao estiver apontado para ele.

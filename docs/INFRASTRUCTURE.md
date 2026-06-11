@@ -3,6 +3,7 @@
 ## Ambientes
 
 - Local de desenvolvimento: Docker Compose com api, web, worker, postgres, redis, keycloak e minio.
+- O host Docker efetivo usado para essa stack neste ambiente e `172.17.0.3`; nao tratar o Docker Desktop local do Windows como origem autoritativa da validacao.
 - Homologação: prevista, ainda sem manifests locais identificados.
 - Produção: prevista, ainda sem pipeline e manifests publicados no repositório.
 

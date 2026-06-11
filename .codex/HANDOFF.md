@@ -884,6 +884,11 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - O runtime de integracoes persistidas da API passou a ter cobertura HTTP para sync de beneficios e identidade, monitoramento, falha, retentativa e DLQ.
 - O reset de banco dos testes de API e store agora inclui `api_integration_requests` e `api_integration_request_histories`, evitando vazamento entre execucoes.
 
+## Validacao complementar - host docker compartilhado
+
+- O host Docker compartilhado usado para a stack do sistema deve ser tratado como `172.17.0.3`.
+- O Docker Desktop local do Windows nao e o alvo autoritativo para os smokes da stack neste ambiente.
+
 ## Ultima entrega complementar 3
 
 - Data: 2026-06-11

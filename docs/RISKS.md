@@ -76,6 +76,8 @@
 - Os pacotes `UC-GST`, `UC-WFL`, `UC-GED`, `UC-ATS`, `UC-ONB`, `UC-LMS`, `UC-PER` e `UC-CAR` tambem estao fechados na documentacao, mas permanecem como especificacao ate validacao futura no runtime.
 - Os pacotes `UC-FER`, `UC-RES`, `UC-BEN`, `UC-SST`, `UC-ESO`, `UC-SEC`, `UC-API`, `UC-PLT` e `UC-DEC` tambem estao fechados na documentacao, mas permanecem como especificacao ate validacao futura no runtime.
 - As rotas de integracoes persistidas da API agora tem cobertura HTTP de ponta a ponta, mas os contratos externos reais de beneficios, identidade e banco ainda exigem validacao operacional fora do ambiente local.
+- A stack do sistema deve ser validada contra o host Docker compartilhado `172.17.0.3`; usar o Docker Desktop local do Windows como referencia pode produzir falso negativo.
+- O host `172.17.0.3` foi identificado, mas a credencial SSH disponível nesta sessão nao conseguiu autenticar; a validacao executavel depende do contexto de acesso correto ao host compartilhado.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.
