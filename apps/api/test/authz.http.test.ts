@@ -28,6 +28,8 @@ async function resetDatabase(): Promise<void> {
       "termination_offboarding_history",
       "termination_offboardings",
       "termination_esocial_transmissions",
+      "api_integration_request_histories",
+      "api_integration_requests",
       "employee_benefits",
       "benefit_catalogs",
       "recruitment_candidates",
@@ -3173,6 +3175,171 @@ test('authenticated admin can read platform telemetry', async () => {
   };
   assert.equal(telemetry.service, 'rh-api');
   assert.ok(telemetry.counts.tenants >= 1);
+});
+
+test('authenticated admin can manage api integrations', async () => {
+  const tenantResponse = await fetch(`${baseUrl}/api/v1/tenants`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      'x-rh-user-id': 'user-integrations',
+      'x-rh-role': 'admin',
+    },
+    body: JSON.stringify({ name: 'Empresa Integracoes', slug: `empresa-integracoes-${Date.now()}` }),
+  });
+  assert.equal(tenantResponse.status, 201);
+  const tenant = (await tenantResponse.json()) as { id: string };
+
+  const commonHeaders = {
+    'content-type': 'application/json',
+    'x-rh-user-id': 'user-integrations',
+    'x-rh-role': 'admin',
+    'x-rh-tenant-id': tenant.id,
+  } as const;
+
+  const companyResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/companies`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      legalName: 'Empresa Integracoes LTDA',
+      tradeName: 'Integracoes',
+      cnpj: '44556677000188',
+    }),
+  });
+  assert.equal(companyResponse.status, 201);
+  const company = (await companyResponse.json()) as { id: string };
+
+  const personResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/persons`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      fullName: 'Pessoa Integracoes',
+      cpf: '44455566677',
+    }),
+  });
+  assert.equal(personResponse.status, 201);
+  const person = (await personResponse.json()) as { id: string };
+
+  const employeeResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/employees`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      companyId: company.id,
+      personId: person.id,
+      code: 'INT-001',
+    }),
+  });
+  assert.equal(employeeResponse.status, 201);
+  const employee = (await employeeResponse.json()) as { id: string };
+
+  const benefitsSyncResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/benefits/sync`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      employeeId: employee.id,
+      benefitCode: 'VT-001',
+      movementType: 'include',
+      notes: 'Sincronizacao de beneficios',
+    }),
+  });
+  assert.equal(benefitsSyncResponse.status, 201);
+  const benefitsSync = (await benefitsSyncResponse.json()) as { id: string; integrationType: string; status: string };
+  assert.equal(benefitsSync.integrationType, 'benefits');
+  assert.equal(benefitsSync.status, 'completed');
+
+  const identitySyncResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/identity/sync`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      subject: 'oidc-user-integracoes',
+      action: 'provision',
+      notes: 'Provisionamento de identidade',
+    }),
+  });
+  assert.equal(identitySyncResponse.status, 201);
+  const identitySync = (await identitySyncResponse.json()) as { id: string; integrationType: string; status: string };
+  assert.equal(identitySync.integrationType, 'identity');
+  assert.equal(identitySync.status, 'completed');
+
+  const failedResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/${benefitsSync.id}/fail`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      reason: 'Falha de retorno do provedor',
+    }),
+  });
+  assert.equal(failedResponse.status, 201);
+  const failed = (await failedResponse.json()) as { status: string };
+  assert.equal(failed.status, 'failed');
+
+  const retriedResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/${benefitsSync.id}/retry`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      notes: 'Nova tentativa depois do incidente',
+    }),
+  });
+  assert.equal(retriedResponse.status, 201);
+  const retried = (await retriedResponse.json()) as { status: string };
+  assert.equal(retried.status, 'requested');
+
+  const failedAgainResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/${benefitsSync.id}/fail`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      reason: 'Falha persistente do provedor',
+    }),
+  });
+  assert.equal(failedAgainResponse.status, 201);
+  const failedAgain = (await failedAgainResponse.json()) as { status: string };
+  assert.equal(failedAgain.status, 'failed');
+
+  const dlqResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/${benefitsSync.id}/dlq`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      reason: 'Encaminhado para tratamento manual',
+    }),
+  });
+  assert.equal(dlqResponse.status, 201);
+  const dlq = (await dlqResponse.json()) as { status: string };
+  assert.equal(dlq.status, 'dlq');
+
+  const monitoringResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/integrations/monitoring`, {
+    headers: commonHeaders,
+  });
+  assert.equal(monitoringResponse.status, 200);
+  const monitoring = (await monitoringResponse.json()) as {
+    counts: { total: number; completed: number; failed: number; dlq: number; benefits: number; identity: number };
+    lastRequestedAt: string | null;
+    alerts: Array<{ severity: string }>;
+  };
+  assert.equal(monitoring.counts.total, 2);
+  assert.equal(monitoring.counts.completed, 1);
+  assert.equal(monitoring.counts.failed, 0);
+  assert.equal(monitoring.counts.dlq, 1);
+  assert.equal(monitoring.counts.benefits, 1);
+  assert.equal(monitoring.counts.identity, 1);
+  assert.ok(monitoring.lastRequestedAt);
+
+  const filteredMonitoringResponse = await fetch(
+    `${baseUrl}/api/v1/tenants/${tenant.id}/integrations/monitoring?integrationType=benefits&status=dlq`,
+    {
+      headers: commonHeaders,
+    },
+  );
+  assert.equal(filteredMonitoringResponse.status, 200);
+  const filteredMonitoring = (await filteredMonitoringResponse.json()) as {
+    counts: { total: number; completed: number; failed: number; dlq: number; benefits: number; identity: number };
+    alerts: Array<{ severity: string; message: string }>;
+  };
+  assert.equal(filteredMonitoring.counts.total, 1);
+  assert.equal(filteredMonitoring.counts.completed, 0);
+  assert.equal(filteredMonitoring.counts.failed, 0);
+  assert.equal(filteredMonitoring.counts.dlq, 1);
+  assert.equal(filteredMonitoring.counts.benefits, 1);
+  assert.equal(filteredMonitoring.counts.identity, 0);
+  assert.equal(filteredMonitoring.alerts[0]?.severity, 'critical');
 });
 
 test('oidc bearer can create and use a tenant without tenant header in the happy path', async () => {

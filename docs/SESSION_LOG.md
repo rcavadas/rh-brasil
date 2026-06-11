@@ -2374,3 +2374,17 @@
 **Riscos:** os pacotes seguem como especificação documental até eventual validação de runtime.
 
 **Próxima ação:** verificar se ainda existe algum pacote remanescente para a mesma etapa documental, ou encerrar a fase se o inventário estiver completo.
+
+## 2026-06-11 - Cobertura HTTP das integrações persistidas da API
+
+**Objetivo:** fechar a cobertura de runtime para as integrações persistidas ja expostas no backend.
+
+**O que foi feito:** adicionado teste HTTP ponta a ponta para sync de beneficios e identidade, monitoramento, falha, retentativa e DLQ; os resets de banco dos testes da API e do store passaram a truncar `api_integration_requests` e `api_integration_request_histories`.
+
+**Arquivos alterados:** `apps/api/test/authz.http.test.ts`, `apps/api/test/slice.store.test.ts`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** cobertura direcionada dos endpoints de integracoes persistidas, com assertions de estados `completed`, `failed`, `requested` e `dlq`, alem de monitoramento filtrado por tipo e status.
+
+**Riscos:** os contratos externos reais de beneficios, identidade e banco ainda dependem de validacao operacional fora do ambiente local.
+
+**Próxima ação:** expandir o mesmo padrao de validacao para os demais fluxos que ainda tiverem apenas cobertura parcial.

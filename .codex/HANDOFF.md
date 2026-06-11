@@ -879,6 +879,11 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - A camada de calculo e consolidacao do `UC-JOR` tambem foi sequenciada em `docs/UC-JOR-008-calcular-horas-extras.md`, `docs/UC-JOR-009-calcular-banco-de-horas.md`, `docs/UC-JOR-017-calcular-adicional-noturno.md`, `docs/UC-JOR-018-aplicar-regras-de-dsr-e-descanso-semanal.md` e `docs/UC-JOR-019-consolidar-eventos-de-ponto-para-folha.md`.
 - A camada final do `UC-JOR` tambem foi sequenciada em `docs/UC-JOR-010-gerar-espelho-de-ponto.md`, `docs/UC-JOR-011-fechar-periodo-de-ponto.md`, `docs/UC-JOR-012-reabrir-periodo-de-ponto.md`, `docs/UC-JOR-016-emitir-comprovante-de-marcacao.md` e `docs/UC-JOR-020-exportar-espelho-e-trilhas-de-auditoria.md`.
 
+## Validacao complementar - integracoes persistidas
+
+- O runtime de integracoes persistidas da API passou a ter cobertura HTTP para sync de beneficios e identidade, monitoramento, falha, retentativa e DLQ.
+- O reset de banco dos testes de API e store agora inclui `api_integration_requests` e `api_integration_request_histories`, evitando vazamento entre execucoes.
+
 ## Ultima entrega complementar 3
 
 - Data: 2026-06-11

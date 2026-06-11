@@ -21,6 +21,8 @@ async function resetDatabase(): Promise<void> {
       "termination_offboarding_history",
       "termination_offboardings",
       "termination_esocial_transmissions",
+      "api_integration_request_histories",
+      "api_integration_requests",
       "employee_benefits",
       "benefit_catalogs",
       "recruitment_candidates",
