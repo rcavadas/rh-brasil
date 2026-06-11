@@ -88,6 +88,8 @@
 
 ## Concluídas
 
+- [x] Encerrar a frente documental do produto e parar de propor expansao documental por padrao.
+
 - [x] Corrigir definitivamente o Git do workspace.
 - [x] Inicializar o repositório Git local e normalizar o `.gitignore`.
 - [x] Detalhar UC-FOL-002 - Configurar Incidencias da Rubrica.

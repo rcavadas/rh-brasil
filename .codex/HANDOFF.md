@@ -3,6 +3,7 @@
 ## Estado atual
 
 Auditoria inicial concluida.
+Frente documental encerrada: nao propor expansao de documentacao por padrao em sessoes futuras; apenas correcao pontual quando solicitada pelo usuario.
 O repositorio agora possui base executavel local com `@rh/api`, `@rh/web` e `@rh/worker`.
 A trilha minima de eSocial da admissao ja esta no runtime, com fila, worker, consulta de transmissao e persistencia de estados.
 Foi criado o documento de continuidade com revisao critica do UC-JOR e inicio detalhado do UC-FOL-001.

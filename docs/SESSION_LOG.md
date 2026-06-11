@@ -2542,3 +2542,17 @@
 **Riscos:** alteracao apenas documental; a validacao executavel da nova camada de ponto continua bloqueada pela indisponibilidade do Docker local.
 
 **Próxima ação:** seguir atacando gaps de documentação/contrato onde houver desalinhamento com o backend real.
+
+## 2026-06-11 - Frente documental encerrada
+
+**Objetivo:** registrar explicitamente que a fase de expansão documental do produto foi concluída.
+
+**O que foi feito:** a memoria operacional, o handoff, as tarefas e as perguntas abertas foram atualizados para dizer que a frente documental está encerrada e que novas propostas documentais nao devem surgir por padrao, apenas correcao pontual quando solicitada.
+
+**Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** consistencia textual entre memoria, handoff, tarefas e perguntas abertas.
+
+**Riscos:** nenhuma nova expansao documental deve ser iniciada sem solicitacao explicita do usuario; a proxima interacao deve priorizar produto ou runtime.
+
+**Próxima ação:** nao propor mais expansao documental por padrao; seguir apenas quando houver demanda funcional ou de correcao pontual.
