@@ -230,6 +230,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - `npm run build` e `npm run typecheck` passaram no monorepo local apos a correcao de tipagem do portal.
 - A validacao end-to-end da API continua bloqueada neste ambiente porque o Docker Desktop Linux Engine nao esta disponivel e as portas locais de Postgres/Redis nao estao expostas.
 - O host Docker compartilhado usado para a stack do sistema deve ser tratado como `172.17.0.3`; o Docker Desktop local do Windows nao e a origem autoritativa para os smokes do projeto.
+- O host compartilhado tem Portainer ativo e varios compose projects, mas a stack do RH nao foi localizada nele nesta rodada.
 - Com o Docker local disponivel, `postgres` e `redis` foram subidos via `infra/docker-compose.yml` e `npm run test -w @rh/api` passou com 70 testes verdes.
 - O stack local completo foi subido com `api`, `web`, `worker`, `keycloak`, `postgres`, `redis` e `minio`; o smoke OIDC real com Keycloak retornou token e permitiu criar tenant e consultar summary na API.
 - O Git do workspace foi corrigido definitivamente: a `.git` foi recriada com ownership do usuario atual via arquivos criados pelo workspace, e `git status` voltou a funcionar sem `safe.directory`.

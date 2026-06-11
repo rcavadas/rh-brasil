@@ -888,6 +888,7 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 
 - O host Docker compartilhado usado para a stack do sistema deve ser tratado como `172.17.0.3`.
 - O Docker Desktop local do Windows nao e o alvo autoritativo para os smokes da stack neste ambiente.
+- O host possui Portainer ativo e varios compose projects, mas a stack do RH nao foi localizada nele nesta rodada.
 
 ## Ultima entrega complementar 3
 

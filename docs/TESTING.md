@@ -33,6 +33,7 @@
 - A suite de integracao de `slice.store` agora cobre tambem prazo de pagamento da rescisao e bloqueio de fechamento enquanto houver documentos sem assinatura.
 - Smoke runtime no compose validou o fluxo completo com token do Keycloak sem `x-rh-tenant-id` no caminho feliz.
 - A stack de runtime deve ser validada no host Docker compartilhado do ambiente, atualmente identificado como `172.17.0.3`; o Docker Desktop local do Windows nao e a origem autoritativa para esses smokes.
+- Nesta rodada o host compartilhado estava acessivel, mas a stack do RH nao estava implantada nele; por isso nao houve smoke de runtime do nosso projeto nesse servidor.
 - Smoke runtime do `@rh/web` validou login OIDC via BFF, cookie HttpOnly, `GET /api/session`, `POST /api/session/active-tenant`, timeout por inatividade e `POST /api/v1/tenants` proxado pelo portal.
 - O `@rh/web` agora foi atualizado para carregar tenants acessiveis, selecionar tenant ativo e persistir esse contexto localmente.
 - O `@rh/web` agora executa o login OIDC via BFF, guarda sessao em cookie HttpOnly e usa logout com redirecionamento para o Keycloak local.

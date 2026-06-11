@@ -2402,3 +2402,17 @@
 **Riscos:** o endereço foi registrado sem identificar porta/protocolo, entao a validacao executavel ainda precisa usar o contexto operacional correto já conhecido pelo ambiente.
 
 **Próxima ação:** repetir os smokes e a suite da API contra o host compartilhado do sistema quando o contexto de execucao estiver apontado para ele.
+
+## 2026-06-11 - Acesso SSH confirmado e stack RH ausente no host compartilhado
+
+**Objetivo:** confirmar o acesso operacional ao host Docker compartilhado e verificar se a stack do RH estava implantada nele.
+
+**O que foi feito:** autenticacao SSH com `itguys` no host `172.17.0.3` foi bem-sucedida; o Portainer no host foi identificado; `docker ps` e `docker compose ls` mostraram varios projetos ativos, mas nenhuma stack do RH foi encontrada nesta rodada.
+
+**Arquivos alterados:** nenhum arquivo de codigo; a verificacao foi operacional via SSH no host compartilhado.
+
+**Validações:** `ssh` com a chave local `id_staging_gps`, `docker version`, `docker ps`, `docker compose ls` e verificacao de ausencia de entradas relacionadas a RH.
+
+**Riscos:** a validacao real do projeto continua dependente de publicar ou localizar a stack do RH nesse host compartilhado antes do smoke final.
+
+**Próxima ação:** localizar a stack do RH no host compartilhado ou provisiona-la antes de repetir os testes de runtime.
