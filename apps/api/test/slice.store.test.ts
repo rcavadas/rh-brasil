@@ -1105,18 +1105,50 @@ test('slice relacional persists point governance configuration', async () => {
     'oidc-user-1',
   );
 
+  const updatedHoliday = await store.updatePointHolidayCalendar(
+    tenant.id,
+    holiday.id,
+    {
+      title: 'Feriado municipal atualizado',
+      isNational: true,
+      notes: 'Calendario local ajustado',
+    },
+    'oidc-user-1',
+  );
+  const updatedTolerance = await store.updatePointToleranceRule(
+    tenant.id,
+    tolerance.id,
+    {
+      toleranceMinutes: 15,
+      notes: 'Tolerancia ajustada',
+    },
+    'oidc-user-1',
+  );
+  const updatedDevice = await store.updatePointDevice(
+    tenant.id,
+    device.id,
+    {
+      status: 'maintenance',
+      supportsGeo: true,
+      notes: 'Dispositivo em manutencao',
+    },
+    'oidc-user-1',
+  );
+
   const holidays = await store.listPointHolidayCalendars(tenant.id);
   const tolerances = await store.listPointToleranceRules(tenant.id);
   const devices = await store.listPointDevices(tenant.id);
   const events = await store.listAuditEvents(tenant.id);
 
-  assert.equal(holiday.title, 'Feriado municipal');
-  assert.equal(tolerance.toleranceMinutes, 10);
-  assert.equal(device.deviceType, 'terminal');
+  assert.equal(updatedHoliday.title, 'Feriado municipal atualizado');
+  assert.equal(updatedHoliday.isNational, true);
+  assert.equal(updatedTolerance.toleranceMinutes, 15);
+  assert.equal(updatedDevice.status, 'maintenance');
+  assert.equal(updatedDevice.supportsGeo, true);
   assert.equal(holidays.length, 1);
   assert.equal(tolerances.length, 1);
   assert.equal(devices.length, 1);
-  assert.equal(events.at(-1)?.action, 'point.device.created');
+  assert.equal(events.at(-1)?.action, 'point.device.updated');
 
   await store.close();
 });

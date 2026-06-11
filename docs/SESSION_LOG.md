@@ -2556,3 +2556,17 @@
 **Riscos:** nenhuma nova expansao documental deve ser iniciada sem solicitacao explicita do usuario; a proxima interacao deve priorizar produto ou runtime.
 
 **Próxima ação:** nao propor mais expansao documental por padrao; seguir apenas quando houver demanda funcional ou de correcao pontual.
+
+## 2026-06-11 - CRUD minimo da governanca do ponto fechado
+
+**Objetivo:** completar a camada operavel de configuracao do ponto com atualizacao auditavel.
+
+**O que foi feito:** `apps/api/src/slice.controller.ts` e `apps/api/src/slice.store.ts` passaram a expor `PATCH` auditavel para `point-holidays`, `point-tolerance-rules` e `point-devices`; os testes de persistencia foram expandidos para cobrir criacao, atualizacao e auditoria desses cadastros.
+
+**Arquivos alterados:** `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `npm run typecheck -w @rh/api` e `npm run build -w @rh/api`.
+
+**Riscos:** validacao end-to-end continua bloqueada pelo engine Docker local indisponivel; a alteracao em si ficou compilavel e tipada.
+
+**Próxima ação:** se houver continuidade de runtime, validar essa camada em banco real; se nao, escolher outro gap de implementacao pequeno e objetivo.

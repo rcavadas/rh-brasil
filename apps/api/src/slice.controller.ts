@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post } from '@nestjs/common';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -242,6 +242,36 @@ class CreatePointHolidayCalendarDto {
   notes?: string;
 }
 
+class UpdatePointHolidayCalendarDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  locale?: string;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isNational?: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreatePointToleranceRuleDto {
   @IsOptional()
   @IsString()
@@ -271,6 +301,37 @@ class CreatePointToleranceRuleDto {
   notes?: string;
 }
 
+class UpdatePointToleranceRuleDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  profile?: string;
+
+  @IsOptional()
+  @IsString()
+  jornada?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  toleranceMinutes?: number;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreatePointDeviceDto {
   @IsOptional()
   @IsString()
@@ -283,6 +344,40 @@ class CreatePointDeviceDto {
   @IsString()
   @IsNotEmpty()
   deviceType!: string;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  supportsOffline?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  supportsBiometrics?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  supportsGeo?: boolean;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class UpdatePointDeviceDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  label?: string;
+
+  @IsOptional()
+  @IsString()
+  deviceType?: string;
 
   @IsOptional()
   @IsString()
@@ -2365,6 +2460,22 @@ export class SliceController {
     );
   }
 
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/point-holidays/:holidayCalendarId')
+  updatePointHolidayCalendar(
+    @Param('tenantId') tenantId: string,
+    @Param('holidayCalendarId') holidayCalendarId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdatePointHolidayCalendarDto,
+  ) {
+    return this.store.updatePointHolidayCalendar(
+      tenantId,
+      holidayCalendarId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
   @Roles('admin', 'rh', 'manager', 'auditor')
   @Get(':tenantId/point-tolerance-rules')
   listPointToleranceRules(@Param('tenantId') tenantId: string) {
@@ -2385,6 +2496,22 @@ export class SliceController {
     );
   }
 
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/point-tolerance-rules/:toleranceRuleId')
+  updatePointToleranceRule(
+    @Param('tenantId') tenantId: string,
+    @Param('toleranceRuleId') toleranceRuleId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdatePointToleranceRuleDto,
+  ) {
+    return this.store.updatePointToleranceRule(
+      tenantId,
+      toleranceRuleId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
   @Roles('admin', 'rh', 'manager', 'auditor')
   @Get(':tenantId/point-devices')
   listPointDevices(@Param('tenantId') tenantId: string) {
@@ -2399,6 +2526,22 @@ export class SliceController {
     @Body() body: CreatePointDeviceDto,
   ) {
     return this.store.createPointDevice(tenantId, body, auth?.source === 'oidc' ? auth.subject : undefined);
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/point-devices/:deviceId')
+  updatePointDevice(
+    @Param('tenantId') tenantId: string,
+    @Param('deviceId') deviceId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdatePointDeviceDto,
+  ) {
+    return this.store.updatePointDevice(
+      tenantId,
+      deviceId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
   }
 
   @Roles('admin', 'rh')

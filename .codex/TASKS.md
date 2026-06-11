@@ -88,6 +88,7 @@
 
 ## Concluídas
 
+- [x] Implementar a edição mínima da governança do ponto.
 - [x] Encerrar a frente documental do produto e parar de propor expansao documental por padrao.
 
 - [x] Corrigir definitivamente o Git do workspace.

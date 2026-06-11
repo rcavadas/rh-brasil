@@ -901,6 +901,7 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - O runbook rapido de homologacao esta em `docs/HOMOLOGATION_RUNBOOK.md`.
 - O contexto local de acesso foi guardado em `.codex/LOCAL_ACCESS_CONTEXT.md` e deve ser lido automaticamente no inicio de cada nova sessao.
 - O caso de uso UC-JOR-013 foi alinhado ao contrato real do backend para usar `point-holidays`, `point-tolerance-rules` e `point-devices` por tenant.
+- O backend agora tambem expõe atualizacao auditavel para `point-holidays`, `point-tolerance-rules` e `point-devices`, fechando o CRUD minimo da governanca do ponto.
 
 ## Ultima entrega complementar 3
 

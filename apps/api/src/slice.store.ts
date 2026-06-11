@@ -5295,6 +5295,94 @@ export class SliceStore implements OnModuleDestroy {
     return this.toPointHolidayCalendarRecord(created);
   }
 
+  async updatePointHolidayCalendar(
+    tenantId: string,
+    holidayCalendarId: string,
+    payload: {
+      companyId?: string;
+      locale?: string;
+      title?: string;
+      isNational?: boolean;
+      validFrom?: string;
+      validUntil?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<PointHolidayCalendarRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.pointHolidayCalendar.findFirst({
+      where: { id: holidayCalendarId, tenantId },
+    });
+    if (!current) {
+      throw new NotFoundException(`point holiday calendar ${holidayCalendarId} not found`);
+    }
+
+    if (payload.companyId !== undefined) {
+      await this.requireCompany(tenantId, payload.companyId);
+    }
+
+    const validFrom = payload.validFrom !== undefined ? new Date(payload.validFrom) : current.validFrom;
+    const validUntil =
+      payload.validUntil !== undefined ? new Date(payload.validUntil) : current.validUntil ?? undefined;
+    if (Number.isNaN(validFrom.getTime()) || (validUntil && Number.isNaN(validUntil.getTime()))) {
+      throw new ConflictException('invalid holiday calendar dates');
+    }
+
+    const now = new Date();
+    const rows = await this.prisma.$queryRaw<
+      Array<{
+        id: string;
+        tenantId: string;
+        companyId: string | null;
+        locale: string | null;
+        title: string;
+        isNational: boolean;
+        validFrom: Date;
+        validUntil: Date | null;
+        notes: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+      }>
+    >`
+      UPDATE "point_holiday_calendars"
+      SET
+        "companyId" = ${payload.companyId !== undefined ? payload.companyId : current.companyId},
+        "locale" = ${payload.locale !== undefined ? payload.locale : current.locale},
+        "title" = ${payload.title !== undefined ? payload.title : current.title},
+        "isNational" = ${payload.isNational !== undefined ? payload.isNational : current.isNational},
+        "validFrom" = ${validFrom},
+        "validUntil" = ${validUntil ?? null},
+        "notes" = ${payload.notes !== undefined ? payload.notes : current.notes},
+        "updatedAt" = ${now}
+      WHERE "id" = ${holidayCalendarId} AND "tenantId" = ${tenantId}
+      RETURNING *;
+    `;
+
+    const updated = rows[0];
+    if (!updated) {
+      throw new ConflictException('failed to update point holiday calendar');
+    }
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'point.holiday_calendar.updated',
+        'pointHolidayCalendar',
+        updated.id,
+        {
+          companyId: updated.companyId ?? undefined,
+          locale: updated.locale ?? undefined,
+          title: updated.title,
+          isNational: String(updated.isNational),
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toPointHolidayCalendarRecord(updated);
+  }
+
   async listPointHolidayCalendars(tenantId: string): Promise<PointHolidayCalendarRecord[]> {
     await this.requireTenant(tenantId);
     const rows = await this.prisma.$queryRaw<
@@ -5392,6 +5480,95 @@ export class SliceStore implements OnModuleDestroy {
     return this.toPointToleranceRuleRecord(created);
   }
 
+  async updatePointToleranceRule(
+    tenantId: string,
+    toleranceRuleId: string,
+    payload: {
+      companyId?: string;
+      profile?: string;
+      jornada?: string;
+      toleranceMinutes?: number;
+      validFrom?: string;
+      validUntil?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<PointToleranceRuleRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.pointToleranceRule.findFirst({
+      where: { id: toleranceRuleId, tenantId },
+    });
+    if (!current) {
+      throw new NotFoundException(`point tolerance rule ${toleranceRuleId} not found`);
+    }
+
+    if (payload.companyId !== undefined) {
+      await this.requireCompany(tenantId, payload.companyId);
+    }
+
+    const validFrom = payload.validFrom !== undefined ? new Date(payload.validFrom) : current.validFrom;
+    const validUntil =
+      payload.validUntil !== undefined ? new Date(payload.validUntil) : current.validUntil ?? undefined;
+    if (Number.isNaN(validFrom.getTime()) || (validUntil && Number.isNaN(validUntil.getTime()))) {
+      throw new ConflictException('invalid tolerance rule dates');
+    }
+
+    const toleranceMinutes = payload.toleranceMinutes !== undefined ? payload.toleranceMinutes : current.toleranceMinutes;
+    const now = new Date();
+    const rows = await this.prisma.$queryRaw<
+      Array<{
+        id: string;
+        tenantId: string;
+        companyId: string | null;
+        profile: string | null;
+        jornada: string | null;
+        toleranceMinutes: number;
+        validFrom: Date;
+        validUntil: Date | null;
+        notes: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+      }>
+    >`
+      UPDATE "point_tolerance_rules"
+      SET
+        "companyId" = ${payload.companyId !== undefined ? payload.companyId : current.companyId},
+        "profile" = ${payload.profile !== undefined ? payload.profile : current.profile},
+        "jornada" = ${payload.jornada !== undefined ? payload.jornada : current.jornada},
+        "toleranceMinutes" = ${toleranceMinutes},
+        "validFrom" = ${validFrom},
+        "validUntil" = ${validUntil ?? null},
+        "notes" = ${payload.notes !== undefined ? payload.notes : current.notes},
+        "updatedAt" = ${now}
+      WHERE "id" = ${toleranceRuleId} AND "tenantId" = ${tenantId}
+      RETURNING *;
+    `;
+
+    const updated = rows[0];
+    if (!updated) {
+      throw new ConflictException('failed to update point tolerance rule');
+    }
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'point.tolerance_rule.updated',
+        'pointToleranceRule',
+        updated.id,
+        {
+          companyId: updated.companyId ?? undefined,
+          profile: updated.profile ?? undefined,
+          jornada: updated.jornada ?? undefined,
+          toleranceMinutes: String(updated.toleranceMinutes),
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toPointToleranceRuleRecord(updated);
+  }
+
   async listPointToleranceRules(tenantId: string): Promise<PointToleranceRuleRecord[]> {
     await this.requireTenant(tenantId);
     const rows = await this.prisma.$queryRaw<
@@ -5483,6 +5660,90 @@ export class SliceStore implements OnModuleDestroy {
     });
 
     return this.toPointDeviceRecord(created);
+  }
+
+  async updatePointDevice(
+    tenantId: string,
+    deviceId: string,
+    payload: {
+      companyId?: string;
+      label?: string;
+      deviceType?: string;
+      status?: string;
+      supportsOffline?: boolean;
+      supportsBiometrics?: boolean;
+      supportsGeo?: boolean;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<PointDeviceRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.pointDevice.findFirst({
+      where: { id: deviceId, tenantId },
+    });
+    if (!current) {
+      throw new NotFoundException(`point device ${deviceId} not found`);
+    }
+
+    if (payload.companyId !== undefined) {
+      await this.requireCompany(tenantId, payload.companyId);
+    }
+
+    const now = new Date();
+    const rows = await this.prisma.$queryRaw<
+      Array<{
+        id: string;
+        tenantId: string;
+        companyId: string | null;
+        label: string;
+        deviceType: string;
+        status: string;
+        supportsOffline: boolean;
+        supportsBiometrics: boolean;
+        supportsGeo: boolean;
+        notes: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+      }>
+    >`
+      UPDATE "point_devices"
+      SET
+        "companyId" = ${payload.companyId !== undefined ? payload.companyId : current.companyId},
+        "label" = ${payload.label !== undefined ? payload.label : current.label},
+        "deviceType" = ${payload.deviceType !== undefined ? payload.deviceType : current.deviceType},
+        "status" = ${payload.status !== undefined ? payload.status : current.status},
+        "supportsOffline" = ${payload.supportsOffline !== undefined ? payload.supportsOffline : current.supportsOffline},
+        "supportsBiometrics" = ${payload.supportsBiometrics !== undefined ? payload.supportsBiometrics : current.supportsBiometrics},
+        "supportsGeo" = ${payload.supportsGeo !== undefined ? payload.supportsGeo : current.supportsGeo},
+        "notes" = ${payload.notes !== undefined ? payload.notes : current.notes},
+        "updatedAt" = ${now}
+      WHERE "id" = ${deviceId} AND "tenantId" = ${tenantId}
+      RETURNING *;
+    `;
+
+    const updated = rows[0];
+    if (!updated) {
+      throw new ConflictException('failed to update point device');
+    }
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'point.device.updated',
+        'pointDevice',
+        updated.id,
+        {
+          companyId: updated.companyId ?? undefined,
+          label: updated.label,
+          deviceType: updated.deviceType,
+          status: updated.status,
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toPointDeviceRecord(updated);
   }
 
   async listPointDevices(tenantId: string): Promise<PointDeviceRecord[]> {

@@ -36,10 +36,13 @@ O slice inicial ja expÃµe um contrato real em:
 - `GET /api/v1/tenants/:tenantId/point-marks/:pointMarkId/receipt`
 - `GET /api/v1/tenants/:tenantId/point-holidays`
 - `POST /api/v1/tenants/:tenantId/point-holidays`
+- `PATCH /api/v1/tenants/:tenantId/point-holidays/:holidayCalendarId`
 - `GET /api/v1/tenants/:tenantId/point-tolerance-rules`
 - `POST /api/v1/tenants/:tenantId/point-tolerance-rules`
+- `PATCH /api/v1/tenants/:tenantId/point-tolerance-rules/:toleranceRuleId`
 - `GET /api/v1/tenants/:tenantId/point-devices`
 - `POST /api/v1/tenants/:tenantId/point-devices`
+- `PATCH /api/v1/tenants/:tenantId/point-devices/:deviceId`
 - `POST /api/v1/tenants/:tenantId/sst/pgrs`
 - `GET /api/v1/tenants/:tenantId/sst/pgrs`
 - `POST /api/v1/tenants/:tenantId/sst/pcmsos`
