@@ -55,8 +55,10 @@ O slice inicial ja expÃµe um contrato real em:
 - `GET /api/v1/tenants/:tenantId/sst/epi-assignments`
 - `POST /api/v1/tenants/:tenantId/sst/environments`
 - `GET /api/v1/tenants/:tenantId/sst/environments`
+- `PATCH /api/v1/tenants/:tenantId/sst/environments/:environmentId`
 - `POST /api/v1/tenants/:tenantId/sst/environments/:environmentId/risks`
 - `GET /api/v1/tenants/:tenantId/sst/environments/:environmentId/risks`
+- `PATCH /api/v1/tenants/:tenantId/sst/environments/:environmentId/risks/:riskId`
 - `POST /api/v1/tenants/:tenantId/sst/exams`
 - `GET /api/v1/tenants/:tenantId/sst/exams`
 - `POST /api/v1/tenants/:tenantId/sst/exams/:examId/aso`

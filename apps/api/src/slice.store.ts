@@ -5844,6 +5844,75 @@ export class SliceStore implements OnModuleDestroy {
     return this.toOccupationalHealthEnvironmentRecord(created);
   }
 
+  async updateOccupationalHealthEnvironment(
+    tenantId: string,
+    environmentId: string,
+    payload: {
+      companyId?: string;
+      code?: string;
+      name?: string;
+      sector?: string;
+      active?: boolean;
+      validFrom?: string;
+      validUntil?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<OccupationalHealthEnvironmentRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.occupationalHealthEnvironment.findFirst({
+      where: { id: environmentId, tenantId },
+    });
+    if (!current) {
+      throw new NotFoundException(`occupational health environment ${environmentId} not found`);
+    }
+
+    if (payload.companyId !== undefined) {
+      await this.requireCompany(tenantId, payload.companyId);
+    }
+
+    const validFrom = payload.validFrom !== undefined ? new Date(payload.validFrom) : current.validFrom;
+    const validUntil =
+      payload.validUntil !== undefined ? new Date(payload.validUntil) : current.validUntil ?? undefined;
+    if (Number.isNaN(validFrom.getTime()) || (validUntil && Number.isNaN(validUntil.getTime()))) {
+      throw new ConflictException('invalid occupational health environment dates');
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.occupationalHealthEnvironment.update({
+      where: { id: current.id },
+      data: {
+        companyId: payload.companyId !== undefined ? payload.companyId : current.companyId,
+        code: payload.code !== undefined ? payload.code : current.code,
+        name: payload.name !== undefined ? payload.name : current.name,
+        sector: payload.sector !== undefined ? payload.sector : current.sector,
+        active: payload.active !== undefined ? payload.active : current.active,
+        validFrom,
+        validUntil: validUntil ?? null,
+        notes: payload.notes !== undefined ? payload.notes : current.notes,
+      },
+    });
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'occupational_health.environment.updated',
+        'occupationalHealthEnvironment',
+        updated.id,
+        {
+          companyId: updated.companyId ?? undefined,
+          code: updated.code,
+          name: updated.name,
+          active: String(updated.active),
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toOccupationalHealthEnvironmentRecord(updated);
+  }
+
   async listOccupationalHealthEnvironments(tenantId: string): Promise<OccupationalHealthEnvironmentRecord[]> {
     await this.requireTenant(tenantId);
     const environments = await this.prisma.occupationalHealthEnvironment.findMany({
@@ -5933,6 +6002,92 @@ export class SliceStore implements OnModuleDestroy {
     });
 
     return this.toOccupationalHealthRiskRecord(created);
+  }
+
+  async updateOccupationalHealthRisk(
+    tenantId: string,
+    environmentId: string,
+    riskId: string,
+    payload: {
+      code?: string;
+      name?: string;
+      severity?: string;
+      probability?: string;
+      controlMeasure?: string;
+      active?: boolean;
+      validFrom?: string;
+      validUntil?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<OccupationalHealthRiskRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.occupationalHealthRisk.findFirst({
+      where: { id: riskId, tenantId, environmentId },
+    });
+    if (!current) {
+      throw new NotFoundException(`occupational health risk ${riskId} not found`);
+    }
+
+    const validFrom = payload.validFrom !== undefined ? new Date(payload.validFrom) : current.validFrom;
+    const validUntil =
+      payload.validUntil !== undefined ? new Date(payload.validUntil) : current.validUntil ?? undefined;
+    if (Number.isNaN(validFrom.getTime()) || (validUntil && Number.isNaN(validUntil.getTime()))) {
+      throw new ConflictException('invalid occupational health risk dates');
+    }
+
+    const nextCode = payload.code !== undefined ? payload.code : current.code;
+    if (nextCode !== current.code) {
+      const existing = await this.prisma.occupationalHealthRisk.findUnique({
+        where: {
+          tenantId_environmentId_code: {
+            tenantId,
+            environmentId,
+            code: nextCode,
+          },
+        },
+      });
+      if (existing && existing.id !== current.id) {
+        throw new ConflictException(`occupational health risk code ${nextCode} already exists in environment ${environmentId}`);
+      }
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.occupationalHealthRisk.update({
+      where: { id: current.id },
+      data: {
+        environmentId,
+        code: nextCode,
+        name: payload.name !== undefined ? payload.name : current.name,
+        severity: payload.severity !== undefined ? payload.severity : current.severity,
+        probability: payload.probability !== undefined ? payload.probability : current.probability,
+        controlMeasure: payload.controlMeasure !== undefined ? payload.controlMeasure : current.controlMeasure,
+        active: payload.active !== undefined ? payload.active : current.active,
+        validFrom,
+        validUntil: validUntil ?? null,
+        notes: payload.notes !== undefined ? payload.notes : current.notes,
+      },
+    });
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'occupational_health.risk.updated',
+        'occupationalHealthRisk',
+        updated.id,
+        {
+          environmentId,
+          code: updated.code,
+          name: updated.name,
+          severity: updated.severity,
+          probability: updated.probability,
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toOccupationalHealthRiskRecord(updated);
   }
 
   async listOccupationalHealthRisks(

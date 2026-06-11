@@ -825,6 +825,40 @@ class CreateOccupationalHealthEnvironmentDto {
   notes?: string;
 }
 
+class UpdateOccupationalHealthEnvironmentDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  sector?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  active?: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreateOccupationalHealthRiskDto {
   @IsString()
   @IsNotEmpty()
@@ -852,6 +886,44 @@ class CreateOccupationalHealthRiskDto {
 
   @IsISO8601()
   validFrom!: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class UpdateOccupationalHealthRiskDto {
+  @IsOptional()
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  severity?: string;
+
+  @IsOptional()
+  @IsString()
+  probability?: string;
+
+  @IsOptional()
+  @IsString()
+  controlMeasure?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  active?: boolean;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
 
   @IsOptional()
   @IsISO8601()
@@ -1208,6 +1280,22 @@ export class SliceController {
   }
 
   @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/environments/:environmentId')
+  updateOccupationalHealthEnvironment(
+    @Param('tenantId') tenantId: string,
+    @Param('environmentId') environmentId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthEnvironmentDto,
+  ) {
+    return this.store.updateOccupationalHealthEnvironment(
+      tenantId,
+      environmentId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
   @Post(':tenantId/sst/environments/:environmentId/risks')
   createOccupationalHealthRisk(
     @Param('tenantId') tenantId: string,
@@ -1227,6 +1315,24 @@ export class SliceController {
   @Get(':tenantId/sst/environments/:environmentId/risks')
   listOccupationalHealthRisks(@Param('tenantId') tenantId: string, @Param('environmentId') environmentId: string) {
     return this.store.listOccupationalHealthRisks(tenantId, environmentId);
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/environments/:environmentId/risks/:riskId')
+  updateOccupationalHealthRisk(
+    @Param('tenantId') tenantId: string,
+    @Param('environmentId') environmentId: string,
+    @Param('riskId') riskId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthRiskDto,
+  ) {
+    return this.store.updateOccupationalHealthRisk(
+      tenantId,
+      environmentId,
+      riskId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
   }
 
   @Roles('admin', 'rh')

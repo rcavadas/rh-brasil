@@ -85,6 +85,7 @@
 - [x] Criar mapa de endpoints publicados de homologacao em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
 - [x] Criar smokes por servico para homologacao em `docs/HOMOLOGATION_SMOKES.md`.
 - [x] Criar runbook rapido de homologacao em `docs/HOMOLOGATION_RUNBOOK.md`.
+- [x] Implementar a edição mínima de ambientes e riscos ocupacionais do SST.
 
 ## Concluídas
 

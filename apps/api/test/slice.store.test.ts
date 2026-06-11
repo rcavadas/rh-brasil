@@ -1153,6 +1153,78 @@ test('slice relacional persists point governance configuration', async () => {
   await store.close();
 });
 
+test('slice relacional updates occupational health environment and risk', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa SST', 'empresa-sst');
+  const company = await store.createCompany(tenant.id, 'Empresa SST LTDA', 'SST', '66554433000122');
+
+  const environment = await store.createOccupationalHealthEnvironment(
+    tenant.id,
+    {
+      companyId: company.id,
+      code: 'ENV-01',
+      name: 'Ambiente industrial',
+      sector: 'produção',
+      active: true,
+      validFrom: '2026-01-01T00:00:00.000Z',
+      notes: 'Ambiente inicial',
+    },
+    'oidc-user-1',
+  );
+  const risk = await store.createOccupationalHealthRisk(
+    tenant.id,
+    environment.id,
+    {
+      code: 'R-01',
+      name: 'Ruído',
+      severity: 'medium',
+      probability: 'medium',
+      controlMeasure: 'Protetor auricular',
+      validFrom: '2026-01-01T00:00:00.000Z',
+      notes: 'Risco inicial',
+    },
+    'oidc-user-1',
+  );
+
+  const updatedEnvironment = await store.updateOccupationalHealthEnvironment(
+    tenant.id,
+    environment.id,
+    {
+      name: 'Ambiente industrial atualizado',
+      active: false,
+      notes: 'Ambiente revisado',
+    },
+    'oidc-user-1',
+  );
+  const updatedRisk = await store.updateOccupationalHealthRisk(
+    tenant.id,
+    environment.id,
+    risk.id,
+    {
+      severity: 'high',
+      probability: 'low',
+      controlMeasure: 'Barreira acústica',
+      notes: 'Risco revisado',
+    },
+    'oidc-user-1',
+  );
+
+  const environments = await store.listOccupationalHealthEnvironments(tenant.id);
+  const risks = await store.listOccupationalHealthRisks(tenant.id, environment.id);
+  const events = await store.listAuditEvents(tenant.id);
+
+  assert.equal(updatedEnvironment.name, 'Ambiente industrial atualizado');
+  assert.equal(updatedEnvironment.active, false);
+  assert.equal(updatedRisk.severity, 'high');
+  assert.equal(updatedRisk.probability, 'low');
+  assert.equal(environments.length, 1);
+  assert.equal(risks.length, 1);
+  assert.equal(events.at(-1)?.action, 'occupational_health.risk.updated');
+
+  await store.close();
+});
+
 test('slice relacional calculates and approves night shift allowance', async () => {
   const store = new SliceStore();
 
