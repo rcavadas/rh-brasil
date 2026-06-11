@@ -197,7 +197,7 @@ Foram criados READMEs de pacote para UC-ADM, UC-FOL, UC-BEN, UC-FER, UC-DEC, UC-
 
 - Data: 2026-06-11
 - O que foi feito: `UC-COL-002 - Consultar Dados Cadastrais` foi detalhado com fluxo de leitura, mascaramento de dados sensiveis, auditoria e tratamento de tenant revogado.
-- Estado atual: a proxima analise do pacote ficou em `UC-COL-003 - Solicitar Atualizacao Cadastral`.
+- Estado atual: o pacote `UC-COL` foi fechado com `UC-COL-003` a `UC-COL-010`, cobrindo autosservico, consulta, solicitacoes e assinatura eletronica.
 
 ## Ultima expansao transversal
 

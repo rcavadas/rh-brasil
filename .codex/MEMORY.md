@@ -232,6 +232,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - O Git do workspace foi corrigido definitivamente: a `.git` foi recriada com ownership do usuario atual via arquivos criados pelo workspace, e `git status` voltou a funcionar sem `safe.directory`.
 - A revisao do commit inicial apontou apenas higiene de repositório; foi adicionada `.gitattributes` com normalizacao LF e a analise funcional seguinte iniciou em `UC-COL-001 - Acessar Portal do Colaborador`.
 - `UC-COL-002 - Consultar Dados Cadastrais` foi detalhado como consulta somente leitura com mascaramento de dados sensiveis, historico resumido e auditoria; o proximo passo e `UC-COL-003 - Solicitar Atualizacao Cadastral`.
+- O pacote `UC-COL` foi fechado com `UC-COL-003` a `UC-COL-010`, cobrindo atualizacao cadastral, holerite, informe de rendimentos, ferias, banco de horas, beneficios, solicitacoes ao RH e assinatura eletronica.
 - O reporte operacional da plataforma e o check de alertas passaram sem alertas, e `npm run backup:platform` gerou snapshot completo com `postgres.sql`, `bff-sessions.json`, `manifest.json` e `minio-data`.
 - `npm run check:platform-alerts` e `npm run report:platform` passaram a incluir o discovery do Keycloak e o readiness do MinIO na telemetria local.
 - O placeholder residual `UC-XXX-000` foi removido do `docs/Catálogo Mestre de Casos de Uso.md`, fechando a seção obsoleta de "Próxima Fase".

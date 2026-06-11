@@ -68,7 +68,14 @@
 - [x] Integrar o dossie documental da admissao com assinatura auditavel.
 - [x] Revalidar a suite da API com Docker Desktop/Linux Engine ativo e Postgres/Redis locais disponiveis.
 - [x] Detalhar UC-COL-002 - Consultar Dados Cadastrais.
-- [ ] Detalhar UC-COL-003 - Solicitar Atualizacao Cadastral.
+- [x] Detalhar UC-COL-003 - Solicitar Atualizacao Cadastral.
+- [x] Detalhar UC-COL-004 - Consultar Holerite.
+- [x] Detalhar UC-COL-005 - Consultar Informe de Rendimentos.
+- [x] Detalhar UC-COL-006 - Solicitar Ferias.
+- [x] Detalhar UC-COL-007 - Consultar Banco de Horas.
+- [x] Detalhar UC-COL-008 - Consultar Beneficios.
+- [x] Detalhar UC-COL-009 - Abrir Solicitacao ao RH.
+- [x] Detalhar UC-COL-010 - Assinar Documento Eletronico.
 
 ## Concluídas
 

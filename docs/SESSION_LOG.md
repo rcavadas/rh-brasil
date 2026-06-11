@@ -2333,3 +2333,16 @@
 **Riscos:** o pacote `UC-COL` ainda precisa dos demais casos detalhados, mas a base funcional de entrada e contexto do colaborador já ficou formalizada.
 
 **Próxima ação:** detalhar `UC-COL-002 - Consultar Dados Cadastrais`.
+## 2026-06-11 - Fechamento do pacote UC-COL
+
+**Objetivo:** detalhar o pacote do portal do colaborador ate completar a etapa.
+
+**O que foi feito:** criados `UC-COL-003` a `UC-COL-010`, cobrindo atualizacao cadastral, holerite, informe de rendimentos, ferias, banco de horas, beneficios, solicitacoes ao RH e assinatura eletronica; o backlog, a memoria e o handoff foram sincronizados.
+
+**Arquivos alterados:** `docs/UC-COL-003-solicitar-atualizacao-cadastral.md`, `docs/UC-COL-004-consultar-holerite.md`, `docs/UC-COL-005-consultar-informe-de-rendimentos.md`, `docs/UC-COL-006-solicitar-ferias.md`, `docs/UC-COL-007-consultar-banco-de-horas.md`, `docs/UC-COL-008-consultar-beneficios.md`, `docs/UC-COL-009-abrir-solicitacao-ao-rh.md`, `docs/UC-COL-010-assinar-documento-eletronico.md`, `.codex/TASKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** conferência do pacote `UC-COL` no README e alinhamento com os blocos ja existentes de portal, folha, ferias, beneficios, workflow, GED e auditoria.
+
+**Riscos:** os novos casos ainda sao especificacao documental; a implementacao de runtime correspondente segue para uma etapa posterior.
+
+**Próxima ação:** abrir o proximo pacote prioritario de portal ou workflow quando a continuidade exigir.
