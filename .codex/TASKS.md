@@ -67,6 +67,8 @@
 - [x] Implementar proposta e conversao para pre-admissao do ATS.
 - [x] Integrar o dossie documental da admissao com assinatura auditavel.
 - [x] Revalidar a suite da API com Docker Desktop/Linux Engine ativo e Postgres/Redis locais disponiveis.
+- [x] Detalhar UC-COL-002 - Consultar Dados Cadastrais.
+- [ ] Detalhar UC-COL-003 - Solicitar Atualizacao Cadastral.
 
 ## Concluídas
 

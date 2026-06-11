@@ -193,6 +193,12 @@ Foram criados READMEs de pacote para UC-ADM, UC-FOL, UC-BEN, UC-FER, UC-DEC, UC-
 - O que foi feito: a revisao do commit inicial encontrou apenas um ponto de higiene de repositorio, corrigido com `.gitattributes` para LF; a nova frente funcional iniciada foi `UC-COL-001 - Acessar Portal do Colaborador`.
 - Estado atual: o backlog de analise passou a ter `UC-COL-002 - Consultar Dados Cadastrais` como proximo caso concreto.
 
+## Atualizacao UC-COL
+
+- Data: 2026-06-11
+- O que foi feito: `UC-COL-002 - Consultar Dados Cadastrais` foi detalhado com fluxo de leitura, mascaramento de dados sensiveis, auditoria e tratamento de tenant revogado.
+- Estado atual: a proxima analise do pacote ficou em `UC-COL-003 - Solicitar Atualizacao Cadastral`.
+
 ## Ultima expansao transversal
 
 - Data: 2026-06-04

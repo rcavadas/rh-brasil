@@ -72,6 +72,7 @@
 - A documentacao esta organizada, mas ainda depende de alinhamento com a implementacao futura.
 - O bloqueio de ownership da `.git` foi resolvido com recriacao manual dos metadados Git; o workspace voltou a aceitar `git status` sem `safe.directory`.
 - A ausencia de normalizacao de fim de linha no snapshot inicial foi corrigida com `.gitattributes`, reduzindo churn de CRLF/LF nas proxima alterações.
+- O pacote `UC-COL` agora inicia a detalhamento dos fluxos do portal do colaborador; os proximos casos devem manter o padrao de leitura/solicitacao sem expor dados sensiveis indevidos.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.
