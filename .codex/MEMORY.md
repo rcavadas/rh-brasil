@@ -47,7 +47,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - UC-ADM-010 foi alinhado ao catálogo mestre como desligamento administrativo.
 - UC-JOR-011 e UC-JOR-012 foram formalizados para fechamento e reabertura de período.
 - UC-JOR-008 passou a incluir adicional noturno como extensão formal do cálculo.
-- UC-JOR-013 foi detalhado para configurar calendários de feriados e exceções por vigência.
+- UC-JOR-013 foi detalhado para configurar calendários de feriados e exceções por vigência e agora está alinhado ao runtime atual, usando `point-holidays`, `point-tolerance-rules` e `point-devices` por tenant.
 - UC-JOR-014 foi detalhado para configurar regras de tolerância de ponto por vigência.
 - UC-JOR-015 foi detalhado para registrar e gerenciar dispositivos de ponto.
 - UC-JOR-016 foi detalhado para emitir comprovante de marcação.

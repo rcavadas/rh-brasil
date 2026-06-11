@@ -162,23 +162,33 @@ status
 
 ---
 
-# APIs Sugeridas
+# APIs atuais no runtime
 
 ```http
-POST /api/v1/holiday-calendars
+GET /api/v1/tenants/{tenantId}/point-holidays
 ```
 
 ```http
-GET /api/v1/holiday-calendars/{id}
+POST /api/v1/tenants/{tenantId}/point-holidays
 ```
 
 ```http
-PUT /api/v1/holiday-calendars/{id}
+GET /api/v1/tenants/{tenantId}/point-tolerance-rules
 ```
 
 ```http
-POST /api/v1/holiday-calendars/{id}/publish
+POST /api/v1/tenants/{tenantId}/point-tolerance-rules
 ```
+
+```http
+GET /api/v1/tenants/{tenantId}/point-devices
+```
+
+```http
+POST /api/v1/tenants/{tenantId}/point-devices
+```
+
+Observacao: o contrato de runtime atual cobre criacao e listagem por tenant. Operacoes de alteracao, exclusao ou publicacao continuam como evolucao futura do dominio.
 
 ---
 

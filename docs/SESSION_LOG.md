@@ -2528,3 +2528,17 @@
 **Riscos:** os valores reais de hostname e publicacao continuam dependentes da stack efetivamente publicada no Portainer; o mapa serve para evitar confusao entre endpoint interno e publicado.
 
 **Próxima ação:** usar o mapa de endpoints ao publicar ou revalidar a stack de homologacao.
+
+## 2026-06-11 - UC-JOR-013 alinhado ao contrato real do backend
+
+**Objetivo:** remover divergencia entre a especificacao de feriados do ponto e as rotas realmente expostas pela API.
+
+**O que foi feito:** `docs/UC-JOR-013-configurar-calendario-de-feriados-e-excecoes.md` deixou de sugerir rotas genericas e passou a documentar `GET`/`POST` em `point-holidays`, `point-tolerance-rules` e `point-devices` sob `tenantId`, com nota clara de que o runtime atual cobre criacao e listagem por tenant.
+
+**Arquivos alterados:** `docs/UC-JOR-013-configurar-calendario-de-feriados-e-excecoes.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** cruzamento do documento de UC-JOR-013 com o contrato real exposto em `apps/api/src/slice.controller.ts` e `docs/BACKEND.md`.
+
+**Riscos:** alteracao apenas documental; a validacao executavel da nova camada de ponto continua bloqueada pela indisponibilidade do Docker local.
+
+**Próxima ação:** seguir atacando gaps de documentação/contrato onde houver desalinhamento com o backend real.
