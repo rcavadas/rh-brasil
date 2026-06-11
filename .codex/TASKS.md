@@ -1,0 +1,198 @@
+﻿# Tarefas do Codex
+
+## Agora
+
+- [x] Executar auditoria inicial do projeto.
+- [x] Mapear arquitetura e stack.
+- [x] Mapear módulos de RH.
+- [x] Identificar comandos de validação.
+- [x] Atualizar documentação base.
+- [x] Documentar a stack executavel e a arquitetura alvo.
+- [x] Documentar o vertical slice inicial do primeiro release.
+
+## Próximas
+
+- [x] Revisar autenticacao e autorizacao.
+- [x] Revisar modelo de dados de pessoas e vinculos.
+- [x] Revisar permissões por perfil.
+- [x] Revisar fluxos de admissao/desligamento.
+- [x] Revisar riscos de LGPD e auditoria.
+- [x] Revisar UX dos fluxos principais.
+- [x] Validar a stack em uma base executavel real.
+- [x] Encerrar a sequencia catalogada do produto.
+- [x] Decompor o vertical slice em tarefas de implementacao.
+- [x] Decompor admissao e desligamento em backlog implementavel.
+- [x] Implementar a etapa 1 da admissao.
+- [x] Implementar o checklist documental minimo da admissao.
+- [x] Implementar a formalizacao contratual separada.
+- [x] Implementar a integracao eSocial da admissao.
+- [x] Implementar o desligamento administrativo.
+- [x] Implementar o offboarding e o eSocial de desligamento.
+- [x] Implementar a rescisao minima.
+- [x] Persistir o slice inicial em banco relacional real no codigo.
+- [x] Validar o slice inicial em um Postgres ativo.
+- [x] Revisar blocos resumidos de UC-BI, UC-SEC, UC-API e UC-PLT.
+- [x] Estruturar o monorepo inicial e os arquivos basicos de infraestrutura.
+- [x] Implementar infraestrutura minima do ambiente local.
+- [x] Definir politica para usuarios com multiplos tenants.
+- [x] Revisar UX de selecao de tenant ativo no frontend.
+- [x] Integrar login OIDC real no portal web.
+- [x] Endurecer renovacao de sessao no portal web.
+- [x] Reduzir persistencia de tokens no navegador.
+- [x] Migrar o portal web para BFF local.
+- [x] Persistir a sessao do BFF em Redis com TTL e restart validado.
+- [x] Implementar o endurecimento da politica do Redis do ambiente local e o check automatizado.
+- [x] Implementar backup, restore e observabilidade da plataforma.
+- [x] Implementar isolamento multi-tenant verificavel na plataforma.
+- [x] Implementar CI/CD e promocao entre ambientes.
+- [x] Implementar logs, telemetria e alertas da plataforma.
+- [x] Implementar portais e workflow da Onda 4.
+- [x] Implementar BI, LGPD e auditoria ampliada da Onda 5.
+- [x] Expor o roadmap da Onda 6 para dominios complementares no portal.
+- [x] Implementar beneficios completos da Onda 6.
+- [x] Implementar travas de janela concessiva e conflito de datas para ferias.
+- [x] Implementar aviso formal e pagamento de ferias.
+- [x] Implementar fracionamento e abono pecuniario de ferias.
+- [x] Implementar apuracao minima de 13o salario.
+- [x] Implementar ferias completas da Onda 6.
+- [x] Implementar 13o completo da Onda 6.
+- [x] Implementar a primeira base executavel de SST.
+- [x] Implementar exames ocupacionais e ASO.
+- [x] Implementar PGR e PCMSO de SST.
+- [x] Implementar CAT e EPI de SST.
+- [x] Implementar eSocial SST de SST.
+- [x] Implementar treinamentos de SST.
+- [x] Implementar a base executavel de ATS.
+- [x] Implementar entrevistas e avaliacao do ATS.
+- [x] Implementar proposta e conversao para pre-admissao do ATS.
+- [x] Integrar o dossie documental da admissao com assinatura auditavel.
+- [x] Revalidar a suite da API com Docker Desktop/Linux Engine ativo e Postgres/Redis locais disponiveis.
+
+## Concluídas
+
+- [x] Corrigir definitivamente o Git do workspace.
+- [x] Inicializar o repositório Git local e normalizar o `.gitignore`.
+- [x] Detalhar UC-FOL-002 - Configurar Incidencias da Rubrica.
+- [x] Detalhar UC-FOL-003 - Processar Folha Mensal.
+- [x] Detalhar UC-FOL-004 - Processar Folha Complementar.
+- [x] Detalhar UC-FOL-005 - Processar Adiantamento Salarial.
+- [x] Detalhar UC-FOL-006 - Calcular INSS.
+- [x] Detalhar UC-FOL-007 - Calcular FGTS.
+- [x] Detalhar UC-FOL-008 - Calcular IRRF.
+- [x] Detalhar UC-FOL-009 - Gerar Holerite.
+- [x] Detalhar UC-FOL-010 - Fechar Folha de Pagamento.
+- [x] Detalhar UC-BI-001 - Consultar dashboard executivo.
+- [x] Detalhar UC-BI-002 - Consultar headcount.
+- [x] Detalhar UC-BI-003 - Consultar turnover.
+- [x] Detalhar UC-BI-004 - Consultar absenteismo.
+- [x] Detalhar UC-BI-005 - Consultar custos de pessoal.
+- [x] Detalhar UC-BI-006 - Consultar indicadores de recrutamento.
+- [x] Detalhar UC-BI-007 - Consultar indicadores de treinamento.
+- [x] Detalhar UC-BI-008 - Consultar indicadores de desempenho.
+- [x] Detalhar UC-BI-009 - Consultar indicadores de SST.
+- [x] Detalhar UC-BI-010 - Exportar indicadores.
+- [x] Detalhar UC-SEC-001 - Gerenciar perfis de acesso.
+- [x] Detalhar UC-SEC-002 - Gerenciar permissoes.
+- [x] Detalhar UC-SEC-003 - Configurar MFA.
+- [x] Detalhar UC-SEC-004 - Configurar SSO.
+- [x] Detalhar UC-SEC-005 - Registrar consentimento.
+- [x] Detalhar UC-SEC-006 - Atender solicitacao do titular.
+- [x] Detalhar UC-SEC-007 - Anonimizar dados.
+- [x] Detalhar UC-SEC-008 - Aplicar politica de retencao.
+- [x] Detalhar UC-SEC-009 - Registrar incidente de seguranca.
+- [x] Detalhar UC-SEC-010 - Auditar acessos e operacoes.
+- [x] Detalhar UC-API-001 - Cadastrar integração.
+- [x] Detalhar UC-API-002 - Configurar API REST.
+- [x] Detalhar UC-API-003 - Configurar webhook.
+- [x] Detalhar UC-API-004 - Publicar evento.
+- [x] Detalhar UC-API-005 - Consumir evento.
+- [x] Detalhar UC-API-006 - Integrar com ERP.
+- [x] Detalhar UC-API-007 - Integrar com banco.
+- [x] Detalhar UC-API-008 - Integrar com operadora de beneficios.
+- [x] Detalhar UC-API-009 - Integrar com provedor de identidade.
+- [x] Detalhar UC-API-010 - Monitorar integracoes.
+- [x] Detalhar UC-PLT-001 - Cadastrar tenant.
+- [x] Detalhar UC-PLT-002 - Cadastrar empresa.
+- [x] Detalhar UC-PLT-003 - Cadastrar filial.
+- [x] Detalhar UC-PLT-004 - Configurar isolamento de dados.
+- [x] Detalhar UC-PLT-005 - Configurar parametrizacoes por tenant.
+- [x] Detalhar UC-PLT-006 - Monitorar disponibilidade.
+- [x] Detalhar UC-PLT-007 - Executar backup.
+- [x] Detalhar UC-PLT-008 - Executar restauracao.
+- [x] Detalhar UC-PLT-009 - Monitorar performance.
+- [x] Detalhar UC-PLT-010 - Auditar governanca da plataforma.
+- [x] Corrigir a sobreposicao entre UC-ADM-001 e UC-ADM-005.
+- [x] Alinhar UC-ADM-010 ao catálogo mestre.
+- [x] Formalizar UC-JOR-011 - Fechar Periodo de Ponto.
+- [x] Formalizar UC-JOR-012 - Reabrir Periodo de Ponto.
+- [x] Tratar adicional noturno como extensao formal de UC-JOR-008.
+- [x] Detalhar UC-JOR-013 - Configurar Calendario de Feriados e Excecoes.
+- [x] Detalhar UC-JOR-014 - Configurar Regras de Tolerancia de Ponto.
+- [x] Detalhar UC-JOR-015 - Registrar e Gerenciar Dispositivos de Ponto.
+- [x] Detalhar UC-JOR-016 - Emitir Comprovante de Marcação.
+- [x] Detalhar UC-JOR-017 - Calcular Adicional Noturno.
+- [x] Detalhar UC-JOR-018 - Aplicar Regras de DSR e Descanso Semanal.
+- [x] Detalhar UC-JOR-019 - Consolidar Eventos de Ponto para Folha.
+- [x] Detalhar UC-JOR-020 - Exportar Espelho e Trilhas de Auditoria.
+- [x] Implementar o slice inicial da API em `api/v1` com validacao e auditoria relacional.
+- [x] Validar build do monorepo apos o slice inicial.
+- [x] Validar em runtime o fluxo de criacao de tenant e consulta de auditoria.
+- [x] Validar o slice inicial com Postgres ativo.
+- [x] Automatizar o slice relacional com testes de integracao.
+- [x] Implementar autenticacao/autorizacao minima no `@rh/api`.
+- [x] Integrar Keycloak/OIDC real.
+- [x] Provisionar realm e client do Keycloak no compose.
+- [x] Validar token emitido pelo Keycloak no compose contra a API.
+- [x] Validar o fluxo relacional completo do slice com token do Keycloak.
+- [x] Endurecer o claim de tenant no realm do Keycloak.
+
+
+
+- [x] Normalizar a documentacao de infraestrutura para backup/restore da store do BFF.
+- [x] Confirmar que os scripts `backup:bff-sessions` e `restore:bff-sessions` continuam alinhados ao Redis.
+- [x] Documentar a politica minima operacional do Redis para a store do BFF.
+- [x] Automatizar a verificacao de backup/restore da store do BFF.
+- [x] Fechar o endurecimento local da store do BFF com backup automatizado, verify automatizado e retention cleanup.
+- [x] Fechar o recorte do MVP e a ordem do primeiro release.
+- [x] Implementar os calculos rescisorios e os documentos finais de desligamento.
+- [x] Refinar as regras legais finais, assinaturas e prazos da rescisao completa.
+- [x] Validar a politica final de assinatura por tipo de documento rescisorio.
+- [x] Implementar UC-JOR-019 - Consolidar Eventos de Ponto para Folha.
+- [x] Implementar integracao com folha para eventos consolidados de ponto.
+- [x] Implementar integracao com ERP.
+- [x] Implementar integracao com banco.
+- [x] Implementar integracao com operadora de beneficios.
+- [x] Implementar integracao com provedor de identidade.
+- [x] Implementar monitoramento de integracoes.
+- [ ] Iniciar a analise dos casos de uso por modulo a partir do `docs/Catálogo Mestre de Casos de Uso.md`.
+- [x] Iniciar a analise do pacote `UC-ADM` como primeira decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-JOR` como segunda decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-FOL` como terceira decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-FER` como quarta decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-RES` como quinta decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-BEN` como sexta decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-SST` como setima decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-ESO` como oitava decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-SEC` como nona decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-API` como decima decomposicao da fase de casos de uso.
+- [x] Iniciar a analise do pacote `UC-PLT` como decima primeira decomposicao da fase de casos de uso.
+- [x] Alinhar o primeiro caso de uso detalhado (`UC-ADM-001`) ao estado real do runtime.
+- [x] Alinhar o segundo caso de uso detalhado (`UC-ADM-005`) ao estado real do runtime.
+- [x] Sequenciar os casos de manutencao cadastral `UC-ADM-002`, `UC-ADM-003` e `UC-ADM-004`.
+- [x] Sequenciar as movimentacoes e o desligamento do ADM `UC-ADM-006` a `UC-ADM-010`.
+- [x] Sequenciar a base configuracional do JOR `UC-JOR-001`, `UC-JOR-002`, `UC-JOR-013`, `UC-JOR-014` e `UC-JOR-015`.
+- [x] Sequenciar a trilha operacional do JOR `UC-JOR-003`, `UC-JOR-004`, `UC-JOR-005`, `UC-JOR-006` e `UC-JOR-007`.
+- [x] Sequenciar a camada de calculo e consolidacao do JOR `UC-JOR-008`, `UC-JOR-009`, `UC-JOR-017`, `UC-JOR-018` e `UC-JOR-019`.
+- [x] Sequenciar a camada final do JOR `UC-JOR-010`, `UC-JOR-011`, `UC-JOR-012`, `UC-JOR-016` e `UC-JOR-020`.
+- [x] Criar o arquivo ausente `UC-FOL-001-cadastrar-rubrica.md` e sincronizar o indice do pacote FOL.
+- [x] Sequenciar a camada central do FOL `UC-FOL-002`, `UC-FOL-003`, `UC-FOL-004` e `UC-FOL-005`.
+- [x] Sequenciar a camada de encargos e fechamento do FOL `UC-FOL-006`, `UC-FOL-007`, `UC-FOL-008`, `UC-FOL-009` e `UC-FOL-010`.
+- [x] Criar o scaffold completo do pacote `UC-FER` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-RES` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-BEN` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-SEC` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-API` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-PLT` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-SST` com 10 arquivos individuais.
+- [x] Criar o scaffold completo do pacote `UC-ESO` com 10 arquivos individuais.
+- [x] Alinhar os primeiros casos do pacote `UC-ESO` ao runtime real.

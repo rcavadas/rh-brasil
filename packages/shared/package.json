@@ -1,0 +1,15 @@
+{
+  "name": "@rh/shared",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.js"
+  },
+  "scripts": {
+    "build": "node --check index.js",
+    "test": "node --test index.test.mjs",
+    "lint": "node --check index.js",
+    "typecheck": "node --check index.js"
+  }
+}

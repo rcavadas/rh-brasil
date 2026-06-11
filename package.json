@@ -1,0 +1,41 @@
+{
+  "name": "rh-brasil",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web,worker -c blue,green,magenta \"npm run dev -w @rh/api\" \"npm run dev -w @rh/web\" \"npm run dev -w @rh/worker\"",
+    "dev:api": "npm run dev -w @rh/api",
+    "dev:web": "npm run dev -w @rh/web",
+    "dev:worker": "npm run dev -w @rh/worker",
+    "backup:bff-sessions": "node scripts/bff-session-backup.mjs",
+    "restore:bff-sessions": "node scripts/bff-session-restore.mjs",
+    "verify:bff-sessions": "node scripts/bff-session-verify.mjs",
+    "maintenance:bff-sessions": "node scripts/bff-session-maintenance.mjs",
+    "maintenance:bff-sessions:once": "node scripts/bff-session-maintenance.mjs --once",
+    "check:redis-platform": "node scripts/redis-platform-check.mjs",
+    "backup:platform": "node scripts/platform-backup.mjs",
+    "restore:platform": "node scripts/platform-restore.mjs",
+    "report:platform": "node scripts/platform-observability-report.mjs",
+    "check:platform-alerts": "node scripts/platform-alerts-check.mjs",
+    "test:platform": "node --test scripts/platform-health.test.mjs scripts/platform-backup-format.test.mjs scripts/platform-restore-format.test.mjs scripts/redis-platform-policy.test.mjs scripts/bff-maintenance-policy.test.mjs",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.16",
+    "@types/react-dom": "^19.2.3",
+    "concurrently": "^10.0.3",
+    "tsx": "^4.22.4",
+    "typescript": "^5.8.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

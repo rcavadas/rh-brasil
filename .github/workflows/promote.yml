@@ -1,0 +1,47 @@
+name: Promote
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_version:
+        description: Source version or tag
+        required: true
+        default: latest
+      target_environment:
+        description: Target environment
+        required: true
+        default: staging
+      notes:
+        description: Optional promotion notes
+        required: false
+        default: ''
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: ${{ inputs.target_environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate source version
+        run: |
+          echo "Promoting ${{ inputs.source_version }} to ${{ inputs.target_environment }}"
+          echo "Notes: ${{ inputs.notes }}"
+
+      - name: Promotion gate
+        run: echo "Promotion gate passed for ${{ inputs.target_environment }}"

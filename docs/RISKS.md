@@ -1,0 +1,80 @@
+﻿# Riscos e pontos de atencao
+## Criticos
+- O repositorio agora possui base executavel e schema Prisma, com validacao relacional em runtime ja executada no Postgres local.
+- Regras legais e de dominio podem estar apenas especificadas, nao implementadas.
+- Dados sensiveis e historico imutavel exigem controles que ainda nao foram verificados com banco persistido.
+- A autenticacao atual e local por headers e ainda nao substitui um IdP real.
+## Altos
+- Escopo amplo de RH ainda exige separar claramente o MVP do backlog pos-MVP para evitar divergencia entre prioridade e documentacao.
+- No MVP, `Employee` e a projecao operacional de `VinculoTrabalhista`; qualquer futura separacao fisica do vinculo precisa preservar compatibilidade de dados e migracao.
+- Integracoes de folha e SSO ainda nao estao especificadas em nivel de contrato tecnico.
+- A etapa 1 da admissao agora existe no runtime, incluindo checklist documental minimo, formalizacao contratual separada, dossie documental de onboarding e assinatura auditavel, e a trilha minima de eSocial tambem ja foi implementada, mas ainda nao cobre o contrato governamental final.
+- O pacote UC-JOR ainda precisa de validacao operacional e juridica sobre fechamento, reabertura e regras complementares de apuracao antes de ser considerado pronto para implementacao final.
+- O desligamento administrativo minimo ja esta implementado no runtime, assim como o offboarding minimo e o eSocial de desligamento minimo; os fluxos completos ainda precisam de validacao operacional.
+- O fluxo minimo de rescisao ja existe no runtime, mas ainda nao cobre o contrato governamental final, validacoes legais finas ou a ultima camada de automacao de documentos.
+- O prazo de pagamento da rescisao agora e calculado automaticamente a partir da data de desligamento informada, mas a politica final para prorrogacao em dias nao uteis e eventuais excecoes operacionais ainda deve ser validada.
+- A assinatura dos documentos rescisorios agora e rastreada no backend, mas a politica final por tipo documental e por nivel de assinatura ainda precisa de validacao juridico-operacional.
+- O calendario de feriados e excecoes do UC-JOR depende de fonte oficial, vigencia e controle de alteracoes por localidade, exigindo validacao juridica e operacional antes de congelar o comportamento final.
+- As regras de tolerancia de ponto dependem de politica interna, acordo coletivo e precedencia por abrangencia, exigindo validacao operacional e juridica antes de congelar o comportamento final.
+- O pacote de ponto ja possui persistencia minima para calendarios de feriados, regras de tolerancia e dispositivos, mas ainda nao foi validado em runtime com a nova migracao aplicada.
+- A suite de integracao da API continua dependente de um Postgres local ativo; neste ambiente o Docker Desktop Service nao esta acessivel, entao a validacao da nova camada de ponto ainda nao pode ser concluida em runtime.
+- Dispositivos de ponto podem envolver biometria, geolocalizacao e captura offline, exigindo controles de privacidade, seguranca e rastreabilidade antes de uso operacional amplo.
+- Comprovantes de marcacao podem conter dados pessoais e evidencia operacional, exigindo controle de acesso, trilha de auditoria e politica de retencao.
+- O adicional noturno depende de janela parametrizada, fator redutor e politica corporativa ou coletiva, exigindo validacao juridica e operacional antes de congelar o comportamento final; o runtime atual usa baseline UTC 22:00-05:00 como referencia tecnica, mas a politica final de fuso e parametrizacao coletiva ainda deve ser validada.
+- DSR e descanso semanal dependem de regra por empresa, escala e politica coletiva, exigindo validacao juridica e operacional antes de congelar o comportamento final; o runtime atual usa domingos e feriados como baseline tecnica para memoria de calculo, mas a regra coletiva final ainda precisa ser validada.
+- A consolidacao de eventos de ponto para folha depende de mapeamento confiavel de rubricas e competencias, exigindo validacao contabil e operacional antes de congelar o comportamento final; o runtime atual consolida apenas eventos aprovados de adicional noturno e DSR como primeira camada auditavel.
+- O envio para folha ainda usa recibo sintetico e rubricas tecnicas de primeira camada; o mapeamento financeiro completo depende da parametrizacao do pacote UC-FOL.
+- A sincronizacao minima com ERP tambem usa recibo sintetico e nao substitui contrato tecnico, idempotencia real nem conciliacao financeira.
+- A sincronizacao minima com banco tambem usa recibo sintetico e nao substitui contrato tecnico, arquivos de remessa/retorno nem conciliacao financeira real.
+- As integracoes minimas de beneficios e identidade ainda usam uma camada genérica de requests persistidos; contratos externos reais, campos obrigatorios e conciliacao operacional continuam dependentes de validacao especializada.
+- O dominio de beneficios ja tem uma primeira camada funcional, mas elegibilidade, descontos, cobertura e integrações com operadoras continuam pendentes.
+- O dominio de ferias ja tem uma primeira camada funcional, com fracionamento e abono pecuniario, e agora tambem integra folha e eSocial; o risco restante e somente validacao operacional/juridica residual.
+- O dominio de ferias agora tambem bloqueia solicitacoes fora da janela concessiva e conflitos de datas e registra aviso/pagamento/envio para folha/eSocial.
+- O dominio de 13o salario agora cobre medias variaveis, encargos e ponte para folha; os refinamentos futuros serao de governanca e integracao, nao de base funcional.
+- O dominio de SST ja possui a fundação de ambientes, riscos, PGR, PCMSO, CAT, EPI, exames, ASO, treinamentos obrigatorios e transmissoes eSocial SST para CAT, exames e ambientes; os refinamentos restantes sao operacionais e juridico-compliance, nao de base funcional.
+- O dominio de ATS ja possui uma base executavel minima com requisicao de vaga, aprovacao, publicacao, candidatos e movimentacao de pipeline; entrevistas, avaliacao, proposta e conversao para pre-admissao continuam como proximas fatias.
+- O dominio de ATS agora tambem cobre entrevistas e avaliacao inicial de candidatos; proposta e conversao para pre-admissao continuam como proximas fatias.
+- O dominio de ATS agora tambem cobre proposta e conversao para pre-admissao; o proximo refinamento natural e evoluir o onboarding para provisionamento e assinatura mais amplos, se o produto exigir.
+- O monitoramento minimo de integracoes hoje e derivado de requests e auditoria, nao de telemetria completa do barramento/fila.
+- A retentativa e a DLQ minimas sao operacoes de estado no agregado persistido e nao substituem ainda uma fila especializada com politica de backoff, limite por canal e isolamento de erros transientes.
+- A politica do Redis do ambiente local agora e valida por script, e a plataforma local tambem possui backup, restore, telemetria operacional e check automatizado de alertas; o ambiente alvo compartilhado ainda precisa de contrato final de operacao, retenção e telemetria completa.
+- A exportacao de espelho e trilhas pode expor dados pessoais e sensiveis, exigindo mascaramento, controle de finalidade e politicas de retencao.
+- O runtime ja registra auditoria relacional e as trilhas foram reduzidas em pontos sensiveis, e a politica base de retencao e exportacao ja esta definida em nivel de classe, com formatos e mascaramento de exportacao fechados; eventuais excecoes legais continuam sujeitas a politica versionada por classe.
+- Adicional noturno, DSR e outras regras de apuracao precisam de validacao especializada antes de congelar o comportamento final.
+- O adiantamento salarial depende de politica interna, eventual acordo coletivo e definicao clara de competencia de deducao antes de ser considerado fechado para implementacao.
+- O calculo de INSS depende de tabelas e regras previdenciarias vigentes, o que exige validacao legal e atualizacao versionada por competencia.
+- O calculo de FGTS depende de regras fundiarias e integracao com FGTS Digital, o que exige conferencia legal e operacional por competencia.
+- O calculo de IRRF depende de tabela vigente, deducoes legais e validacao tributaria por competencia, o que exige conferencia especializada antes de congelar o comportamento final.
+- O holerite contem dados remuneratorios e tributarios sensiveis e deve manter controle de acesso, trilha de auditoria e regras de retencao.
+- Indicadores de BI devem ser agregados e filtrados corretamente para evitar exposicao indevida de dados pessoais ou sensiveis.
+- Integracoes com ERP, banco, identidade e operadoras exigem contratos tecnicos, retentativas e monitoramento para evitar inconsistencias operacionais.
+- A plataforma SaaS exige isolamento de tenants, backup, restauracao e monitoramento para impedir vazamento ou indisponibilidade transversal.
+- O portal ja expõe um workspace operacional de portais e workflow, mas o motor de aprovacoes ainda e uma leitura consolidada de estado e nao um orquestrador transacional completo.
+- O painel de BI/LGPD/auditoria do portal e um snapshot agregado e auditavel, mas ainda nao substitui analitica historica, filtros complexos ou exportacoes parametrizadas por finalidade.
+- A timeline da Onda 6 e apenas um roadmap visual; os dominios complementares ainda nao tem motor funcional implementado e continuam dependentes de modelagem e contratos dedicados.
+- Os blocos UC-BI, UC-SEC, UC-API e UC-PLT foram expandidos, mas ainda podem exigir validacao operacional e juridica fina antes de congelar comportamento final.
+## Medios
+- Ainda nao existe validacao de carga, concorrencia e isolamento multi-tenant real em runtime, embora o BFF agora revogue tenant ativo que deixou de estar autorizado.
+- A estrategia minima de observabilidade e backup/restore da plataforma local agora existe, com telemetria operacional e check de alertas, mas ainda nao cobre telemetria completa do ambiente alvo.
+- O primeiro contrato de tenant funciona no codigo e no banco local, mas ainda precisa de endurecimento antes de uso multiusuario amplo.
+- O acesso multi-tenant por usuario ja tem lista e grant no banco; o portal agora valida tenant ativo contra a lista corrente, mas a UX de selecao e o contexto persistido ainda podem ser endurecidos.
+- A selecao de tenant ativo agora passa pelo BFF e a sessao ja persiste no Redis com timeout por inatividade, validada em restart do container; o risco restante e a estrategia para escala horizontal, backup, observabilidade e retencao do Redis compartilhado.
+- O BFF ja trata refresh expirado como sessao invalidada, reduzindo 500, mas ainda depende de um Redis disponivel para manter o portal autenticado.
+- O snapshot `npm run backup:bff-sessions` cobre apenas a store do BFF; a operacao do Redis compartilhado ainda precisa de politica de backup, restauração e retenção para o ambiente alvo.
+- O snapshot GET /api/session-store melhora o diagnostico, mas nao substitui backup/restore/monitoramento do Redis compartilhado.
+- A trilha minima de desligamento administrativo bloqueia novos apontamentos ao efetivar o desligamento, e o offboarding/eSocial de desligamento minimo ja existe, mas ainda nao cobre os calculos e documentos finais de desligamento.
+- A trilha minima de rescisao agora existe com memoria de calculo e documentos, mas ainda nao cobre a regra legal completa, prazos, assinaturas e transmissao governamental final.
+- O endurecimento local agora inclui backup agendado, verify agendado e retenção automatizada; o que continua aberto e apenas a politica do Redis do ambiente alvo.
+- O endurecimento local da store do BFF pode ser considerado fechado; a pendencia remanescente e somente a politica do Redis do ambiente alvo.
+- O comando `npm run verify:bff-sessions` valida o round-trip da store do BFF, mas nao substitui a politica operacional completa do Redis compartilhado no ambiente alvo.
+- A politica operacional do Redis compartilhado ainda precisa ser formalizada para ambiente alvo; a documentacao atual registra apenas a recomendacao minima para Redis local e a store do BFF.
+## Baixos
+- A documentacao esta organizada, mas ainda depende de alinhamento com a implementacao futura.
+- O bloqueio de ownership da `.git` foi resolvido com recriacao manual dos metadados Git; o workspace voltou a aceitar `git status` sem `safe.directory`.
+## Atualizacao tecnica
+- A stack recomendada ja foi validada em build e runtime no monorepo local.
+- O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.
+- O portal web agora opera como BFF local, reduzindo a exposicao de tokens, mas introduz dependencia de cookie HttpOnly, timeout de inatividade e armazenamento de sessao persistido em Redis com volume dedicado.
+- Observabilidade, backup, restore e telemetria operacional agora existem no runtime local do compose; o que ainda nao existe e a politica completa do ambiente alvo.
+- A trilha minima de eSocial da admissao existe no runtime, mas o contrato governamental final, a conciliacao e a politica de reprocessamento ainda precisam de validacao operacional.
+- O reprocessamento explicito de eSocial para admissao e desligamento ja existe, mas a politica final de retentativas, DLQ e conciliacao com o governo ainda precisa de validacao operacional.

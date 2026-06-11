@@ -1,0 +1,12 @@
+node_modules/
+.data/
+backups/
+dist/
+build/
+coverage/
+.cache/
+.turbo/
+*.log
+*.tsbuildinfo
+.env
+.env.*
