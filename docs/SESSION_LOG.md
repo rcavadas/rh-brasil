@@ -2416,3 +2416,17 @@
 **Riscos:** a validacao real do projeto continua dependente de publicar ou localizar a stack do RH nesse host compartilhado antes do smoke final.
 
 **Próxima ação:** localizar a stack do RH no host compartilhado ou provisiona-la antes de repetir os testes de runtime.
+
+## 2026-06-11 - Persistencia do contexto local de acesso
+
+**Objetivo:** evitar que novas sessoes voltem a usar o Docker Desktop local errado para validacao.
+
+**O que foi feito:** o contexto local de acesso ao host compartilhado foi salvo em `.codex/LOCAL_ACCESS_CONTEXT.md` e o prompt de inicio de sessao foi atualizado para carregá-lo automaticamente.
+
+**Arquivos alterados:** `.codex/LOCAL_ACCESS_CONTEXT.md`, `.codex/SESSION_START_PROMPT.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** verificacao manual de leitura automatica planejada via prompt de inicio, com foco em `172.17.0.3` e Portainer em `9443`.
+
+**Riscos:** o arquivo contem credenciais e precisa permanecer fora do Git; a leitura automatica no inicio da sessao e obrigatoria para evitar confusao de alvo.
+
+**Próxima ação:** iniciar a proxima sessao lendo `.codex/LOCAL_ACCESS_CONTEXT.md` antes de qualquer validacao de runtime.

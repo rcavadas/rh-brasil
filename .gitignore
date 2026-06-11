@@ -10,3 +10,4 @@ coverage/
 *.tsbuildinfo
 .env
 .env.*
+.codex/LOCAL_ACCESS_CONTEXT.md

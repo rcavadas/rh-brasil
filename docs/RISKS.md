@@ -79,6 +79,7 @@
 - A stack do sistema deve ser validada contra o host Docker compartilhado `172.17.0.3`; usar o Docker Desktop local do Windows como referencia pode produzir falso negativo.
 - O host `172.17.0.3` foi identificado, mas a credencial SSH disponível nesta sessão nao conseguiu autenticar; a validacao executavel depende do contexto de acesso correto ao host compartilhado.
 - O host compartilhado ja esta acessivel via SSH, porem a stack do RH nao foi encontrada nele nesta rodada; a validacao real depende de localizar ou publicar essa stack antes do smoke final.
+- O contexto local de acesso ao host compartilhado foi persistido em `.codex/LOCAL_ACCESS_CONTEXT.md`; se esse arquivo nao for lido no inicio da sessao, ha risco de voltar a validar o Docker errado.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.
