@@ -76,6 +76,15 @@
 - [x] Detalhar UC-COL-008 - Consultar Beneficios.
 - [x] Detalhar UC-COL-009 - Abrir Solicitacao ao RH.
 - [x] Detalhar UC-COL-010 - Assinar Documento Eletronico.
+- [x] Separar formalmente desenvolvimento local e homologacao via Portainer.
+- [x] Separar os templates de variaveis por ambiente e adicionar comandos de compose local.
+- [x] Remover `infra/.env.example` como referencia operacional principal no mapa do projeto.
+- [x] Criar stack base de homologacao em `infra/docker-compose.homologation.yml`.
+- [x] Criar checklist operacional de homologacao em `docs/HOMOLOGATION_CHECKLIST.md`.
+- [x] Criar guia de publicacao de homologacao em `docs/HOMOLOGATION_PUBLICATION.md`.
+- [x] Criar mapa de endpoints publicados de homologacao em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
+- [x] Criar smokes por servico para homologacao em `docs/HOMOLOGATION_SMOKES.md`.
+- [x] Criar runbook rapido de homologacao em `docs/HOMOLOGATION_RUNBOOK.md`.
 
 ## Concluídas
 

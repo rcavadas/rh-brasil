@@ -4,6 +4,15 @@
 
 - `.codex/`: memoria, tarefas, perguntas abertas e handoff.
 - `docs/`: especificacao de produto, dominio, arquitetura, riscos, testes e casos de uso.
+- `docs/ENVIRONMENTS.md`: separacao formal entre desenvolvimento local e homologacao no Portainer.
+- `docs/HOMOLOGATION_CHECKLIST.md`: checklist operacional de publicacao e smoke no Portainer.
+- `docs/HOMOLOGATION_PUBLICATION.md`: guia prático de publicacao da stack de homologacao.
+- `docs/HOMOLOGATION_ENDPOINT_MAP.md`: mapa de endpoints publicados para homologacao.
+- `docs/HOMOLOGATION_SMOKES.md`: smokes por servico para homologacao.
+- `docs/HOMOLOGATION_RUNBOOK.md`: runbook rapido para incidente ou validacao curta.
+- `infra/.env.development.example` e `infra/.env.homologation.example`: templates de variaveis separados por ambiente.
+- `infra/docker-compose.homologation.yml`: stack base para homologacao no Portainer.
+- `package.json`: comandos `compose:dev`, `compose:dev:down` e `compose:dev:ps` para o ambiente local.
 - `docs/CONTINUIDADE-UC-JOR-E-UC-FOL.md`: revisao critica do UC-JOR e inicio do UC-FOL.
 - `docs/MATRIZ-TECNICA-ESBOCO.md`: matriz tecnica para evolucao do esboço e definicao de prioridades.
 - `docs/TOPICO-01-FUNDACAO-DA-PLATAFORMA.md`: fundacao tecnica da plataforma.
@@ -200,4 +209,4 @@
   - `apps/worker`;
   - `packages/shared`;
   - `infra/docker-compose.yml`;
-  - `infra/.env.example`.
+- `infra/.env.development.example` e `infra/.env.homologation.example` como templates de ambiente separados; `infra/.env.example` fica apenas como legado de compatibilidade.

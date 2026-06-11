@@ -4,17 +4,17 @@ services:
       context: ..
       dockerfile: apps/api/Dockerfile
     env_file:
-      - .env.development.example
+      - .env.homologation.example
     environment:
       DATABASE_URL: postgresql://rh:rh@postgres:5432/rh
       REDIS_URL: redis://redis:6379
       KEYCLOAK_URL: http://keycloak:8080
       AUTH_MODE: mixed
       ESOCIAL_QUEUE_ENABLED: "true"
-      OIDC_ISSUER_URL: http://host.docker.internal:8080/realms/rh
-      OIDC_JWKS_URL: http://host.docker.internal:8080/realms/rh/protocol/openid-connect/certs
+      OIDC_ISSUER_URL: https://<homolog-host>:8080/realms/rh
+      OIDC_JWKS_URL: https://<homolog-host>:8080/realms/rh/protocol/openid-connect/certs
       OIDC_AUDIENCE: ""
-      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+      CORS_ORIGINS: https://<homolog-host>:5173
     depends_on:
       - postgres
       - redis
@@ -33,13 +33,13 @@ services:
       context: ..
       dockerfile: apps/web/Dockerfile
     env_file:
-      - .env.development.example
+      - .env.homologation.example
     environment:
       PORT: 5173
-      WEB_PUBLIC_ORIGIN: http://localhost:5173
+      WEB_PUBLIC_ORIGIN: https://<homolog-host>:5173
       API_INTERNAL_URL: http://api:3000
       WEB_REDIS_URL: redis://redis:6379
-      KEYCLOAK_BROWSER_URL: http://localhost:8080
+      KEYCLOAK_BROWSER_URL: https://<homolog-host>:8080
       KEYCLOAK_INTERNAL_URL: http://keycloak:8080
       KEYCLOAK_REALM: rh
       KEYCLOAK_CLIENT_ID: rh-web
@@ -60,32 +60,12 @@ services:
       timeout: 5s
       retries: 5
 
-  bff-maintenance:
-    build:
-      context: ..
-      dockerfile: apps/web/Dockerfile
-    env_file:
-      - .env.development.example
-    environment:
-      REDIS_URL: redis://redis:6379
-      BFF_SESSION_BACKUP_INTERVAL_SECONDS: 86400
-      BFF_SESSION_VERIFY_INTERVAL_SECONDS: 604800
-      BFF_SESSION_MAINTENANCE_TICK_SECONDS: 300
-      BFF_SESSION_BACKUP_RETENTION_COUNT: 7
-      BFF_SESSION_MAINTENANCE_STATE_PATH: /app/backups/bff-session-maintenance-state.json
-    command: ["npm", "run", "maintenance:bff-sessions"]
-    depends_on:
-      - redis
-    volumes:
-      - bff_backup_data:/app/backups
-    restart: unless-stopped
-
   worker:
     build:
       context: ..
       dockerfile: apps/worker/Dockerfile
     env_file:
-      - .env.development.example
+      - .env.homologation.example
     environment:
       DATABASE_URL: postgresql://rh:rh@postgres:5432/rh
       REDIS_URL: redis://redis:6379
@@ -134,7 +114,7 @@ services:
       KC_DB_URL_DATABASE: rh
       KC_DB_USERNAME: rh
       KC_DB_PASSWORD: rh
-      KC_HOSTNAME: http://localhost:8080
+      KC_HOSTNAME: https://<homolog-host>:8080
       KC_HOSTNAME_STRICT: "false"
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
@@ -162,4 +142,3 @@ volumes:
   minio_data:
   redis_data:
   web_session_data:
-  bff_backup_data:

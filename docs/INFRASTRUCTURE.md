@@ -2,10 +2,11 @@
 
 ## Ambientes
 
-- Local de desenvolvimento: Docker Compose com api, web, worker, postgres, redis, keycloak e minio.
-- O host Docker efetivo usado para essa stack neste ambiente e `172.17.0.3`; nao tratar o Docker Desktop local do Windows como origem autoritativa da validacao.
-- O host compartilhado possui Portainer ativo e varios outros compose projects, mas a stack do RH nao foi encontrada nele nesta rodada.
-- Homologação: prevista, ainda sem manifests locais identificados.
+- Veja também: [docs/ENVIRONMENTS.md](/F:/projetos/RH/docs/ENVIRONMENTS.md).
+- Desenvolvimento: Docker local com `docker compose` no workspace, usando api, web, worker, postgres, redis, keycloak e minio.
+- Homologação: stack compartilhada gerenciada no Portainer do host `172.17.0.3`.
+- O Docker Desktop local do Windows nao e a origem autoritativa para smokes da stack.
+- O ambiente compartilhado deve ser tratado como alvo de validacao runtime, nao de desenvolvimento diario.
 - Produção: prevista, ainda sem pipeline e manifests publicados no repositório.
 
 ## Docker/containers
@@ -19,8 +20,15 @@
 
 ## Variáveis de ambiente
 
-- Documentadas em `infra/.env.example`.
+- Documentadas em `infra/.env.development.example` e `infra/.env.homologation.example`.
+- A base atual `infra/.env.example` permanece como compatibilidade para o compose local, mas o contrato oficial agora separa desenvolvimento e homologação.
 - Incluem `AUTH_MODE`, parâmetros OIDC, `CORS_ORIGINS`, URLs internas/externas do BFF, Redis e credenciais locais de infraestrutura.
+- O stack de homologação usa `infra/docker-compose.homologation.yml` como base de referência para o Portainer.
+- O checklist operacional de homologação esta em `docs/HOMOLOGATION_CHECKLIST.md`.
+- O mapa de endpoints publicados esta em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
+- Os smokes por serviço estão em `docs/HOMOLOGATION_SMOKES.md`.
+- O guia de publicacao de homologacao esta em `docs/HOMOLOGATION_PUBLICATION.md`.
+- O runbook rapido de homologacao esta em `docs/HOMOLOGATION_RUNBOOK.md`.
 
 ## Secrets
 
@@ -79,8 +87,9 @@
 
 ## Atualização técnica
 
-- Ambiente local recomendado: Docker Compose com api, web, worker, banco, redis, storage e auth.
-- Ambientes previstos: local, homologação e produção.
+- Ambiente de desenvolvimento: Docker Compose local com api, web, worker, banco, redis, storage e auth.
+- Ambiente de homologação: Portainer no host compartilhado `172.17.0.3`.
+- Ambientes previstos: desenvolvimento, homologação e produção.
 - Secrets devem permanecer fora do repositório.
 - Deploy proposto: GitHub Actions com etapa de CI em `pull_request`/`push` e fluxo manual de promocao entre ambientes via `workflow_dispatch`.
 - O repositório agora contém os workflows `.github/workflows/ci.yml` e `.github/workflows/promote.yml`.
@@ -94,7 +103,7 @@
 
 - `Dockerfile` para `api`, `web` e `worker`.
 - `docker-compose.yml` com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak` e `minio`.
-- arquivo `.env.example` com variáveis sem segredos, incluindo `AUTH_MODE`, `CORS_ORIGINS` e parâmetros OIDC.
+- arquivo `.env.development.example` com variáveis sem segredos, incluindo `AUTH_MODE`, `CORS_ORIGINS` e parâmetros OIDC.
 - import local de realm em `infra/keycloak/rh-realm.json`.
 - healthchecks para os serviços principais.
 - banco Postgres para o slice inicial via Prisma.
@@ -114,6 +123,20 @@
 - estratégia mínima de backup local.
 - observabilidade básica para API e worker.
 - separação entre configuração local, homologação e produção.
+
+### Homologação
+
+- stack publicada no Portainer.
+- variáveis e segredos do ambiente compartilhado fora do repositório.
+- arquivo `.env.homologation.example` como referência de valores do ambiente compartilhado.
+- arquivo `infra/docker-compose.homologation.yml` como stack base de homologação.
+- checklist de smoke e criterio de aceite em [docs/HOMOLOGATION_CHECKLIST.md](/F:/projetos/RH/docs/HOMOLOGATION_CHECKLIST.md).
+- mapa de endpoints publicados em [docs/HOMOLOGATION_ENDPOINT_MAP.md](/F:/projetos/RH/docs/HOMOLOGATION_ENDPOINT_MAP.md).
+- smokes por serviço em [docs/HOMOLOGATION_SMOKES.md](/F:/projetos/RH/docs/HOMOLOGATION_SMOKES.md).
+- guia de publicacao em [docs/HOMOLOGATION_PUBLICATION.md](/F:/projetos/RH/docs/HOMOLOGATION_PUBLICATION.md).
+- runbook rapido em [docs/HOMOLOGATION_RUNBOOK.md](/F:/projetos/RH/docs/HOMOLOGATION_RUNBOOK.md).
+- procedimento de smoke documentado para o host `172.17.0.3`.
+- processo de atualização sem uso do Docker Desktop local do Windows.
 
 ### Status atual
 

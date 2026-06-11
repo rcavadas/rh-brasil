@@ -16,6 +16,90 @@
 
 **Próxima ação:**
 
+### 2026-06-11 - Runbook rapido de homologacao
+
+**Objetivo:** criar uma referencia curta para validacao rapida e tratamento de incidente em homologacao.
+
+**O que foi feito:** criado `docs/HOMOLOGATION_RUNBOOK.md` com sequencia curta, diagnostico rapido e decisao de retorno ao checklist, guia ou smokes conforme o tipo de falha; os documentos de ambientes, infraestrutura, memoria, handoff, mapa do projeto, tarefas e perguntas abertas foram sincronizados.
+
+**Arquivos alterados:** `docs/HOMOLOGATION_RUNBOOK.md`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/PROJECT_MAP.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão textual do runbook e conferência de referencias cruzadas com checklist, publicação e smokes.
+
+**Riscos:** a efetividade do runbook depende da stack real estar publicada no Portainer com endpoints coerentes com o template.
+
+**Próxima ação:** usar o runbook como primeiro ponto de entrada quando houver incidente ou validação rápida de homologacao.
+
+### 2026-06-11 - Checklist de homologacao
+
+**Objetivo:** documentar a ordem de publicacao e o smoke minimo da homologacao no Portainer.
+
+**O que foi feito:** criado `docs/HOMOLOGATION_CHECKLIST.md` com pre-requisitos, ordem de subida, configuracao, smoke minimo e criterios de aceite/falha para a stack compartilhada; os documentos de ambientes, infraestrutura, memoria, handoff, mapa do projeto, tarefas e perguntas abertas foram sincronizados.
+
+**Arquivos alterados:** `docs/HOMOLOGATION_CHECKLIST.md`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/PROJECT_MAP.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão textual do checklist e conferência da nova trilha de publicacao.
+
+**Riscos:** os endpoints publicados e o host final ainda dependem da stack real no Portainer, mas a ordem e o smoke agora estao definidos.
+
+**Próxima ação:** usar o checklist como roteiro de publicacao quando a stack de homologacao for ativada.
+
+### 2026-06-11 - Stack base de homologacao
+
+**Objetivo:** criar um manifesto base especifico para homologacao no Portainer.
+
+**O que foi feito:** criado `infra/docker-compose.homologation.yml` para servir de base ao stack de homologacao no host `172.17.0.3`; os documentos de ambientes, infraestrutura, testes, memoria, handoff, tarefas, perguntas abertas e mapa do projeto foram sincronizados com esse contrato.
+
+**Arquivos alterados:** `infra/docker-compose.homologation.yml`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/PROJECT_MAP.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão textual do manifesto e conferência de referencias ao novo stack base.
+
+**Riscos:** os endpoints publicados no host compartilhado ainda dependem da publicacao real da stack no Portainer.
+
+**Próxima ação:** usar o manifesto de desenvolvimento para iteracao local e o manifesto de homologacao para publicacao no Portainer quando a stack for provisionada.
+
+### 2026-06-11 - Guia de publicacao de homologacao
+
+**Objetivo:** documentar o fluxo prático de publicacao da stack de homologacao.
+
+**O que foi feito:** criado `docs/HOMOLOGATION_PUBLICATION.md` com o passo a passo para publicar a stack no Portainer, ajustar os endpoints publicados e executar o smoke minimo usando o checklist de homologacao.
+
+**Arquivos alterados:** `docs/HOMOLOGATION_PUBLICATION.md`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/PROJECT_MAP.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão textual do guia e conferência de referencias cruzadas com o checklist.
+
+**Riscos:** a publicacao real ainda depende do Portainer e dos endpoints efetivamente expostos no host compartilhado.
+
+**Próxima ação:** usar o guia e o checklist como base quando a stack for publicada de fato.
+
+### 2026-06-11 - Smokes por servico de homologacao
+
+**Objetivo:** detalhar os testes de homologacao por servico.
+
+**O que foi feito:** criado `docs/HOMOLOGATION_SMOKES.md` com smokes separados para Postgres, Redis, Keycloak, MinIO, API, portal e fluxo OIDC; os documentos de ambientes, infraestrutura, memoria, handoff, mapa do projeto, tarefas e perguntas abertas foram sincronizados com essa trilha.
+
+**Arquivos alterados:** `docs/HOMOLOGATION_SMOKES.md`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/PROJECT_MAP.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão textual dos comandos e dos criterios de aceite por servico.
+
+**Riscos:** os comandos dependem dos endpoints publicados no Portainer e precisam ser parametrizados com os hosts reais antes do uso.
+
+**Próxima ação:** usar o roteiro de smokes quando a stack de homologacao estiver publicada.
+
+### 2026-06-11 - Separacao de desenvolvimento e homologacao
+
+**Objetivo:** separar formalmente o ambiente de desenvolvimento do ambiente de homologacao.
+
+**O que foi feito:** criado `docs/ENVIRONMENTS.md` para explicitar que desenvolvimento usa o Docker local com `docker compose` e homologacao usa o Portainer no host compartilhado `172.17.0.3`; a infraestrutura, a estrategia de testes, a memoria, o handoff, as tarefas, as perguntas abertas e os riscos foram sincronizados com esse contrato.
+
+**Arquivos alterados:** `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `docs/TESTING.md`, `docs/ARCHITECTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão textual da separação de ambientes e do novo documento de referência.
+
+**Riscos:** homologacao continua dependente do stack efetivamente publicado no Portainer, mas o contrato operacional agora fica claro e separado do desenvolvimento local.
+
+**Próxima ação:** usar o compose local para desenvolvimento e o Portainer apenas quando a validacao de homologacao for necessária.
+
 ### 2026-06-05 - Roadmap de dominios complementares da Onda 6
 
 **Objetivo:** expor a sequencia da Onda 6 no portal sem inventar ainda o motor funcional dos dominios complementares.
@@ -2430,3 +2514,17 @@
 **Riscos:** o arquivo contem credenciais e precisa permanecer fora do Git; a leitura automatica no inicio da sessao e obrigatoria para evitar confusao de alvo.
 
 **Próxima ação:** iniciar a proxima sessao lendo `.codex/LOCAL_ACCESS_CONTEXT.md` antes de qualquer validacao de runtime.
+
+## 2026-06-11 - Mapa de endpoints de homologacao consolidado
+
+**Objetivo:** fechar a fase de separacao de ambientes com um mapa explicito dos endpoints publicados da homologacao.
+
+**O que foi feito:** criado `docs/HOMOLOGATION_ENDPOINT_MAP.md` para mapear `WEB_PUBLIC_ORIGIN`, `KEYCLOAK_BROWSER_URL`, `KC_HOSTNAME`, `OIDC_ISSUER_URL`, `OIDC_JWKS_URL`, `CORS_ORIGINS`, `API_PUBLIC_URL`, `MINIO_PUBLIC_URL` e `MINIO_CONSOLE_URL`; os documentos de publicacao, checklist, infraestrutura, ambientes, memoria, handoff, tarefas, mapa do projeto e perguntas abertas foram sincronizados.
+
+**Arquivos alterados:** `docs/HOMOLOGATION_ENDPOINT_MAP.md`, `docs/HOMOLOGATION_PUBLICATION.md`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/PROJECT_MAP.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisao documental do mapa de endpoints e conferência de consistencia entre host compartilhado, Portainer e variaveis publicadas.
+
+**Riscos:** os valores reais de hostname e publicacao continuam dependentes da stack efetivamente publicada no Portainer; o mapa serve para evitar confusao entre endpoint interno e publicado.
+
+**Próxima ação:** usar o mapa de endpoints ao publicar ou revalidar a stack de homologacao.

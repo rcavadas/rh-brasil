@@ -1,3 +1,3 @@
 # Duvidas abertas
 
-Nao ha perguntas abertas remanescentes nesta etapa, exceto localizar ou publicar a stack do RH no host Docker compartilhado `172.17.0.3` para a execucao dos smokes do sistema. A fase de casos de uso inicia pelo `docs/Catalogo Mestre de Casos de Uso.md`.
+Nao ha perguntas abertas remanescentes sobre a separacao de ambientes: desenvolvimento usa o Docker local com `docker compose` e homologacao usa o Portainer no host compartilhado `172.17.0.3`, com stack base em `infra/docker-compose.homologation.yml`, checklist em `docs/HOMOLOGATION_CHECKLIST.md`, guia em `docs/HOMOLOGATION_PUBLICATION.md`, mapa em `docs/HOMOLOGATION_ENDPOINT_MAP.md`, smokes em `docs/HOMOLOGATION_SMOKES.md` e runbook em `docs/HOMOLOGATION_RUNBOOK.md`. A fase de casos de uso inicia pelo `docs/Catalogo Mestre de Casos de Uso.md`.

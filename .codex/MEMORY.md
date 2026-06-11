@@ -231,6 +231,15 @@ Sistema de RH corporativo para o mercado brasileiro.
 - A validacao end-to-end da API continua bloqueada neste ambiente porque o Docker Desktop Linux Engine nao esta disponivel e as portas locais de Postgres/Redis nao estao expostas.
 - O host Docker compartilhado usado para a stack do sistema deve ser tratado como `172.17.0.3`; o Docker Desktop local do Windows nao e a origem autoritativa para os smokes do projeto.
 - O host compartilhado tem Portainer ativo e varios compose projects, mas a stack do RH nao foi localizada nele nesta rodada.
+- O ambiente de desenvolvimento deve usar o Docker local com `docker compose`.
+- O ambiente de homologacao deve usar o Portainer no host compartilhado `172.17.0.3`.
+- Os templates de variaveis agora estao separados em `infra/.env.development.example` e `infra/.env.homologation.example`.
+- A stack de homologacao tem um manifesto base em `infra/docker-compose.homologation.yml`.
+- O checklist operacional de homologacao esta em `docs/HOMOLOGATION_CHECKLIST.md`.
+- O guia de publicacao de homologacao esta em `docs/HOMOLOGATION_PUBLICATION.md`.
+- O mapa de endpoints publicados de homologacao esta em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
+- Os smokes por servico de homologacao estao em `docs/HOMOLOGATION_SMOKES.md`.
+- O runbook rapido de homologacao esta em `docs/HOMOLOGATION_RUNBOOK.md`.
 - O contexto local de acesso ao host compartilhado foi guardado em `.codex/LOCAL_ACCESS_CONTEXT.md` e deve ser carregado no inicio de cada sessao.
 - Com o Docker local disponivel, `postgres` e `redis` foram subidos via `infra/docker-compose.yml` e `npm run test -w @rh/api` passou com 70 testes verdes.
 - O stack local completo foi subido com `api`, `web`, `worker`, `keycloak`, `postgres`, `redis` e `minio`; o smoke OIDC real com Keycloak retornou token e permitiu criar tenant e consultar summary na API.

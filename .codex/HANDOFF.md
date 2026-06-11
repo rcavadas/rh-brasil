@@ -233,7 +233,7 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 
 ## Infraestrutura imediata
 
-- A proxima etapa deve ser tratada como ambiente de desenvolvimento local.
+- A proxima etapa deve ser tratada como desenvolvimento local; homologacao fica reservada ao Portainer no host compartilhado `172.17.0.3`.
 - A infraestrutura minima precisa subir api, web, worker, postgres, redis, keycloak e minio em compose.
 - A fase de producao ainda nao e o alvo.
 - O monorepo inicial e os arquivos basicos de infraestrutura ja foram criados e os workspaces principais compilam.
@@ -889,6 +889,15 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - O host Docker compartilhado usado para a stack do sistema deve ser tratado como `172.17.0.3`.
 - O Docker Desktop local do Windows nao e o alvo autoritativo para os smokes da stack neste ambiente.
 - O host possui Portainer ativo e varios compose projects, mas a stack do RH nao foi localizada nele nesta rodada.
+- O ambiente de desenvolvimento usa o Docker local com `docker compose`.
+- O ambiente de homologacao usa o Portainer no host compartilhado `172.17.0.3`.
+- Os templates de variaveis estao separados em `infra/.env.development.example` e `infra/.env.homologation.example`.
+- A stack de homologacao usa `infra/docker-compose.homologation.yml` como base de referencia.
+- O checklist de homologacao esta em `docs/HOMOLOGATION_CHECKLIST.md`.
+- O guia de publicacao de homologacao esta em `docs/HOMOLOGATION_PUBLICATION.md`.
+- O mapa de endpoints publicados de homologacao esta em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
+- Os smokes por servico de homologacao estao em `docs/HOMOLOGATION_SMOKES.md`.
+- O runbook rapido de homologacao esta em `docs/HOMOLOGATION_RUNBOOK.md`.
 - O contexto local de acesso foi guardado em `.codex/LOCAL_ACCESS_CONTEXT.md` e deve ser lido automaticamente no inicio de cada nova sessao.
 
 ## Ultima entrega complementar 3

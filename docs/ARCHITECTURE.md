@@ -23,6 +23,7 @@ A camada funcional catalogada foi expandida e consolidada em UC-JOR, UC-FOL, UC-
 - A operacao do Redis do BFF agora tem politica minima documentada: AOF, volume persistente, backup diario ou sob demanda, restore manual e drill recomendado.
 - O Redis do ambiente local passou a usar `infra/redis/redis.conf`, com AOF, `appendfsync everysec` e `maxmemory-policy noeviction`.
 - O compose local tambem sobe `bff-maintenance`, que executa backup, verify e limpeza de snapshots da store do BFF em volume dedicado.
+- O ambiente de desenvolvimento e o compose local; a homologacao e o Portainer no host compartilhado `172.17.0.3`.
 - O workspace tambem expõe `npm run verify:bff-sessions` para validar o round-trip backup/restore em prefixo temporario sem tocar na store real.
 - O workspace tambem expõe `npm run check:redis-platform` para validar a politica do Redis local.
 - A plataforma local agora expõe `npm run backup:platform`, `npm run restore:platform`, `npm run report:platform` e `npm run check:platform-alerts` para snapshot operacional do compose, com restore em modo seguro por padrão.
