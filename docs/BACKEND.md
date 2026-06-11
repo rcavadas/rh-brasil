@@ -45,8 +45,10 @@ O slice inicial ja expÃµe um contrato real em:
 - `PATCH /api/v1/tenants/:tenantId/point-devices/:deviceId`
 - `POST /api/v1/tenants/:tenantId/sst/pgrs`
 - `GET /api/v1/tenants/:tenantId/sst/pgrs`
+- `PATCH /api/v1/tenants/:tenantId/sst/pgrs/:pgrId`
 - `POST /api/v1/tenants/:tenantId/sst/pcmsos`
 - `GET /api/v1/tenants/:tenantId/sst/pcmsos`
+- `PATCH /api/v1/tenants/:tenantId/sst/pcmsos/:pcmsoId`
 - `POST /api/v1/tenants/:tenantId/sst/cats`
 - `GET /api/v1/tenants/:tenantId/sst/cats`
 - `POST /api/v1/tenants/:tenantId/sst/epi-catalogs`

@@ -1225,6 +1225,73 @@ test('slice relacional updates occupational health environment and risk', async 
   await store.close();
 });
 
+test('slice relacional updates occupational health pgr and pcmso', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa Programas', 'empresa-programas');
+  const company = await store.createCompany(tenant.id, 'Empresa Programas LTDA', 'Programas', '77889900000144');
+
+  const pgr = await store.createOccupationalHealthPgr(
+    tenant.id,
+    {
+      companyId: company.id,
+      code: 'PGR-01',
+      title: 'PGR inicial',
+      status: 'draft',
+      validFrom: '2026-01-01T00:00:00.000Z',
+      notes: 'PGR inicial',
+    },
+    'oidc-user-1',
+  );
+  const pcmso = await store.createOccupationalHealthPcmso(
+    tenant.id,
+    {
+      companyId: company.id,
+      code: 'PCMSO-01',
+      title: 'PCMSO inicial',
+      status: 'draft',
+      validFrom: '2026-01-01T00:00:00.000Z',
+      notes: 'PCMSO inicial',
+    },
+    'oidc-user-1',
+  );
+
+  const updatedPgr = await store.updateOccupationalHealthPgr(
+    tenant.id,
+    pgr.id,
+    {
+      title: 'PGR atualizado',
+      status: 'published',
+      notes: 'PGR revisado',
+    },
+    'oidc-user-1',
+  );
+  const updatedPcmso = await store.updateOccupationalHealthPcmso(
+    tenant.id,
+    pcmso.id,
+    {
+      title: 'PCMSO atualizado',
+      status: 'published',
+      notes: 'PCMSO revisado',
+    },
+    'oidc-user-1',
+  );
+
+  const pgrs = await store.listOccupationalHealthPgrs(tenant.id);
+  const psmcos = await store.listOccupationalHealthPcmsos(tenant.id);
+  const events = await store.listAuditEvents(tenant.id);
+
+  assert.equal(updatedPgr.title, 'PGR atualizado');
+  assert.equal(updatedPgr.status, 'published');
+  assert.equal(updatedPcmso.title, 'PCMSO atualizado');
+  assert.equal(updatedPcmso.status, 'published');
+  assert.equal(pgrs.length, 1);
+  assert.equal(psmcos.length, 1);
+  assert.equal(events.at(-1)?.action, 'occupational_health.pcmso.updated');
+
+  await store.close();
+});
+
 test('slice relacional calculates and approves night shift allowance', async () => {
   const store = new SliceStore();
 

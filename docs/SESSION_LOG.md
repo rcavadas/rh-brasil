@@ -2584,3 +2584,17 @@
 **Riscos:** validacao end-to-end continua bloqueada pelo engine Docker local indisponivel; a alteracao em si ficou compilavel e tipada.
 
 **Próxima ação:** seguir para outro gap pequeno e objetivo de runtime, se houver continuidade solicitada.
+
+## 2026-06-11 - CRUD minimo de PGR e PCMSO fechado
+
+**Objetivo:** completar a edição auditável dos programas centrais de SST já materializados no runtime.
+
+**O que foi feito:** `apps/api/src/slice.controller.ts` e `apps/api/src/slice.store.ts` passaram a expor `PATCH` auditavel para `sst/pgrs/:pgrId` e `sst/pcmsos/:pcmsoId`; os testes de persistencia foram expandidos para cobrir criacao, atualizacao e auditoria de PGR e PCMSO.
+
+**Arquivos alterados:** `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `npm run typecheck -w @rh/api` e `npm run build -w @rh/api`.
+
+**Riscos:** validacao end-to-end continua bloqueada pelo engine Docker local indisponivel; a alteracao em si ficou compilavel e tipada.
+
+**Próxima ação:** seguir para outro gap pequeno e objetivo de runtime, se houver continuidade solicitada.

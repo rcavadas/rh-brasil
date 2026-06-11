@@ -50,6 +50,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - UC-JOR-008 passou a incluir adicional noturno como extensão formal do cálculo.
 - UC-JOR-013 foi detalhado para configurar calendários de feriados e exceções por vigência e agora está alinhado ao runtime atual, usando `point-holidays`, `point-tolerance-rules` e `point-devices` por tenant; o CRUD minimo desses cadastros agora inclui atualizacao auditavel.
 - O backend tambem agora expõe atualizacao auditavel para ambientes e riscos ocupacionais do SST, fechando o CRUD minimo desse subdominio.
+- O backend tambem agora expõe atualizacao auditavel para PGR e PCMSO, fechando um segundo bloco minimo do SST.
 - UC-JOR-014 foi detalhado para configurar regras de tolerância de ponto por vigência.
 - UC-JOR-015 foi detalhado para registrar e gerenciar dispositivos de ponto.
 - UC-JOR-016 foi detalhado para emitir comprovante de marcação.

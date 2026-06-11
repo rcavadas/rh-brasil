@@ -6176,6 +6176,88 @@ export class SliceStore implements OnModuleDestroy {
     return this.toOccupationalHealthPgrRecord(created);
   }
 
+  async updateOccupationalHealthPgr(
+    tenantId: string,
+    pgrId: string,
+    payload: {
+      companyId?: string;
+      code?: string;
+      title?: string;
+      status?: string;
+      validFrom?: string;
+      validUntil?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<OccupationalHealthPgrRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.occupationalHealthPgr.findFirst({
+      where: { id: pgrId, tenantId },
+    });
+    if (!current) {
+      throw new NotFoundException(`occupational health pgr ${pgrId} not found`);
+    }
+
+    if (payload.companyId !== undefined) {
+      await this.requireCompany(tenantId, payload.companyId);
+    }
+
+    const validFrom = payload.validFrom !== undefined ? new Date(payload.validFrom) : current.validFrom;
+    const validUntil =
+      payload.validUntil !== undefined ? new Date(payload.validUntil) : current.validUntil ?? undefined;
+    if (Number.isNaN(validFrom.getTime()) || (validUntil && Number.isNaN(validUntil.getTime()))) {
+      throw new ConflictException('invalid occupational health pgr dates');
+    }
+
+    const nextCode = payload.code !== undefined ? payload.code : current.code;
+    if (nextCode !== current.code) {
+      const existing = await this.prisma.occupationalHealthPgr.findUnique({
+        where: {
+          tenantId_code: {
+            tenantId,
+            code: nextCode,
+          },
+        },
+      });
+      if (existing && existing.id !== current.id) {
+        throw new ConflictException(`occupational health pgr code ${nextCode} already exists`);
+      }
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.occupationalHealthPgr.update({
+      where: { id: current.id },
+      data: {
+        companyId: payload.companyId !== undefined ? payload.companyId : current.companyId,
+        code: nextCode,
+        title: payload.title !== undefined ? payload.title : current.title,
+        status: payload.status !== undefined ? payload.status : current.status,
+        validFrom,
+        validUntil: validUntil ?? null,
+        notes: payload.notes !== undefined ? payload.notes : current.notes,
+      },
+    });
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'occupational_health.pgr.updated',
+        'occupationalHealthPgr',
+        updated.id,
+        {
+          companyId: updated.companyId ?? undefined,
+          code: updated.code,
+          title: updated.title,
+          status: updated.status,
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toOccupationalHealthPgrRecord(updated);
+  }
+
   async listOccupationalHealthPgrs(tenantId: string): Promise<OccupationalHealthPgrRecord[]> {
     await this.requireTenant(tenantId);
     const pgrs = await this.prisma.occupationalHealthPgr.findMany({
@@ -6254,6 +6336,88 @@ export class SliceStore implements OnModuleDestroy {
     });
 
     return this.toOccupationalHealthPcmsoRecord(created);
+  }
+
+  async updateOccupationalHealthPcmso(
+    tenantId: string,
+    pcmsoId: string,
+    payload: {
+      companyId?: string;
+      code?: string;
+      title?: string;
+      status?: string;
+      validFrom?: string;
+      validUntil?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<OccupationalHealthPcmsoRecord> {
+    await this.requireTenant(tenantId);
+    const current = await this.prisma.occupationalHealthPcmso.findFirst({
+      where: { id: pcmsoId, tenantId },
+    });
+    if (!current) {
+      throw new NotFoundException(`occupational health pcmso ${pcmsoId} not found`);
+    }
+
+    if (payload.companyId !== undefined) {
+      await this.requireCompany(tenantId, payload.companyId);
+    }
+
+    const validFrom = payload.validFrom !== undefined ? new Date(payload.validFrom) : current.validFrom;
+    const validUntil =
+      payload.validUntil !== undefined ? new Date(payload.validUntil) : current.validUntil ?? undefined;
+    if (Number.isNaN(validFrom.getTime()) || (validUntil && Number.isNaN(validUntil.getTime()))) {
+      throw new ConflictException('invalid occupational health pcmso dates');
+    }
+
+    const nextCode = payload.code !== undefined ? payload.code : current.code;
+    if (nextCode !== current.code) {
+      const existing = await this.prisma.occupationalHealthPcmso.findUnique({
+        where: {
+          tenantId_code: {
+            tenantId,
+            code: nextCode,
+          },
+        },
+      });
+      if (existing && existing.id !== current.id) {
+        throw new ConflictException(`occupational health pcmso code ${nextCode} already exists`);
+      }
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.occupationalHealthPcmso.update({
+      where: { id: current.id },
+      data: {
+        companyId: payload.companyId !== undefined ? payload.companyId : current.companyId,
+        code: nextCode,
+        title: payload.title !== undefined ? payload.title : current.title,
+        status: payload.status !== undefined ? payload.status : current.status,
+        validFrom,
+        validUntil: validUntil ?? null,
+        notes: payload.notes !== undefined ? payload.notes : current.notes,
+      },
+    });
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'occupational_health.pcmso.updated',
+        'occupationalHealthPcmso',
+        updated.id,
+        {
+          companyId: updated.companyId ?? undefined,
+          code: updated.code,
+          title: updated.title,
+          status: updated.status,
+          actor,
+        },
+        now,
+      ),
+    });
+
+    return this.toOccupationalHealthPcmsoRecord(updated);
   }
 
   async listOccupationalHealthPcmsos(tenantId: string): Promise<OccupationalHealthPcmsoRecord[]> {

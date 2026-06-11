@@ -86,6 +86,7 @@
 - [x] Criar smokes por servico para homologacao em `docs/HOMOLOGATION_SMOKES.md`.
 - [x] Criar runbook rapido de homologacao em `docs/HOMOLOGATION_RUNBOOK.md`.
 - [x] Implementar a edição mínima de ambientes e riscos ocupacionais do SST.
+- [x] Implementar a edição mínima de PGR e PCMSO do SST.
 
 ## Concluídas
 

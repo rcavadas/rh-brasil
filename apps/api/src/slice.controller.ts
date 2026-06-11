@@ -963,6 +963,36 @@ class CreateOccupationalHealthPgrDto {
   notes?: string;
 }
 
+class UpdateOccupationalHealthPgrDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreateOccupationalHealthPcmsoDto {
   @IsOptional()
   @IsString()
@@ -982,6 +1012,36 @@ class CreateOccupationalHealthPcmsoDto {
 
   @IsISO8601()
   validFrom!: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validUntil?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class UpdateOccupationalHealthPcmsoDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  code?: string;
+
+  @IsOptional()
+  @IsString()
+  title?: string;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  validFrom?: string;
 
   @IsOptional()
   @IsISO8601()
@@ -1364,6 +1424,22 @@ export class SliceController {
   }
 
   @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/pgrs/:pgrId')
+  updateOccupationalHealthPgr(
+    @Param('tenantId') tenantId: string,
+    @Param('pgrId') pgrId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthPgrDto,
+  ) {
+    return this.store.updateOccupationalHealthPgr(
+      tenantId,
+      pgrId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
   @Post(':tenantId/sst/pcmsos')
   createOccupationalHealthPcmso(
     @Param('tenantId') tenantId: string,
@@ -1389,6 +1465,22 @@ export class SliceController {
   @Get(':tenantId/sst/pcmsos')
   listOccupationalHealthPcmsos(@Param('tenantId') tenantId: string) {
     return this.store.listOccupationalHealthPcmsos(tenantId);
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/sst/pcmsos/:pcmsoId')
+  updateOccupationalHealthPcmso(
+    @Param('tenantId') tenantId: string,
+    @Param('pcmsoId') pcmsoId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateOccupationalHealthPcmsoDto,
+  ) {
+    return this.store.updateOccupationalHealthPcmso(
+      tenantId,
+      pcmsoId,
+      body,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
   }
 
   @Roles('admin', 'rh')
