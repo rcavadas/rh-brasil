@@ -174,7 +174,15 @@
 - [x] Implementar integracao com provedor de identidade.
 - [x] Implementar monitoramento de integracoes.
 - [x] Iniciar a analise dos casos de uso por modulo a partir do `docs/Catálogo Mestre de Casos de Uso.md`.
-- [ ] Detalhar UC-COL-002 - Consultar Dados Cadastrais.
+- [x] Detalhar UC-COL-002 - Consultar Dados Cadastrais.
+- [x] Detalhar UC-GST-001 a UC-GST-010.
+- [x] Detalhar UC-WFL-001 a UC-WFL-010.
+- [x] Detalhar UC-GED-001 a UC-GED-010.
+- [x] Detalhar UC-ATS-001 a UC-ATS-010.
+- [x] Detalhar UC-ONB-001 a UC-ONB-010.
+- [x] Detalhar UC-LMS-001 a UC-LMS-010.
+- [x] Detalhar UC-PER-001 a UC-PER-010.
+- [x] Detalhar UC-CAR-001 a UC-CAR-010.
 - [x] Iniciar a analise do pacote `UC-ADM` como primeira decomposicao da fase de casos de uso.
 - [x] Iniciar a analise do pacote `UC-JOR` como segunda decomposicao da fase de casos de uso.
 - [x] Iniciar a analise do pacote `UC-FOL` como terceira decomposicao da fase de casos de uso.

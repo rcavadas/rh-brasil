@@ -73,6 +73,7 @@
 - O bloqueio de ownership da `.git` foi resolvido com recriacao manual dos metadados Git; o workspace voltou a aceitar `git status` sem `safe.directory`.
 - A ausencia de normalizacao de fim de linha no snapshot inicial foi corrigida com `.gitattributes`, reduzindo churn de CRLF/LF nas proxima alterações.
 - O pacote `UC-COL` agora esta fechado na documentacao, cobrindo entrada, consulta, solicitacoes, ferias, holerite, informe, banco de horas, beneficios, chamados e assinatura eletrônica; os fluxos seguintes devem manter o mesmo padrao de consulta controlada e auditoria.
+- Os pacotes `UC-GST`, `UC-WFL`, `UC-GED`, `UC-ATS`, `UC-ONB`, `UC-LMS`, `UC-PER` e `UC-CAR` tambem estao fechados na documentacao, mas permanecem como especificacao ate validacao futura no runtime.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.

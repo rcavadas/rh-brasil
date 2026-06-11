@@ -27,6 +27,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - A continuidade e o mapa do projeto foram limpos para refletir a conclusao dos pacotes UC-JOR, UC-FOL, UC-BI, UC-SEC, UC-API e UC-PLT.
 - `docs/PRODUCT.md`, `docs/ARCHITECTURE.md` e `.codex/OPEN_QUESTIONS.md` foram atualizados para tratar a especificacao catalogada como concluida e a implementacao como pendente; depois, a trilha minima de eSocial da admissao passou a existir no runtime.
 - Os pacotes UC-ADM, UC-FOL, UC-BEN, UC-FER, UC-DEC, UC-RES, UC-SST, UC-ESO, UC-COL, UC-GST, UC-WFL, UC-GED, UC-ATS, UC-ONB, UC-LMS, UC-PER e UC-CAR receberam READMEs de pacote para cobrir o esboço documental completo.
+- Os pacotes UC-GST, UC-WFL, UC-GED, UC-ATS, UC-ONB, UC-LMS, UC-PER e UC-CAR foram detalhados em nivel individual, cobrindo portal do gestor, workflow, gestao documental, ATS, onboarding, LMS, avaliacao de desempenho e cargos/salarios/carreira.
 - `docs/MATRIZ-TECNICA-ESBOCO.md` foi criado para orientar a discussao tecnica e a priorizacao do MVP.
 - `docs/TOPICO-01-FUNDACAO-DA-PLATAFORMA.md` foi criado para detalhar a base tecnica, o estilo arquitetural e os requisitos de operacao inicial.
 - `docs/TOPICO-02-MODELO-DE-DADOS-CENTRAL.md` foi criado para detalhar o modelo de dados central, entidades, relacoes e regras de integridade.
@@ -233,6 +234,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - A revisao do commit inicial apontou apenas higiene de repositório; foi adicionada `.gitattributes` com normalizacao LF e a analise funcional seguinte iniciou em `UC-COL-001 - Acessar Portal do Colaborador`.
 - `UC-COL-002 - Consultar Dados Cadastrais` foi detalhado como consulta somente leitura com mascaramento de dados sensiveis, historico resumido e auditoria; o proximo passo e `UC-COL-003 - Solicitar Atualizacao Cadastral`.
 - O pacote `UC-COL` foi fechado com `UC-COL-003` a `UC-COL-010`, cobrindo atualizacao cadastral, holerite, informe de rendimentos, ferias, banco de horas, beneficios, solicitacoes ao RH e assinatura eletronica.
+- Os pacotes `UC-GST`, `UC-WFL`, `UC-GED`, `UC-ATS`, `UC-ONB`, `UC-LMS`, `UC-PER` e `UC-CAR` tambem foram fechados em documentacao, mantendo o mesmo padrao de consulta controlada, workflow auditavel, prontuario documental e segregacao por finalidade.
 - O reporte operacional da plataforma e o check de alertas passaram sem alertas, e `npm run backup:platform` gerou snapshot completo com `postgres.sql`, `bff-sessions.json`, `manifest.json` e `minio-data`.
 - `npm run check:platform-alerts` e `npm run report:platform` passaram a incluir o discovery do Keycloak e o readiness do MinIO na telemetria local.
 - O placeholder residual `UC-XXX-000` foi removido do `docs/Catálogo Mestre de Casos de Uso.md`, fechando a seção obsoleta de "Próxima Fase".
