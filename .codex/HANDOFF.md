@@ -187,6 +187,12 @@ Foram criados READMEs de pacote para UC-ADM, UC-FOL, UC-BEN, UC-FER, UC-DEC, UC-
 - Estado atual: `git status` agora funciona sem `safe.directory` ou outros workarounds.
 - Implicacao: o workspace voltou a ter operacao Git normal; o override global temporario foi removido.
 
+## Atualizacao de Analise
+
+- Data: 2026-06-11
+- O que foi feito: a revisao do commit inicial encontrou apenas um ponto de higiene de repositorio, corrigido com `.gitattributes` para LF; a nova frente funcional iniciada foi `UC-COL-001 - Acessar Portal do Colaborador`.
+- Estado atual: o backlog de analise passou a ter `UC-COL-002 - Consultar Dados Cadastrais` como proximo caso concreto.
+
 ## Ultima expansao transversal
 
 - Data: 2026-06-04

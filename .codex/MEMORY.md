@@ -230,6 +230,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - Com o Docker local disponivel, `postgres` e `redis` foram subidos via `infra/docker-compose.yml` e `npm run test -w @rh/api` passou com 70 testes verdes.
 - O stack local completo foi subido com `api`, `web`, `worker`, `keycloak`, `postgres`, `redis` e `minio`; o smoke OIDC real com Keycloak retornou token e permitiu criar tenant e consultar summary na API.
 - O Git do workspace foi corrigido definitivamente: a `.git` foi recriada com ownership do usuario atual via arquivos criados pelo workspace, e `git status` voltou a funcionar sem `safe.directory`.
+- A revisao do commit inicial apontou apenas higiene de repositório; foi adicionada `.gitattributes` com normalizacao LF e a analise funcional seguinte iniciou em `UC-COL-001 - Acessar Portal do Colaborador`.
 - O reporte operacional da plataforma e o check de alertas passaram sem alertas, e `npm run backup:platform` gerou snapshot completo com `postgres.sql`, `bff-sessions.json`, `manifest.json` e `minio-data`.
 - `npm run check:platform-alerts` e `npm run report:platform` passaram a incluir o discovery do Keycloak e o readiness do MinIO na telemetria local.
 - O placeholder residual `UC-XXX-000` foi removido do `docs/Catálogo Mestre de Casos de Uso.md`, fechando a seção obsoleta de "Próxima Fase".

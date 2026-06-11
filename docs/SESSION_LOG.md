@@ -2305,3 +2305,31 @@
 **Riscos:** o repositório ficou operavel, mas a metadata foi montada manualmente; a proxima operacao Git relevante deve ser validada com um `git add` e `git status` para confirmar o fluxo completo.
 
 **Próxima ação:** seguir com as tarefas do produto normalmente, usando Git nativo do workspace.
+
+## 2026-06-11 - Revisao do commit inicial
+
+**Objetivo:** revisar o commit inicial do repositório com foco em higiene e risco operacional.
+
+**O que foi feito:** o commit `7afde98` foi revisado e nao apresentou defeitos funcionais de produto; o unico achado de higiene foi a ausencia de normalizacao de fim de linha. Para fechar isso, foi adicionada `.gitattributes` com `eol=lf`.
+
+**Arquivos alterados:** `.gitattributes`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** revisão de commit com `git show`, checagem de cobertura do catálogo mestre e confirmação de que nao havia `.gitattributes` na raiz.
+
+**Riscos:** o commit inicial continua sendo um snapshot grande, o que limita o valor de `git bisect` até o projeto ganhar historico incremental.
+
+**Próxima ação:** seguir com a análise do pacote `UC-COL`, iniciando pelo `UC-COL-001 - Acessar Portal do Colaborador`.
+
+## 2026-06-11 - Inicio de UC-COL
+
+**Objetivo:** abrir a próxima frente funcional a partir do catálogo mestre.
+
+**O que foi feito:** criado `docs/UC-COL-001-acessar-portal-do-colaborador.md`, iniciando a análise do pacote `UC-COL` pelo fluxo de entrada no portal do colaborador.
+
+**Arquivos alterados:** `.gitattributes`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/UC-COL-001-acessar-portal-do-colaborador.md`.
+
+**Validações:** conferência do `docs/README-UC-COL.md` e alinhamento do novo caso com o portal/BFF/OIDC já descritos na arquitetura.
+
+**Riscos:** o pacote `UC-COL` ainda precisa dos demais casos detalhados, mas a base funcional de entrada e contexto do colaborador já ficou formalizada.
+
+**Próxima ação:** detalhar `UC-COL-002 - Consultar Dados Cadastrais`.

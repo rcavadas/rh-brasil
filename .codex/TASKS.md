@@ -164,7 +164,8 @@
 - [x] Implementar integracao com operadora de beneficios.
 - [x] Implementar integracao com provedor de identidade.
 - [x] Implementar monitoramento de integracoes.
-- [ ] Iniciar a analise dos casos de uso por modulo a partir do `docs/Catálogo Mestre de Casos de Uso.md`.
+- [x] Iniciar a analise dos casos de uso por modulo a partir do `docs/Catálogo Mestre de Casos de Uso.md`.
+- [ ] Detalhar UC-COL-002 - Consultar Dados Cadastrais.
 - [x] Iniciar a analise do pacote `UC-ADM` como primeira decomposicao da fase de casos de uso.
 - [x] Iniciar a analise do pacote `UC-JOR` como segunda decomposicao da fase de casos de uso.
 - [x] Iniciar a analise do pacote `UC-FOL` como terceira decomposicao da fase de casos de uso.
