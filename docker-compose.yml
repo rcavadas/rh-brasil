@@ -1,8 +1,6 @@
 services:
   api:
-    build:
-      context: .
-      dockerfile: apps/api/Dockerfile
+    image: ghcr.io/rcavadas/rh-brasil-api:main
     environment:
       DATABASE_URL: postgresql://rh:rh@postgres:5432/rh
       REDIS_URL: redis://redis:6379
@@ -27,9 +25,7 @@ services:
       retries: 5
 
   web:
-    build:
-      context: .
-      dockerfile: apps/web/Dockerfile
+    image: ghcr.io/rcavadas/rh-brasil-web:main
     environment:
       PORT: 5173
       WEB_PUBLIC_ORIGIN: ${WEB_PUBLIC_ORIGIN:-https://172.17.0.3:5173}
@@ -57,9 +53,7 @@ services:
       retries: 5
 
   worker:
-    build:
-      context: .
-      dockerfile: apps/worker/Dockerfile
+    image: ghcr.io/rcavadas/rh-brasil-worker:main
     environment:
       DATABASE_URL: postgresql://rh:rh@postgres:5432/rh
       REDIS_URL: redis://redis:6379

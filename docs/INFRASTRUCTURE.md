@@ -24,7 +24,8 @@
 - A base atual `infra/.env.example` permanece como compatibilidade para o compose local, mas o contrato oficial agora separa desenvolvimento e homologação.
 - Incluem `AUTH_MODE`, parâmetros OIDC, `CORS_ORIGINS`, URLs internas/externas do BFF, Redis e credenciais locais de infraestrutura.
 - O stack de homologação usa `infra/docker-compose.homologation.yml` como base de referência para o Portainer.
-- O Portainer Git stack usa o `docker-compose.yml` na raiz do repo como ponto de entrada; esse arquivo precisa ser self-contained para a clonagem remota.
+- O Portainer Git stack usa o `docker-compose.yml` na raiz do repo como ponto de entrada; esse arquivo consome imagens do GHCR para evitar build no endpoint de homologacao.
+- O workflow `.github/workflows/publish-images.yml` publica as imagens `api`, `web` e `worker` em `ghcr.io/rcavadas/`.
 - O checklist operacional de homologação esta em `docs/HOMOLOGATION_CHECKLIST.md`.
 - O mapa de endpoints publicados esta em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
 - Os smokes por serviço estão em `docs/HOMOLOGATION_SMOKES.md`.
@@ -104,7 +105,7 @@
 
 - `Dockerfile` para `api`, `web` e `worker`.
 - `docker-compose.yml` com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak` e `minio`.
-- `docker-compose.yml` na raiz do repo para a publicação Git no Portainer.
+- `docker-compose.yml` na raiz do repo para a publicação Git no Portainer, consumindo imagens do GHCR.
 - arquivo `.env.development.example` com variáveis sem segredos, incluindo `AUTH_MODE`, `CORS_ORIGINS` e parâmetros OIDC.
 - import local de realm em `infra/keycloak/rh-realm.json`.
 - healthchecks para os serviços principais.

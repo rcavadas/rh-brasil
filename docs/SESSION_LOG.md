@@ -2654,3 +2654,17 @@
 **Riscos:** homologacao segue sem stack RH publicada no momento da checagem; isso precisa ser resolvido antes de qualquer smoke de homologacao.
 
 **Próxima ação:** publicar ou localizar a stack RH no Portainer e entao rodar os smokes de homologacao.
+
+## 2026-06-11 - Stack Git criada e virada para GHCR
+
+**Objetivo:** destravar a homologacao sem depender de build direto no endpoint Portainer.
+
+**O que foi feito:** o repo foi publicado em `https://github.com/rcavadas/rh-brasil.git`; o Portainer recebeu as stacks Git `rh`, `rh-brasil`, `rh-brasil-live` e `rh-brasil-prod`; o build direto no endpoint falhou, entao foi criado `docker-compose.yml` na raiz do repo para homologacao via Git Stack consumindo imagens `ghcr.io/rcavadas/rh-brasil-*`, e adicionado o workflow `.github/workflows/publish-images.yml` para publicar `api`, `web` e `worker` no GHCR.
+
+**Arquivos alterados:** `docker-compose.yml`, `.github/workflows/publish-images.yml`, `docs/HOMOLOGATION_PUBLICATION.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** criação das stacks Git no Portainer e leitura do erro de build do endpoint `10`, que mostrou a necessidade de publicar imagens em registry antes do redeploy.
+
+**Riscos:** enquanto as imagens GHCR nao estiverem publicadas, o redeploy da stack Git continuara falhando.
+
+**Próxima ação:** aguardar o workflow de publish das imagens, confirmar a disponibilidade no GHCR e redeployar a stack Git no Portainer.

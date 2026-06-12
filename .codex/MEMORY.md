@@ -297,3 +297,5 @@ Sistema de RH corporativo para o mercado brasileiro.
 - Nesta sessao, a retomada da validacao de runtime ficou bloqueada por falta de Docker local acessivel e por falha de autenticacao SSH no host compartilhado `172.17.0.3`; nao houve alteracao funcional no codigo.
 - Foi criado `scripts/session-access-check.ps1` para validar em um unico passo o Docker local de desenvolvimento e o acesso autenticado ao Portainer de homologacao.
 - O script `scripts/session-access-check.ps1` conseguiu autenticar no Portainer de homologacao, mas nao encontrou uma stack RH publicada no momento da checagem.
+- O Portainer Git stack foi criado com o repo `rh-brasil`, mas o endpoint de homologacao falhou no build; o root `docker-compose.yml` agora consome imagens do GHCR em vez de `build:`.
+- O workflow `.github/workflows/publish-images.yml` foi adicionado para publicar `api`, `web` e `worker` em `ghcr.io/rcavadas/`.

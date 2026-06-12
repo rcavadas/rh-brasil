@@ -241,3 +241,4 @@
 - [x] Alinhar os primeiros casos do pacote `UC-ESO` ao runtime real.
 - [x] Fechar atualizacao auditavel de catalogos EPI, exames ocupacionais e catalogos de treinamento de SST.
 - [x] Destravar o runtime local e concluir a suite completa da API contra Postgres real.
+- [ ] Publicar as imagens `api`, `web` e `worker` no GHCR e redeployar a stack Git do Portainer.

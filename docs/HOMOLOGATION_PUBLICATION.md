@@ -16,7 +16,7 @@ Descrever o fluxo pratico para publicar a stack do RH no Portainer usando o mani
 
 1. Abrir o Portainer no host `172.17.0.3`.
 2. Criar ou atualizar a stack RH a partir do `docker-compose.yml` na raiz do repo.
-3. Confirmar que o repo publicado contem a fonte completa e que o compose raiz referencia caminhos relativos ao repo.
+3. Confirmar que o repo publicado contem a fonte completa, o compose raiz aponta para imagens do GHCR e o workflow de publicacao de imagens esta ativo.
 4. Carregar as variaveis publicas da homologacao quando for necessario sobrescrever os defaults do host.
 5. Ajustar os campos obrigatorios do host publicado conforme [docs/HOMOLOGATION_ENDPOINT_MAP.md](/F:/projetos/RH/docs/HOMOLOGATION_ENDPOINT_MAP.md):
    - `WEB_PUBLIC_ORIGIN`
@@ -35,6 +35,8 @@ Descrever o fluxo pratico para publicar a stack do RH no Portainer usando o mani
 
 - O manifesto base e o contrato.
 - O `docker-compose.yml` na raiz do repo e o ponto de entrada do Portainer para a stack Git de homologacao.
+- O root compose consome as imagens publicadas no GHCR e evita build direto no endpoint de homologacao.
+- O workflow [.github/workflows/publish-images.yml](/F:/projetos/RH/.github/workflows/publish-images.yml) publica `api`, `web` e `worker` em `ghcr.io/rcavadas/`.
 - O checklist e o criterio de aceite.
 - O Portainer e o mecanismo de publicacao.
 - O Docker Desktop local do Windows nao faz parte desse fluxo.
