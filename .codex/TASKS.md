@@ -12,8 +12,8 @@
 
 ## Próximas
 
-- [ ] Localizar ou publicar a stack RH no Portainer de homologação.
-- [ ] Validar os smokes de homologação depois que a stack RH estiver publicada.
+- [x] Localizar ou publicar a stack RH no Portainer de homologação.
+- [x] Validar os smokes de homologação depois que a stack RH estiver publicada.
 - [x] Revisar autenticacao e autorizacao.
 - [x] Revisar modelo de dados de pessoas e vinculos.
 - [x] Revisar permissões por perfil.
@@ -241,5 +241,7 @@
 - [x] Alinhar os primeiros casos do pacote `UC-ESO` ao runtime real.
 - [x] Fechar atualizacao auditavel de catalogos EPI, exames ocupacionais e catalogos de treinamento de SST.
 - [x] Destravar o runtime local e concluir a suite completa da API contra Postgres real.
-- [ ] Publicar as imagens `api`, `web` e `worker` no GHCR e redeployar a stack Git do Portainer.
-- [ ] Obter acesso de pull ao GHCR para o Portainer ou tornar o pacote de imagens publicamente acessivel.
+- [x] Publicar as imagens `api`, `web` e `worker` no GHCR e redeployar a stack Git do Portainer.
+- [x] Obter acesso de pull ao GHCR para o Portainer ou tornar o pacote de imagens publicamente acessivel.
+- [x] Corrigir o build do worker para gerar o Prisma Client na imagem.
+- [x] Ajustar o manifesto de homologacao para evitar conflitos de portas no host compartilhado.

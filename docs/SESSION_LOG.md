@@ -2682,3 +2682,17 @@
 **Riscos:** a homologacao continua bloqueada enquanto o Portainer nao tiver uma credencial com `packages` scope ou enquanto as imagens nao forem publicadas como publicas.
 
 **Próxima ação:** obter uma credencial GHCR com `read:packages` ou publicar os pacotes como publicos e então redeployar a stack Git.
+
+## 2026-06-11 - Homologacao final ativa e worker corrigido
+
+**Objetivo:** fechar a homologacao no Portainer com as imagens publicas e corrigir o worker que morria por Prisma Client ausente.
+
+**O que foi feito:** o repo foi tornado publico, o workflow de imagens voltou a publicar `rh-brasil-public-api`, `rh-brasil-public-web` e `rh-brasil-public-worker`, a stack Git `rh-brasil-public-hom-final` foi criada no endpoint `10` e redeployada com sucesso, o `docker-compose.yml` raiz foi ajustado para evitar conflitos de portas no host compartilhado e o `apps/worker/Dockerfile` passou a executar `npx prisma generate --schema apps/api/prisma/schema.prisma` antes do build.
+
+**Arquivos alterados:** `docker-compose.yml`, `apps/worker/Dockerfile`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/HOMOLOGATION_ENDPOINT_MAP.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `docker pull` anônimo das imagens `rh-brasil-public-*` funcionou; o workflow `Publish Images` concluiu com sucesso; `PUT /api/stacks/121/git/redeploy?endpointId=10` foi aceito; a stack `rh-brasil-public-hom-final` ficou `Status: 1`; os containers `api`, `web`, `worker`, `keycloak`, `postgres`, `redis` e `minio` ficaram em execução; o build local do worker passou; e o endpoint de containers do Portainer confirmou o worker em `running`.
+
+**Riscos:** o mapa de portas públicas agora usa `38080` para Keycloak e `29000/29001` para MinIO para evitar colisão com outros projetos no host compartilhado.
+
+**Próxima ação:** manter esse contrato de portas e reenfileirar apenas quando houver novo commit funcional ou necessidade de smoke adicional.

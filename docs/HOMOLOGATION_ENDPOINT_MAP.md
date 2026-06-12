@@ -15,23 +15,23 @@ Mapear os placeholders usados na homologacao para os endpoints publicados pelo P
 
 - `5173`: portal web.
 - `3000`: API.
-- `8080`: Keycloak.
-- `9000`: MinIO API.
-- `9001`: MinIO console.
+- `38080`: Keycloak.
+- `29000`: MinIO API.
+- `29001`: MinIO console.
 
 ## Mapa de variaveis
 
 | Variavel | Endpoint esperado | Uso |
 | --- | --- | --- |
 | `WEB_PUBLIC_ORIGIN` | `https://<homolog-host>:5173` | Origem publica do portal. |
-| `KEYCLOAK_BROWSER_URL` | `https://<homolog-host>:8080` | URL de navegacao do IdP para o browser. |
-| `KC_HOSTNAME` | `https://<homolog-host>:8080` | Hostname publicado pelo Keycloak. |
-| `OIDC_ISSUER_URL` | `https://<homolog-host>:8080/realms/rh` | Issuer OIDC do realm `rh`. |
-| `OIDC_JWKS_URL` | `https://<homolog-host>:8080/realms/rh/protocol/openid-connect/certs` | JWKS usado pela API. |
+| `KEYCLOAK_BROWSER_URL` | `https://<homolog-host>:38080` | URL de navegacao do IdP para o browser. |
+| `KC_HOSTNAME` | `https://<homolog-host>:38080` | Hostname publicado pelo Keycloak. |
+| `OIDC_ISSUER_URL` | `https://<homolog-host>:38080/realms/rh` | Issuer OIDC do realm `rh`. |
+| `OIDC_JWKS_URL` | `https://<homolog-host>:38080/realms/rh/protocol/openid-connect/certs` | JWKS usado pela API. |
 | `CORS_ORIGINS` | `https://<homolog-host>:5173` | Origem permitida para o portal. |
 | `API_PUBLIC_URL` | `https://<homolog-host>:3000` | Base publica da API para smokes. |
-| `MINIO_PUBLIC_URL` | `https://<homolog-host>:9000` | Base publica do MinIO para readiness. |
-| `MINIO_CONSOLE_URL` | `https://<homolog-host>:9001` | Console publica do MinIO. |
+| `MINIO_PUBLIC_URL` | `https://<homolog-host>:29000` | Base publica do MinIO para readiness. |
+| `MINIO_CONSOLE_URL` | `https://<homolog-host>:29001` | Console publica do MinIO. |
 
 ## Mapa de uso por documento
 

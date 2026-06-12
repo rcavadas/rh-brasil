@@ -299,4 +299,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - O script `scripts/session-access-check.ps1` conseguiu autenticar no Portainer de homologacao, mas nao encontrou uma stack RH publicada no momento da checagem.
 - O Portainer Git stack foi criado com o repo `rh-brasil`, mas o endpoint de homologacao falhou no build; o root `docker-compose.yml` agora consome imagens do GHCR em vez de `build:`.
 - O workflow `.github/workflows/publish-images.yml` foi adicionado para publicar `api`, `web` e `worker` em `ghcr.io/rcavadas/`.
-- As imagens GHCR foram publicadas, mas o pull no Portainer ainda falha com `403 Forbidden` porque a credencial atual nao tem `packages` scope; a homologacao depende de uma credencial com `read:packages` ou de pacote publico.
+- O bloqueio de `403 Forbidden` no GHCR foi resolvido quando o repo ficou publico e o Portainer passou a puxar as imagens `rh-brasil-public-*` sem credencial `packages`.
+- A frente de GHCR e homologacao foi fechada: o repo foi tornado publico, as imagens `rh-brasil-public-*` passaram a ser puxaveis anonimamente e a stack `rh-brasil-public-hom-final` no endpoint `10` subiu com sucesso.
+- O worker da homologacao precisava de `npx prisma generate --schema apps/api/prisma/schema.prisma` no build da imagem; sem isso o processo morria com `@prisma/client did not initialize yet`.
+- O manifesto de homologacao na raiz passou a evitar conflitos de porta no host compartilhado com `postgres`/`redis` internos e portas publicas `38080` (Keycloak) e `29000/29001` (MinIO).
