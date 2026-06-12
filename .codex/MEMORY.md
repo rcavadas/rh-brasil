@@ -305,3 +305,6 @@ Sistema de RH corporativo para o mercado brasileiro.
 - O manifesto de homologacao na raiz passou a evitar conflitos de porta no host compartilhado com `postgres`/`redis` internos e portas publicas `38080` (Keycloak) e `29000/29001` (MinIO).
 - O realm `rh` do Keycloak nao ficou disponivel apenas com o import do container; nesta sessao foi provisionado explicitamente pela admin API do Keycloak e o smoke OIDC passou depois disso.
 - O endpoint de homologacao `10` foi limpo dos stacks RH antigos quebrados; a unica stack RH restante e a stack final `RH`.
+- Em 2026-06-12, a frente de SST foi validada em runtime na stack `RH` de homologacao com um smoke HTTP real cobrindo ambiente, risco, PGR, PCMSO, CAT, EPI, exame/ASO, treinamento e transmissao eSocial basal.
+- O comando `npm run smoke:sst` foi adicionado como guardrail reutilizavel da trilha basal de SST na homologacao.
+- A validacao de retry de eSocial SST em `UC-ESO` foi endurecida para comparar `transmissionId` com o recurso pai esperado na rota.

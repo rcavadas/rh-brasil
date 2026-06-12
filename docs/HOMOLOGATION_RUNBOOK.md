@@ -30,6 +30,7 @@ Dar um caminho curto para publicar, validar e diagnosticar a stack de homologaca
 7. Executar o login OIDC.
 8. Confirmar `GET /api/session`.
 9. Confirmar `GET /api/v1/tenants/:tenantId/summary`.
+10. Executar `npm run smoke:sst` para validar a trilha basal de SST.
 
 ## Diagnostico rapido
 
@@ -58,6 +59,13 @@ Dar um caminho curto para publicar, validar e diagnosticar a stack de homologaca
 - Verificar health do `web`.
 - Verificar `WEB_REDIS_URL`.
 - Verificar sessao e cookie HttpOnly.
+
+### Se o smoke de SST falha
+
+- Verificar `API_PUBLIC_URL`.
+- Verificar se a stack `rh` ainda esta ativa no endpoint `10`.
+- Reexecutar `npm run smoke:sst` e comparar o tenant retornado com a ultima execucao.
+- Se o erro for de retry de eSocial SST, revisar o recurso pai informado na rota.
 
 ## Decisao
 

@@ -82,6 +82,8 @@ O slice inicial ja expÃµe um contrato real em:
 - `POST /api/v1/tenants/:tenantId/sst/exams/:examId/esocial-transmissions`
 - `GET /api/v1/tenants/:tenantId/sst/exams/:examId/esocial-transmissions`
 - `POST /api/v1/tenants/:tenantId/sst/exams/:examId/esocial-transmissions/:transmissionId/retry`
+
+Os endpoints de retry de eSocial SST agora validam o contexto do recurso pai da rota antes de reprocessar a transmissao.
 - `POST /api/v1/tenants/:tenantId/night-shift-allowance/calculate`
 - `GET /api/v1/tenants/:tenantId/night-shift-allowance/calculations/:calculationId`
 - `POST /api/v1/tenants/:tenantId/night-shift-allowance/calculations/:calculationId/approve`

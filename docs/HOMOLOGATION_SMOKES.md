@@ -63,6 +63,15 @@ Validar a stack publicada no Portainer por servico, com comandos e criterios cla
   - `status: ok` ou `degraded` apenas quando o Redis do portal estiver indisponível
   - `GET /api/session` acessível após login
 
+### SST
+
+- Comando:
+  - `npm run smoke:sst`
+- Validação esperada:
+  - cria tenant, company, person e employee de smoke
+  - valida environment, risk, PGR, PCMSO, CAT, EPI, exam/ASO e training
+  - encerra com transmissao eSocial basal `queued`
+
 ### Fluxo OIDC
 
 - Comando:
@@ -82,6 +91,7 @@ Validar a stack publicada no Portainer por servico, com comandos e criterios cla
 5. `api`
 6. `web`
 7. fluxo OIDC no navegador
+8. smoke SST via `npm run smoke:sst`
 
 ## Criterio de aceite
 
@@ -90,6 +100,7 @@ Validar a stack publicada no Portainer por servico, com comandos e criterios cla
 - O portal abre e autentica.
 - O tenant ativo é carregado.
 - O summary do tenant responde.
+- O smoke de SST responde no runtime de homologação.
 
 ## Criterio de falha
 
@@ -98,6 +109,7 @@ Validar a stack publicada no Portainer por servico, com comandos e criterios cla
 - O login OIDC falha ou entra em loop.
 - O portal não consegue acessar a API.
 - O tenant ativo não é carregado.
+- O smoke de SST falha ou não consegue criar a trilha basica.
 
 ## Observacao
 

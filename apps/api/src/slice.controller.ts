@@ -1924,12 +1924,13 @@ export class SliceController {
     @Body() body: QueueOccupationalHealthEsocialDto,
   ) {
     void environmentId;
-    void body;
     return this.store.retryOccupationalHealthEsocialTransmission(
       tenantId,
       transmissionId,
       auth?.source === 'oidc' ? auth.subject : undefined,
       body.notes,
+      'environment',
+      environmentId,
     );
   }
 
@@ -1967,12 +1968,13 @@ export class SliceController {
     @Body() body: QueueOccupationalHealthEsocialDto,
   ) {
     void catId;
-    void body;
     return this.store.retryOccupationalHealthEsocialTransmission(
       tenantId,
       transmissionId,
       auth?.source === 'oidc' ? auth.subject : undefined,
       body.notes,
+      'cat',
+      catId,
     );
   }
 
@@ -2010,12 +2012,13 @@ export class SliceController {
     @Body() body: QueueOccupationalHealthEsocialDto,
   ) {
     void examId;
-    void body;
     return this.store.retryOccupationalHealthEsocialTransmission(
       tenantId,
       transmissionId,
       auth?.source === 'oidc' ? auth.subject : undefined,
       body.notes,
+      'exam',
+      examId,
     );
   }
 

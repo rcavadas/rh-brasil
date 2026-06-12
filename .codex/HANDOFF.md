@@ -950,3 +950,19 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - Resultado: a homologacao ficou funcional, com worker vivo e sem dependencias manuais de credencial GHCR.
 - O realm `rh` do Keycloak nao apareceu apenas com o import do container; ele foi criado explicitamente via admin API em `38080`, e o smoke OIDC passou depois disso.
 - O endpoint `10` foi limpo dos stacks RH antigos quebrados e a stack final ativa agora se chama `RH`.
+
+## Sessão atual
+
+- Data: 2026-06-12
+- Objetivo: retomar a validação de runtime a partir da frente de SST que ficou pendente.
+- O que foi feito: o Docker local continuou sem o daemon `dockerDesktopLinuxEngine`, mas o Portainer no host compartilhado `172.17.0.3` respondeu, a stack `rh` permaneceu presente no endpoint `10` e um smoke HTTP real contra `http://172.17.0.3:3000` validou criacao de tenant, company, person, employee, ambiente, risco, PGR, PCMSO, CAT, EPI, exame/ASO, treinamento e transmissao eSocial basal de SST.
+- Validações: `docker version` e `docker compose -f infra/docker-compose.yml ps` continuaram sem daemon local; `GET https://172.17.0.3:9443/api/status` respondeu `200`; a listagem autenticada do Portainer mostrou a stack `rh` ativa no endpoint `10`; o smoke HTTP em `172.17.0.3:3000` retornou sucesso para todos os recursos de SST exercitados.
+- Arquivos alterados: `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+- Resultado: a frente pendente de SST foi validada no runtime de homologacao; nao houve alteracao funcional no codigo.
+- Proximo passo recomendado: manter o smoke de SST como guardrail ao subir novamente a stack ou ao reiniciar o Keycloak/compose do endpoint `10`.
+
+## Atualizacao de guardrail
+
+- Data: 2026-06-12
+- O que foi feito: `npm run smoke:sst` passou a executar o smoke basal de SST contra a stack RH publicada.
+- Reforco de revisao: os retries SST de `UC-ESO` agora validam o identificador do recurso pai da rota antes de reprocessar a transmissao.

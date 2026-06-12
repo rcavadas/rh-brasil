@@ -20,6 +20,7 @@
     "maintenance:bff-sessions": "node scripts/bff-session-maintenance.mjs",
     "maintenance:bff-sessions:once": "node scripts/bff-session-maintenance.mjs --once",
     "check:redis-platform": "node scripts/redis-platform-check.mjs",
+    "smoke:sst": "node scripts/homologation-sst-smoke.mjs",
     "backup:platform": "node scripts/platform-backup.mjs",
     "restore:platform": "node scripts/platform-restore.mjs",
     "report:platform": "node scripts/platform-observability-report.mjs",

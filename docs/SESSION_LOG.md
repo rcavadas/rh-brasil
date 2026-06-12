@@ -2710,3 +2710,31 @@
 **Riscos:** o realm depende de seeding explicito na instancia de homologacao; nao assumir que o import do container o manterá disponivel sozinho em futuros redeploys. Os stacks RH antigos quebrados foram removidos do endpoint `10` para evitar confusao operacional.
 
 **Próxima ação:** manter esse smoke como guardrail minimo sempre que a stack de homologacao for recriada ou o Keycloak for reiniciado.
+
+## 2026-06-12 - Smoke de SST validado em runtime
+
+**Objetivo:** retomar a validação de runtime a partir da frente de SST que ficou pendente.
+
+**O que foi feito:** o Docker local continuou sem o daemon `dockerDesktopLinuxEngine`, mas o Portainer do host compartilhado `172.17.0.3` respondeu normalmente, a stack `rh` permaneceu publicada no endpoint `10` e um smoke HTTP real contra `http://172.17.0.3:3000` validou a criacao de tenant, empresa, colaborador e a trilha de SST com ambiente, risco, PGR, PCMSO, CAT, EPI, exame/ASO, treinamento e transmissao eSocial basal.
+
+**Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `docker version` continuou sem acesso ao daemon local; `docker compose -f infra/docker-compose.yml ps` nao conseguiu listar recursos locais; `GET https://172.17.0.3:9443/api/status` respondeu `200`; a listagem autenticada do Portainer confirmou a stack `rh` ativa no endpoint `10`; e o smoke HTTP em `172.17.0.3:3000` retornou sucesso para todos os recursos de SST exercitados.
+
+**Riscos:** o runtime local de desenvolvimento segue indisponivel neste ambiente; a validacao atual depende do host compartilhado e deve continuar usando o endpoint `10` como alvo autoritativo.
+
+**Próxima ação:** manter o smoke de SST como guardrail e, se houver novo commit funcional, repetir a checagem para garantir que a trilha permaneça verde.
+
+## 2026-06-12 - Guardrail de SST codificado
+
+**Objetivo:** transformar o smoke basal de SST em rotina reutilizavel e registrar a revisao do `UC-ESO`.
+
+**O que foi feito:** foi adicionado `scripts/homologation-sst-smoke.mjs` e o script foi exposto por `npm run smoke:sst`; o smoke validou com sucesso a stack RH publicada. Na revisao do `UC-ESO`, a validacao de retry de transmissao SST foi endurecida para comparar `transmissionId` com o recurso pai esperado na rota.
+
+**Arquivos alterados:** `package.json`, `scripts/homologation-sst-smoke.mjs`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/HOMOLOGATION_SMOKES.md`, `docs/HOMOLOGATION_RUNBOOK.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `npm run smoke:sst` retornou sucesso contra `http://172.17.0.3:3000` e exerceu tenant, company, person, employee, environment, risk, PGR, PCMSO, CAT, EPI, exam/ASO, training e transmissao eSocial basal.
+
+**Riscos:** o retry SST de `UC-ESO` pode aceitar um contexto de rota inconsistente porque o backend revalida apenas `transmissionId`.
+
+**Próxima ação:** se a cobertura de eSocial SST for priorizada, endurecer a checagem do recurso pai nos endpoints de retry.

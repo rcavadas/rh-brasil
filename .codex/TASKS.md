@@ -245,3 +245,4 @@
 - [x] Obter acesso de pull ao GHCR para o Portainer ou tornar o pacote de imagens publicamente acessivel.
 - [x] Corrigir o build do worker para gerar o Prisma Client na imagem.
 - [x] Ajustar o manifesto de homologacao para evitar conflitos de portas no host compartilhado.
+- [x] Validar em runtime a camada de SST na stack RH de homologacao.

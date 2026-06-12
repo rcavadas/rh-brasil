@@ -7487,6 +7487,8 @@ export class SliceStore implements OnModuleDestroy {
     transmissionId: string,
     actor?: string,
     notes?: string,
+    expectedSubjectType?: OccupationalHealthEsocialSubjectType,
+    expectedSubjectId?: string,
   ): Promise<OccupationalHealthEsocialTransmissionRecord> {
     await this.requireTenant(tenantId);
     const existing = await this.prisma.occupationalHealthEsocialTransmission.findFirst({
@@ -7494,6 +7496,16 @@ export class SliceStore implements OnModuleDestroy {
     });
     if (!existing) {
       throw new NotFoundException(`occupational health eSocial transmission ${transmissionId} not found`);
+    }
+    if (expectedSubjectType !== undefined || expectedSubjectId !== undefined) {
+      if (expectedSubjectType === undefined || expectedSubjectId === undefined) {
+        throw new ConflictException('incomplete occupational health eSocial route context');
+      }
+      if (existing.subjectType !== expectedSubjectType || existing.subjectId !== expectedSubjectId) {
+        throw new NotFoundException(
+          `occupational health eSocial transmission ${transmissionId} not found for ${expectedSubjectType} ${expectedSubjectId}`,
+        );
+      }
     }
     if (existing.status !== 'failed') {
       throw new ConflictException(`occupational health eSocial transmission ${transmissionId} is not failed`);

@@ -732,6 +732,19 @@ test('slice relacional queues occupational health esocial transmissions', async 
   const examList = await store.listOccupationalHealthEsocialTransmissions(tenant.id, 'exam', exam.id);
   const failed = await store.markOccupationalHealthEsocialTransmissionFailed(catTransmission.id, 'Falha simulada');
   const requeued = await store.retryOccupationalHealthEsocialTransmission(tenant.id, catTransmission.id, 'oidc-user-1', 'Reenvio');
+  await store.markOccupationalHealthEsocialTransmissionFailed(environmentTransmission.id, 'Falha para rota incorreta');
+  await assert.rejects(
+    () =>
+      store.retryOccupationalHealthEsocialTransmission(
+        tenant.id,
+        environmentTransmission.id,
+        'oidc-user-1',
+        'Reenvio incorreto',
+        'cat',
+        cat.id,
+      ),
+    /not found for cat/,
+  );
   const events = await store.listAuditEvents(tenant.id);
 
   assert.equal(environmentTransmission.eventCode, 'S-2240');
