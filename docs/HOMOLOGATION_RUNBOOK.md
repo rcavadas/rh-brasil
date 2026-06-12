@@ -66,6 +66,7 @@ Dar um caminho curto para publicar, validar e diagnosticar a stack de homologaca
 - Verificar se a stack `rh` ainda esta ativa no endpoint `10`.
 - Reexecutar `npm run smoke:sst` e comparar o tenant retornado com a ultima execucao.
 - Se o erro for de retry de eSocial SST, revisar o recurso pai informado na rota.
+- Se precisar reproduzir o ramo de retry com transmissao falha, usar o endpoint `POST /api/v1/tenants/:tenantId/sst/{environments|cats|exams}/:subjectId/esocial-transmissions/:transmissionId/mark-failed` antes do retry.
 
 ## Decisao
 

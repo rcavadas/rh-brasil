@@ -1406,6 +1406,12 @@ class QueueOccupationalHealthEsocialDto {
   notes?: string;
 }
 
+class MarkOccupationalHealthEsocialTransmissionFailedDto {
+  @IsOptional()
+  @IsString()
+  errorMessage?: string;
+}
+
 @Controller('v1/tenants')
 export class SliceController {
   constructor(@Inject(SliceStore) private readonly store: SliceStore) {}
@@ -1935,6 +1941,21 @@ export class SliceController {
   }
 
   @Roles('admin', 'rh')
+  @Post(':tenantId/sst/environments/:environmentId/esocial-transmissions/:transmissionId/mark-failed')
+  markOccupationalHealthEnvironmentEsocialTransmissionFailed(
+    @Param('tenantId') tenantId: string,
+    @Param('environmentId') environmentId: string,
+    @Param('transmissionId') transmissionId: string,
+    @Body() body: MarkOccupationalHealthEsocialTransmissionFailedDto,
+  ) {
+    void environmentId;
+    return this.store.markOccupationalHealthEsocialTransmissionFailed(
+      transmissionId,
+      body.errorMessage ?? 'manual occupational health eSocial failure',
+    );
+  }
+
+  @Roles('admin', 'rh')
   @Post(':tenantId/sst/cats/:catId/esocial-transmissions')
   queueOccupationalHealthCatEsocialTransmission(
     @Param('tenantId') tenantId: string,
@@ -1979,6 +2000,21 @@ export class SliceController {
   }
 
   @Roles('admin', 'rh')
+  @Post(':tenantId/sst/cats/:catId/esocial-transmissions/:transmissionId/mark-failed')
+  markOccupationalHealthCatEsocialTransmissionFailed(
+    @Param('tenantId') tenantId: string,
+    @Param('catId') catId: string,
+    @Param('transmissionId') transmissionId: string,
+    @Body() body: MarkOccupationalHealthEsocialTransmissionFailedDto,
+  ) {
+    void catId;
+    return this.store.markOccupationalHealthEsocialTransmissionFailed(
+      transmissionId,
+      body.errorMessage ?? 'manual occupational health eSocial failure',
+    );
+  }
+
+  @Roles('admin', 'rh')
   @Post(':tenantId/sst/exams/:examId/esocial-transmissions')
   queueOccupationalHealthExamEsocialTransmission(
     @Param('tenantId') tenantId: string,
@@ -2019,6 +2055,21 @@ export class SliceController {
       body.notes,
       'exam',
       examId,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/sst/exams/:examId/esocial-transmissions/:transmissionId/mark-failed')
+  markOccupationalHealthExamEsocialTransmissionFailed(
+    @Param('tenantId') tenantId: string,
+    @Param('examId') examId: string,
+    @Param('transmissionId') transmissionId: string,
+    @Body() body: MarkOccupationalHealthEsocialTransmissionFailedDto,
+  ) {
+    void examId;
+    return this.store.markOccupationalHealthEsocialTransmissionFailed(
+      transmissionId,
+      body.errorMessage ?? 'manual occupational health eSocial failure',
     );
   }
 

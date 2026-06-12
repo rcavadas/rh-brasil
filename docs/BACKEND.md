@@ -84,6 +84,13 @@ O slice inicial ja expÃµe um contrato real em:
 - `POST /api/v1/tenants/:tenantId/sst/exams/:examId/esocial-transmissions/:transmissionId/retry`
 
 Os endpoints de retry de eSocial SST agora validam o contexto do recurso pai da rota antes de reprocessar a transmissao.
+Para validar ou forcar o ciclo de reprocessamento em homologacao, a API tambem expõe:
+
+- `POST /api/v1/tenants/:tenantId/sst/environments/:environmentId/esocial-transmissions/:transmissionId/mark-failed`
+- `POST /api/v1/tenants/:tenantId/sst/cats/:catId/esocial-transmissions/:transmissionId/mark-failed`
+- `POST /api/v1/tenants/:tenantId/sst/exams/:examId/esocial-transmissions/:transmissionId/mark-failed`
+
+Esses endpoints de marcação de falha servem para operacao controlada e validacao do contrato de retry com contexto de rota.
 - `POST /api/v1/tenants/:tenantId/night-shift-allowance/calculate`
 - `GET /api/v1/tenants/:tenantId/night-shift-allowance/calculations/:calculationId`
 - `POST /api/v1/tenants/:tenantId/night-shift-allowance/calculations/:calculationId/approve`
