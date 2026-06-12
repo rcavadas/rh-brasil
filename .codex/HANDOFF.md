@@ -971,3 +971,4 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - A transmissao do smoke permaneceu em `sent`; o retry pela rota errada respondeu `409` por nao estar em `failed`, entao a verificacao exata do ramo de mismatch de pai continua coberta pelo teste unitario, nao pelo runtime desta sessao.
 - Depois do pull forcado das imagens e de um novo redeploy, o ramo `mark-failed -> retry` foi provado em runtime: a transmissao SST `44f597d5-5542-4550-92e5-7646c3ecf16a` foi marcada como `failed` no endpoint publicado e o retry pela rota errada de `cat` retornou `404 not found for cat 30dc0e4d-50af-4cb3-a2da-6a2d6b2c4d06`.
 - O smoke `npm run smoke:sst` voltou a passar apos esse redeploy final, entao nao ficaram pontas soltas na trilha basal de SST.
+- A pendencia obsoleta de `docs/PRODUCT.md` sobre "store em arquivo para persistencia relacional" foi removida, para evitar que a proxima leitura trate a persistencia relacional como algo ainda aberto.

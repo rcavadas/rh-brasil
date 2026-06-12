@@ -2766,3 +2766,15 @@
 **Resultado:** o ramo exato que faltava ficou validado em runtime e nao restaram pontas soltas na trilha basal de SST.
 
 **Observacao:** a nota operacional do contrato SST foi registrada em `docs/BACKEND.md`, deixando explicito que `mark-failed` e retry com pai incorreto so fazem sentido com transmissao previamente em `failed`.
+
+## 2026-06-12 - Limpeza de pendencia documental obsoleta
+
+**Objetivo:** remover de `docs/PRODUCT.md` uma pendencia que ja estava superada pelo runtime e pela documentacao tecnica.
+
+**O que foi feito:** a pendencia "Evoluir do store em arquivo para persistencia relacional e contratos testados" foi removida de `docs/PRODUCT.md`; a memoria e o handoff foram atualizados para registrar que a persistencia relacional ja e a fonte de verdade atual.
+
+**Validações:** cruzamento com `docs/BACKEND.md` confirmou que o slice usa Prisma com PostgreSQL e que a suite de integracao ja valida persistencia relacional.
+
+**Arquivos alterados:** `docs/PRODUCT.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `docs/SESSION_LOG.md`.
+
+**Resultado:** a documentação nao volta mais a sugerir que a persistencia relacional ainda seja uma pendencia em aberto.

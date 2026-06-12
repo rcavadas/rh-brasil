@@ -104,7 +104,6 @@ RH Brasil e uma plataforma SaaS de gestao do ciclo de vida do colaborador para e
 ## Requisitos pendentes
 
 - Confirmar regras operacionais e juridicas que dependem de validacao especializada.
-- Evoluir do store em arquivo para persistencia relacional e contratos testados.
 - Os eventos detalhados de desligamento no eSocial continuam como evolucao posterior do [Topico 04](docs/TOPICO-04-PLANO-DE-IMPLEMENTACAO-ADMISSAO-E-DESLIGAMENTO.md).
 - O fluxo minimo de rescisao ja existe no runtime; o que resta agora e evoluir os calculos detalhados, a politica final de assinatura documental e o contrato completo de desligamento.
 - O fluxo de ferias executavel agora cobre fracionamento, abono pecuniario, aviso formal, pagamento, envio para folha e eSocial auditaveis, sem pontas soltas funcionais no dominio.
