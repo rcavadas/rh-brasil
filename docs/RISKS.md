@@ -88,7 +88,7 @@
 - O mapa de endpoints agora usa portas altas para evitar colisao com outros projetos do host compartilhado: `38080` para Keycloak e `29000/29001` para MinIO.
 - O realm `rh` nao foi servido apenas pelo import automatico do Keycloak; ele precisou ser criado explicitamente pela admin API na instancia de homologacao antes do smoke OIDC passar. Isso indica que futuros redeploys devem manter o seeding de realm como passo verificavel, nao presumido.
 - O endpoint `10` foi limpo dos stacks RH antigos quebrados e agora tem apenas a stack final `RH`, reduzindo a chance de escolher o alvo errado em novas sessoes.
-- O endurecimento do retry SST em `UC-ESO` foi validado no codigo, no teste unitario e no deploy da stack `RH`, mas a verificacao exata da ramificacao `not found for <parent>` ainda depende de uma transmissao ocupacional em `failed` no runtime publicado.
+- O endurecimento do retry SST em `UC-ESO` foi validado no codigo, no teste unitario, no deploy da stack `RH` e no runtime publicado: uma transmissao ocupacional foi marcada como `failed` e o retry pela rota errada retornou `404 not found for cat`, entao o risco operacional remanescente e apenas manter o guardrail `npm run smoke:sst` em novos redeploys.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.

@@ -311,3 +311,5 @@ Sistema de RH corporativo para o mercado brasileiro.
 - O commit `4ea25cc` foi publicado em `main`, a stack `rh` no endpoint `10` foi redeployada no Portainer e voltou para `Status = 1`.
 - O smoke `npm run smoke:sst` voltou a passar apos o redeploy; a transmissao SST do smoke ficou em `sent`.
 - A chamada de retry pela rota errada contra essa transmissao respondeu `409` por o registro nao estar em estado `failed`; a ramificacao de mismatch de pai segue coberta no teste de unidade, mas nao foi exercitada em runtime nesta sessao.
+- A stack `rh` foi redeployada novamente apos o pull forcado das imagens e o ramo `mark-failed -> retry` do `UC-ESO` foi provado em runtime: a transmissao `44f597d5-5542-4550-92e5-7646c3ecf16a` foi marcada como `failed` e o retry pela rota de `cat` retornou `404 not found for cat 30dc0e4d-50af-4cb3-a2da-6a2d6b2c4d06`.
+- O smoke `npm run smoke:sst` voltou a passar apos esse redeploy final, mantendo a trilha basal de SST verde na homologacao.

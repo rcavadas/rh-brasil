@@ -2752,3 +2752,15 @@
 **Riscos:** a verificacao exata do ramo `not found for <parent>` continua dependente de uma transmissao `failed` no runtime publicado; nesta sessao a transmissao de smoke permaneceu `sent`.
 
 **Próxima ação:** se for necessario provar o ramo exato de mismatch em runtime, produzir uma transmissao ocupacional em `failed` e repetir o retry pela rota errada.
+
+## 2026-06-12 - Ramo de retry SST fechado em runtime
+
+**Objetivo:** eliminar a ponta solta do retry SST de `UC-ESO` provando o ramo `failed -> retry` no runtime publicado.
+
+**O que foi feito:** a stack `rh` foi redeployada novamente depois do pull forcado das imagens; a transmissao ocupacional `44f597d5-5542-4550-92e5-7646c3ecf16a` foi marcada manualmente como `failed`; o retry pela rota errada de `cat` retornou `404 not found for cat 30dc0e4d-50af-4cb3-a2da-6a2d6b2c4d06`; e o smoke `npm run smoke:sst` passou novamente no runtime publicado.
+
+**Validações:** o endpoint `mark-failed` respondeu `201` com a transmissao atualizada em `failed`; o retry pela rota errada respondeu `404`; e o smoke basal de SST voltou a passar apos o redeploy.
+
+**Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Resultado:** o ramo exato que faltava ficou validado em runtime e nao restaram pontas soltas na trilha basal de SST.
