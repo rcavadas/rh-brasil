@@ -12,6 +12,8 @@
 
 ## Próximas
 
+- [ ] Localizar ou publicar a stack RH no Portainer de homologação.
+- [ ] Validar os smokes de homologação depois que a stack RH estiver publicada.
 - [x] Revisar autenticacao e autorizacao.
 - [x] Revisar modelo de dados de pessoas e vinculos.
 - [x] Revisar permissões por perfil.

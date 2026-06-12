@@ -79,6 +79,7 @@
 - A stack do sistema deve ser validada contra o host Docker compartilhado `172.17.0.3`; usar o Docker Desktop local do Windows como referencia pode produzir falso negativo.
 - O host `172.17.0.3` foi identificado, mas a credencial SSH disponível nesta sessão nao conseguiu autenticar; a validacao executavel depende do contexto de acesso correto ao host compartilhado.
 - O host compartilhado ja esta acessivel via SSH, porem a stack do RH nao foi encontrada nele nesta rodada; a validacao real depende de localizar ou publicar essa stack antes do smoke final.
+- A checagem automatizada de acesso confirmou que o Portainer de homologacao responde, mas nao havia stack RH publicada no momento da execucao do script `scripts/session-access-check.ps1`.
 - Desenvolvimento e homologacao agora estao formalmente separados, mas qualquer rotina que misture `docker compose` local com Portainer precisa ser evitada para nao validar o alvo errado.
 - O contexto local de acesso ao host compartilhado foi persistido em `.codex/LOCAL_ACCESS_CONTEXT.md`; se esse arquivo nao for lido no inicio da sessao, ha risco de voltar a validar o Docker errado.
 ## Atualizacao tecnica

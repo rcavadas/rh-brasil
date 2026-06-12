@@ -294,3 +294,6 @@ Sistema de RH corporativo para o mercado brasileiro.
 - As rotas persistidas de integracoes da API agora possuem cobertura HTTP ponta a ponta para sync de beneficios e identidade, monitoramento, falha, retentativa e DLQ.
 - O backend agora tambem expõe atualizacao auditavel para catalogos de EPI, exames ocupacionais e catalogos de treinamento de SST, com testes de persistencia cobrindo criacao, atualizacao e auditoria.
 - O runtime local de desenvolvimento foi destravado: Docker Desktop foi iniciado, o Postgres/Redis do compose subiram, migrations foram aplicadas e a suite completa da API passou.
+- Nesta sessao, a retomada da validacao de runtime ficou bloqueada por falta de Docker local acessivel e por falha de autenticacao SSH no host compartilhado `172.17.0.3`; nao houve alteracao funcional no codigo.
+- Foi criado `scripts/session-access-check.ps1` para validar em um unico passo o Docker local de desenvolvimento e o acesso autenticado ao Portainer de homologacao.
+- O script `scripts/session-access-check.ps1` conseguiu autenticar no Portainer de homologacao, mas nao encontrou uma stack RH publicada no momento da checagem.

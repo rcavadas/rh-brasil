@@ -20,6 +20,10 @@ Dentro da sessão, envie:
 Leia AGENTS.md e inicialize a sessão usando .codex/SESSION_START_PROMPT.md
 ```
 
+Se a sessão envolver runtime, garanta que `.codex/LOCAL_ACCESS_CONTEXT.md` seja lido antes de qualquer validação.
+
+Para checagem rápida dos acessos de desenvolvimento e homologação, use `scripts/session-access-check.ps1`.
+
 Para encerrar:
 
 ```txt

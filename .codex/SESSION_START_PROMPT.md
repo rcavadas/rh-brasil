@@ -2,7 +2,15 @@
 
 Leia `AGENTS.md` e siga a inicializacao obrigatoria de sessao.
 
-Se existir, leia tambem `.codex/LOCAL_ACCESS_CONTEXT.md` antes de qualquer validacao de runtime. Esse arquivo contem o contexto local do host Docker compartilhado e do Portainer; use-o para evitar o Docker Desktop local do Windows e para escolher o container/stack corretos.
+Leia tambem `.codex/LOCAL_ACCESS_CONTEXT.md` antes de qualquer validacao de runtime. Esse arquivo contem o contexto local do host Docker compartilhado e do Portainer; use-o para evitar o Docker Desktop local do Windows e para escolher o container/stack corretos.
+
+Regra obrigatoria de acesso:
+
+1. Sempre carregar o contexto local de acesso antes de tentar qualquer validação de runtime.
+2. Tratar o Docker local do workspace como ambiente de desenvolvimento.
+3. Tratar `172.17.0.3` como ambiente de homologação.
+4. Confirmar que ambos os ambientes estao disponiveis antes de concluir validacoes que dependam de infraestrutura.
+5. Se algum acesso falhar, registrar o bloqueio no handoff e no log antes de seguir para outra frente.
 
 Faca uma auditoria inicial do projeto inteiro sem alterar codigo.
 

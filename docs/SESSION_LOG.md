@@ -2626,3 +2626,31 @@
 **Riscos:** o `npm run test -w @rh/api` continua dependendo do `pretest` com `prisma generate`, que nesta sessao apresentou um lock transitório no engine nativo; a validacao efetiva da API, porém, foi concluída com a invocacao direta da suite.
 
 **Próxima ação:** escolher o próximo gap pequeno e objetivo de runtime agora que a base local voltou a responder.
+
+## 2026-06-11 - Retomada da validação de runtime bloqueada
+
+**Objetivo:** prosseguir a partir da ultima validacao pendente da frente de SST e confirmar o runtime disponivel nesta sessao.
+
+**O que foi feito:** a suite relacional da API foi reexecutada; o `prisma generate` falhou com `EPERM` ao renomear o engine nativo, a execucao direta de `slice.store.test.ts` falhou porque o Postgres nao estava acessivel em `localhost:5432`, a tentativa de subir o Docker local nao teve permissao para iniciar o servico `com.docker.service` e a tentativa de acesso ao host compartilhado `172.17.0.3` por SSH foi recusada por autenticacao.
+
+**Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `npm run test -w @rh/api`, `tsx --test --test-concurrency=1 apps/api/test/slice.store.test.ts`, `docker compose -f infra/docker-compose.yml ps`, `docker version`, `Start-Service com.docker.service` e `ssh -o BatchMode=yes itguys@172.17.0.3 "docker ps --format '{{.Names}}\t{{.Status}}'"`.
+
+**Riscos:** a validacao de runtime desta sessão ficou bloqueada por falta de engine Docker local e por acesso SSH negado ao host compartilhado; o estado funcional do codigo permaneceu inalterado.
+
+**Próxima ação:** retomar a validação em um ambiente com Docker ativo ou com credenciais SSH válidas para o host compartilhado.
+
+## 2026-06-11 - Automacao de acesso e checagem de homologacao
+
+**Objetivo:** consolidar o acesso para as proximas sessoes e confirmar o estado real da homologacao.
+
+**O que foi feito:** o `SESSION_START_PROMPT` passou a obrigar a leitura de `.codex/LOCAL_ACCESS_CONTEXT.md` antes de qualquer validacao de runtime, `README_CODEX_KIT.md` passou a apontar para o script de checagem de acesso e `scripts/session-access-check.ps1` foi criado para autenticar no Portainer e listar endpoints e stacks; a execucao confirmou que o Portainer responde, mas nao havia stack RH publicada na checagem.
+
+**Arquivos alterados:** `.codex/SESSION_START_PROMPT.md`, `README_CODEX_KIT.md`, `scripts/session-access-check.ps1`, `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** leitura do contexto local de acesso, execucao do script de checagem de acesso e autenticacao no Portainer do host `172.17.0.3`.
+
+**Riscos:** homologacao segue sem stack RH publicada no momento da checagem; isso precisa ser resolvido antes de qualquer smoke de homologacao.
+
+**Próxima ação:** publicar ou localizar a stack RH no Portainer e entao rodar os smokes de homologacao.
