@@ -314,3 +314,6 @@ Sistema de RH corporativo para o mercado brasileiro.
 - A stack `rh` foi redeployada novamente apos o pull forcado das imagens e o ramo `mark-failed -> retry` do `UC-ESO` foi provado em runtime: a transmissao `44f597d5-5542-4550-92e5-7646c3ecf16a` foi marcada como `failed` e o retry pela rota de `cat` retornou `404 not found for cat 30dc0e4d-50af-4cb3-a2da-6a2d6b2c4d06`.
 - O smoke `npm run smoke:sst` voltou a passar apos esse redeploy final, mantendo a trilha basal de SST verde na homologacao.
 - `docs/PRODUCT.md` foi ajustado para remover a pendencia obsoleta de "store em arquivo para persistencia relacional"; a fonte de verdade agora trata a persistencia relacional como consolidada.
+- O runtime agora tambem possui o agregado minimo de dependentes do colaborador, com CRUD, inativacao e auditoria.
+- O review de UC-SEC apontou que consentimento do titular e atendimento de solicitacao do titular continuam sem runtime dedicado e seguem como proximo gap real de governanca/LGPD.
+- `docs/PRODUCT.md` foi corrigido para dizer explicitamente que a base executavel inicial usa PostgreSQL, nao mais um store em arquivo.

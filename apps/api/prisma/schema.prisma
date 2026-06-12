@@ -67,6 +67,7 @@ model Tenant {
   pointHolidayCalendars PointHolidayCalendar[]
   pointToleranceRules PointToleranceRule[]
   pointDevices PointDevice[]
+  employeeDependents EmployeeDependent[]
   auditEvents AuditEvent[]
   accessGrants TenantAccess[]
 
@@ -162,8 +163,32 @@ model Employee {
   occupationalHealthAsos OccupationalHealthAso[]
   pointMarks PointMark[]
 
+  dependents EmployeeDependent[]
+
   @@unique([tenantId, code])
   @@map("employees")
+}
+
+model EmployeeDependent {
+  id               String   @id @default(uuid())
+  tenantId         String
+  employeeId       String
+  fullName         String
+  cpf              String?
+  birthDate        DateTime
+  relationshipType String
+  status           String   @default("active")
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  tenant           Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employee         Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, employeeId, cpf])
+  @@unique([tenantId, employeeId, fullName, birthDate, relationshipType])
+  @@index([tenantId, employeeId])
+  @@index([tenantId, status])
+  @@map("employee_dependents")
 }
 
 model BenefitCatalog {

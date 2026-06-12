@@ -10,7 +10,7 @@ RH Brasil e uma plataforma SaaS de gestao do ciclo de vida do colaborador para e
 - O dominio central gira em torno de Pessoa, VinculoTrabalhista e Empresa.
 - A documentacao atual cobre o ciclo de vida do colaborador, de recrutamento a arquivamento.
 - A especificacao funcional catalogada foi expandida para cobrir UC-JOR, UC-FOL, UC-BI, UC-SEC, UC-API e UC-PLT de forma completa.
-- A base executavel inicial ja existe com slice persistido em arquivo para tenant, cadastro, ponto, resumo e auditoria.
+- A base executavel inicial ja existe com slice persistido em PostgreSQL para tenant, cadastro, ponto, resumo e auditoria.
 - A documentacao tecnica agora tambem recomenda a stack executavel e o primeiro vertical slice.
 - O MVP do produto foi consolidado nos topicos 10, 11 e 12 como: plataforma minima, nucleo do colaborador e operacao essencial.
 - O backlog pos-MVP foi organizado no Topico 13 como sequencia de entrega para as ondas futuras.
@@ -30,6 +30,7 @@ RH Brasil e uma plataforma SaaS de gestao do ciclo de vida do colaborador para e
 - A Onda 5 agora tambem possui um snapshot analitico no portal, com headcount, pressao de fluxo, auditoria, integracoes e politica base de LGPD visiveis no tenant ativo.
 - A Onda 6 agora tambem possui uma trilha de roadmap no portal, com os dominios complementares e a sequencia de expansao explicitadas para o tenant ativo.
 - O pacote de ponto agora tambem possui persistencia minima para calendarios de feriados, regras de tolerancia e dispositivos.
+- O cadastro-base do colaborador agora tambem possui o agregado minimo de dependentes, com CRUD, inativacao e auditoria.
 - O adicional noturno do pacote UC-JOR agora tambem possui calculo, aprovacao e trilha de auditoria em runtime, com memoria por competencia.
 - O DSR e o descanso semanal do pacote UC-JOR agora tambem possuem calculo, aprovacao e trilha de auditoria em runtime, com memoria por competencia.
 - A consolidacao de eventos de ponto para folha do pacote UC-JOR agora tambem possui lote auditavel em runtime, com mapeamento versionado para rubricas de folha.

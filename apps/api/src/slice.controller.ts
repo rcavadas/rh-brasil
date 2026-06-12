@@ -65,6 +65,53 @@ class CreateEmployeeDto {
   code?: string;
 }
 
+class CreateEmployeeDependentDto {
+  @IsString()
+  @IsNotEmpty()
+  fullName!: string;
+
+  @IsOptional()
+  @IsString()
+  cpf?: string;
+
+  @IsISO8601()
+  birthDate!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  relationshipType!: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class UpdateEmployeeDependentDto {
+  @IsOptional()
+  @IsString()
+  fullName?: string;
+
+  @IsOptional()
+  @IsString()
+  cpf?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  birthDate?: string;
+
+  @IsOptional()
+  @IsString()
+  relationshipType?: string;
+
+  @IsOptional()
+  @IsString()
+  status?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreateRecruitmentVacancyRequestDto {
   @IsOptional()
   @IsString()
@@ -2634,6 +2681,75 @@ export class SliceController {
   @Post(':tenantId/employees')
   createEmployee(@Param('tenantId') tenantId: string, @Body() body: CreateEmployeeDto) {
     return this.store.createEmployee(tenantId, body.companyId, body.personId, body.code);
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/employees/:employeeId/dependents')
+  listEmployeeDependents(@Param('tenantId') tenantId: string, @Param('employeeId') employeeId: string) {
+    return this.store.listEmployeeDependents(tenantId, employeeId);
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/employees/:employeeId/dependents')
+  createEmployeeDependent(
+    @Param('tenantId') tenantId: string,
+    @Param('employeeId') employeeId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreateEmployeeDependentDto,
+  ) {
+    return this.store.createEmployeeDependent(
+      tenantId,
+      employeeId,
+      {
+        fullName: body.fullName,
+        cpf: body.cpf,
+        birthDate: body.birthDate,
+        relationshipType: body.relationshipType,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/employees/:employeeId/dependents/:dependentId')
+  updateEmployeeDependent(
+    @Param('tenantId') tenantId: string,
+    @Param('employeeId') employeeId: string,
+    @Param('dependentId') dependentId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateEmployeeDependentDto,
+  ) {
+    return this.store.updateEmployeeDependent(
+      tenantId,
+      employeeId,
+      dependentId,
+      {
+        fullName: body.fullName,
+        cpf: body.cpf,
+        birthDate: body.birthDate,
+        relationshipType: body.relationshipType,
+        status: body.status,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/employees/:employeeId/dependents/:dependentId/inactive')
+  inactivateEmployeeDependent(
+    @Param('tenantId') tenantId: string,
+    @Param('employeeId') employeeId: string,
+    @Param('dependentId') dependentId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+  ) {
+    return this.store.inactivateEmployeeDependent(
+      tenantId,
+      employeeId,
+      dependentId,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
   }
 
   @Roles('admin', 'rh')

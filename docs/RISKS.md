@@ -9,6 +9,7 @@
 - No MVP, `Employee` e a projecao operacional de `VinculoTrabalhista`; qualquer futura separacao fisica do vinculo precisa preservar compatibilidade de dados e migracao.
 - Integracoes de folha e SSO ainda nao estao especificadas em nivel de contrato tecnico.
 - A etapa 1 da admissao agora existe no runtime, incluindo checklist documental minimo, formalizacao contratual separada, dossie documental de onboarding e assinatura auditavel, e a trilha minima de eSocial tambem ja foi implementada, mas ainda nao cobre o contrato governamental final.
+- O agregado minimo de dependentes do colaborador agora existe no runtime, mas elegibilidade juridica, vinculo com benefícios/folha e controle documental completo ainda dependem de validacao especializada.
 - O pacote UC-JOR ainda precisa de validacao operacional e juridica sobre fechamento, reabertura e regras complementares de apuracao antes de ser considerado pronto para implementacao final.
 - O desligamento administrativo minimo ja esta implementado no runtime, assim como o offboarding minimo e o eSocial de desligamento minimo; os fluxos completos ainda precisam de validacao operacional.
 - O fluxo minimo de rescisao ja existe no runtime, mas ainda nao cobre o contrato governamental final, validacoes legais finas ou a ultima camada de automacao de documentos.
@@ -53,6 +54,7 @@
 - O painel de BI/LGPD/auditoria do portal e um snapshot agregado e auditavel, mas ainda nao substitui analitica historica, filtros complexos ou exportacoes parametrizadas por finalidade.
 - A timeline da Onda 6 e apenas um roadmap visual; os dominios complementares ainda nao tem motor funcional implementado e continuam dependentes de modelagem e contratos dedicados.
 - Os blocos UC-BI, UC-SEC, UC-API e UC-PLT foram expandidos, mas ainda podem exigir validacao operacional e juridica fina antes de congelar comportamento final.
+- Em UC-SEC, consentimento do titular e atendimento de solicitacao do titular continuam como especificacao documental sem runtime dedicado, entao o fluxo LGPD fino ainda nao esta fechado na implementacao.
 ## Medios
 - Ainda nao existe validacao de carga, concorrencia e isolamento multi-tenant real em runtime, embora o BFF agora revogue tenant ativo que deixou de estar autorizado.
 - A estrategia minima de observabilidade e backup/restore da plataforma local agora existe, com telemetria operacional e check de alertas, mas ainda nao cobre telemetria completa do ambiente alvo.

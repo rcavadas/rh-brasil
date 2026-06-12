@@ -60,6 +60,7 @@ async function resetDatabase(): Promise<void> {
       "audit_events",
       "point_marks",
       "employees",
+      "employee_dependents",
       "persons",
       "companies",
       "tenants"
@@ -99,6 +100,51 @@ test('slice relacional persists tenant, company, person, employee, point and aud
   assert.equal(receipt.pointMark.id, point.id);
   assert.equal(receipt.employee.id, employee.id);
   assert.equal(events.at(-1)?.action, 'point_mark.receipt.generated');
+
+  await store.close();
+});
+
+test('slice relacional manages employee dependents with audit trail', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa Dependentes', 'empresa-dependentes');
+  const company = await store.createCompany(tenant.id, 'Empresa Dependentes LTDA', 'Dependentes', '99887766000155');
+  const person = await store.createPerson(tenant.id, 'Pessoa Dependente', '32132132100');
+  const employee = await store.createEmployee(tenant.id, company.id, person.id, 'DEP-001');
+
+  const dependent = await store.createEmployeeDependent(
+    tenant.id,
+    employee.id,
+    {
+      fullName: 'Dependente Teste',
+      cpf: '12312312300',
+      birthDate: '2012-05-10T00:00:00.000Z',
+      relationshipType: 'filho(a)',
+      notes: 'Cadastro inicial',
+    },
+    'oidc-user-1',
+  );
+
+  const updated = await store.updateEmployeeDependent(
+    tenant.id,
+    employee.id,
+    dependent.id,
+    {
+      fullName: 'Dependente Teste Atualizado',
+      notes: 'Atualizado para validacao',
+    },
+    'oidc-user-1',
+  );
+
+  const inactive = await store.inactivateEmployeeDependent(tenant.id, employee.id, dependent.id, 'oidc-user-1');
+  const dependents = await store.listEmployeeDependents(tenant.id, employee.id);
+  const events = await store.listAuditEvents(tenant.id);
+
+  assert.equal(dependents.length, 1);
+  assert.equal(dependents[0]?.id, dependent.id);
+  assert.equal(updated.fullName, 'Dependente Teste Atualizado');
+  assert.equal(inactive.status, 'inactive');
+  assert.equal(events.at(-1)?.action, 'dependent.inactivated');
 
   await store.close();
 });

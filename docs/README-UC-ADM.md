@@ -45,7 +45,7 @@ Este pacote consolida a documentacao do cadastro corporativo, da estrutura organ
 ## Estado de Implementacao
 
 Este pacote descreve o comportamento desejado do dominio.
-O runtime executavel atual ja implementa o cadastro-base, a etapa 1 de admissao, o checklist documental minimo, a formalizacao contratual separada, um dossie documental de onboarding com assinatura auditavel, a trilha minima de eSocial, o desligamento administrativo minimo, o offboarding minimo, o eSocial de desligamento minimo e um scaffold minimo de rescisao; os fluxos completos continuam como evolucao posterior.
+O runtime executavel atual ja implementa o cadastro-base, a etapa 1 de admissao, o checklist documental minimo, a formalizacao contratual separada, um dossie documental de onboarding com assinatura auditavel, a trilha minima de eSocial, o desligamento administrativo minimo, o offboarding minimo, o eSocial de desligamento minimo, um scaffold minimo de rescisao e o agregado minimo de dependentes; os fluxos completos continuam como evolucao posterior.
 O runtime executavel tambem ja possui um scaffold minimo de rescisao vinculado ao desligamento efetivo; o pacote UC-RES continua descrevendo a evolucao completa do processo.
 
 ## Analise de Sequenciamento

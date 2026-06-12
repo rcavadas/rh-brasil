@@ -17,6 +17,10 @@ O slice inicial ja expÃµe um contrato real em:
 - `POST /api/v1/tenants/:tenantId/companies`
 - `POST /api/v1/tenants/:tenantId/persons`
 - `POST /api/v1/tenants/:tenantId/employees`
+- `GET /api/v1/tenants/:tenantId/employees/:employeeId/dependents`
+- `POST /api/v1/tenants/:tenantId/employees/:employeeId/dependents`
+- `PATCH /api/v1/tenants/:tenantId/employees/:employeeId/dependents/:dependentId`
+- `PATCH /api/v1/tenants/:tenantId/employees/:employeeId/dependents/:dependentId/inactive`
 - `POST /api/v1/tenants/:tenantId/ats/vacancy-requests`
 - `GET /api/v1/tenants/:tenantId/ats/vacancy-requests`
 - `POST /api/v1/tenants/:tenantId/ats/vacancy-requests/:vacancyRequestId/approve`
@@ -166,6 +170,7 @@ Regra operacional: o retry SST de `UC-ESO` somente deve ser exercitado com trans
 - `GET /api/v1/platform/telemetry`
 
 O slice inicial agora usa Prisma com PostgreSQL para persistencia relacional.
+A base executavel de admissao agora tambem inclui o agregado minimo de dependentes do colaborador, com CRUD, inativacao e auditoria.
 A etapa 1 da admissao ja esta implementada no backend como solicitacao rastreavel por tenant, com cancelamento controlado e auditoria.
 O checklist documental minimo da admissao tambem entrou no runtime, com lista dos itens obrigatorios, recebimento item a item e transicao automatica para pendencia ou revisao.
 A formalizacao contratual separada tambem entrou no runtime como snapshot proprio, com vigencia, tipo de contrato e transicao da admissao para `completed`.

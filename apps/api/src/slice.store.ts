@@ -48,6 +48,20 @@ export type EmployeeRecord = {
   updatedAt: string;
 };
 
+export type EmployeeDependentRecord = {
+  id: string;
+  tenantId: string;
+  employeeId: string;
+  fullName: string;
+  cpf?: string;
+  birthDate: string;
+  relationshipType: string;
+  status: string;
+  notes?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type RecruitmentVacancyRequestRecord = {
   id: string;
   tenantId: string;
@@ -1336,6 +1350,193 @@ export class SliceStore implements OnModuleDestroy {
     });
 
     return this.toEmployeeRecord(employee);
+  }
+
+  async createEmployeeDependent(
+    tenantId: string,
+    employeeId: string,
+    payload: {
+      fullName: string;
+      cpf?: string;
+      birthDate: string;
+      relationshipType: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<EmployeeDependentRecord> {
+    await this.requireTenant(tenantId);
+    await this.requireEmployee(tenantId, employeeId);
+
+    const birthDate = new Date(payload.birthDate);
+    if (Number.isNaN(birthDate.getTime())) {
+      throw new ConflictException(`invalid dependent birthDate ${payload.birthDate}`);
+    }
+
+    if (payload.cpf) {
+      const existing = await this.prisma.employeeDependent.findFirst({
+        where: { tenantId, employeeId, cpf: payload.cpf },
+      });
+      if (existing) {
+        throw new ConflictException(`dependent cpf ${payload.cpf} already exists for employee ${employeeId}`);
+      }
+    }
+
+    const now = new Date();
+    const dependent = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.employeeDependent.create({
+        data: {
+          tenantId,
+          employeeId,
+          fullName: payload.fullName,
+          cpf: payload.cpf,
+          birthDate,
+          relationshipType: payload.relationshipType,
+          notes: payload.notes,
+          status: 'active',
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'dependent.created',
+          'dependent',
+          created.id,
+          { employeeId, relationshipType: payload.relationshipType, status: 'active', actor },
+          now,
+        ),
+      });
+
+      return created;
+    });
+
+    return this.toEmployeeDependentRecord(dependent);
+  }
+
+  async listEmployeeDependents(tenantId: string, employeeId: string): Promise<EmployeeDependentRecord[]> {
+    await this.requireTenant(tenantId);
+    await this.requireEmployee(tenantId, employeeId);
+
+    const dependents = await this.prisma.employeeDependent.findMany({
+      where: { tenantId, employeeId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    return dependents.map((dependent) => this.toEmployeeDependentRecord(dependent));
+  }
+
+  async updateEmployeeDependent(
+    tenantId: string,
+    employeeId: string,
+    dependentId: string,
+    payload: {
+      fullName?: string;
+      cpf?: string;
+      birthDate?: string;
+      relationshipType?: string;
+      status?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<EmployeeDependentRecord> {
+    await this.requireTenant(tenantId);
+    await this.requireEmployee(tenantId, employeeId);
+
+    const current = await this.prisma.employeeDependent.findFirst({
+      where: { id: dependentId, tenantId, employeeId },
+    });
+    if (!current) {
+      throw new NotFoundException(`dependent ${dependentId} not found`);
+    }
+
+    if (payload.cpf && payload.cpf !== current.cpf) {
+      const existing = await this.prisma.employeeDependent.findFirst({
+        where: { tenantId, employeeId, cpf: payload.cpf },
+      });
+      if (existing && existing.id !== dependentId) {
+        throw new ConflictException(`dependent cpf ${payload.cpf} already exists for employee ${employeeId}`);
+      }
+    }
+
+    const birthDate = payload.birthDate ? new Date(payload.birthDate) : undefined;
+    if (payload.birthDate && Number.isNaN(birthDate!.getTime())) {
+      throw new ConflictException(`invalid dependent birthDate ${payload.birthDate}`);
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.employeeDependent.update({
+        where: { id: dependentId },
+        data: {
+          fullName: payload.fullName,
+          cpf: payload.cpf,
+          birthDate,
+          relationshipType: payload.relationshipType,
+          status: payload.status,
+          notes: payload.notes,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'dependent.updated',
+          'dependent',
+          next.id,
+          { employeeId, relationshipType: payload.relationshipType, status: payload.status, actor },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toEmployeeDependentRecord(updated);
+  }
+
+  async inactivateEmployeeDependent(
+    tenantId: string,
+    employeeId: string,
+    dependentId: string,
+    actor?: string,
+  ): Promise<EmployeeDependentRecord> {
+    await this.requireTenant(tenantId);
+    await this.requireEmployee(tenantId, employeeId);
+
+    const current = await this.prisma.employeeDependent.findFirst({
+      where: { id: dependentId, tenantId, employeeId },
+    });
+    if (!current) {
+      throw new NotFoundException(`dependent ${dependentId} not found`);
+    }
+    if (current.status === 'inactive') {
+      throw new ConflictException(`dependent ${dependentId} is already inactive`);
+    }
+
+    const now = new Date();
+    const inactive = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.employeeDependent.update({
+        where: { id: dependentId },
+        data: {
+          status: 'inactive',
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'dependent.inactivated',
+          'dependent',
+          next.id,
+          { employeeId, relationshipType: next.relationshipType, status: 'inactive', actor },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toEmployeeDependentRecord(inactive);
   }
 
   async createRecruitmentVacancyRequest(
@@ -10992,6 +11193,36 @@ export class SliceStore implements OnModuleDestroy {
       code: employee.code ?? undefined,
       createdAt: employee.createdAt.toISOString(),
       updatedAt: employee.updatedAt.toISOString(),
+    };
+  }
+
+  private toEmployeeDependentRecord(
+    dependent: {
+      id: string;
+      tenantId: string;
+      employeeId: string;
+      fullName: string;
+      cpf: string | null;
+      birthDate: Date;
+      relationshipType: string;
+      status: string;
+      notes: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+  ): EmployeeDependentRecord {
+    return {
+      id: dependent.id,
+      tenantId: dependent.tenantId,
+      employeeId: dependent.employeeId,
+      fullName: dependent.fullName,
+      cpf: dependent.cpf ?? undefined,
+      birthDate: dependent.birthDate.toISOString(),
+      relationshipType: dependent.relationshipType,
+      status: dependent.status,
+      notes: dependent.notes ?? undefined,
+      createdAt: dependent.createdAt.toISOString(),
+      updatedAt: dependent.updatedAt.toISOString(),
     };
   }
 

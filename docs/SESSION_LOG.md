@@ -2778,3 +2778,16 @@
 **Arquivos alterados:** `docs/PRODUCT.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md` e `docs/SESSION_LOG.md`.
 
 **Resultado:** a documentação nao volta mais a sugerir que a persistencia relacional ainda seja uma pendencia em aberto.
+
+## 2026-06-12 - Dependentes do colaborador
+
+**Objetivo:** materializar o agregado minimo de dependentes do colaborador em runtime e registrar o proximo gap de UC-SEC.
+
+**O que foi feito:** o backend recebeu o modelo `employee_dependents` com relacao a tenant e employee, rotas para listar, criar, atualizar e inativar dependentes, auditoria relacional e teste de integracao; a documentação de backend, o pacote UC-ADM, o produto, a memoria, o handoff e o backlog foram sincronizados; e o review de UC-SEC apontou consentimento do titular e atendimento de solicitacao do titular como proximo gap real.
+**Observacao complementar:** `docs/PRODUCT.md` tambem foi corrigido para dizer que a base executavel inicial usa PostgreSQL, nao mais um store em arquivo.
+
+**Validações:** `npm run prisma:generate -w @rh/api` passou; `npm run typecheck -w @rh/api` passou; a tentativa de executar o teste de integração alvo falhou por indisponibilidade do Postgres em `localhost:5432` neste ambiente.
+
+**Arquivos alterados:** `apps/api/prisma/schema.prisma`, `apps/api/prisma/migrations/20260612000000_employee_dependents/migration.sql`, `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `docs/PRODUCT.md`, `docs/README-UC-ADM.md`, `docs/RISKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Resultado:** `UC-ADM-004` deixou de ser apenas documental e passou a ter um recorte executável; o próximo gap real identificado ficou em `UC-SEC`.
