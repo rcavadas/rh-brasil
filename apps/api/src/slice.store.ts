@@ -62,6 +62,41 @@ export type EmployeeDependentRecord = {
   updatedAt: string;
 };
 
+export type PrivacyConsentRecord = {
+  id: string;
+  tenantId: string;
+  subjectType: string;
+  subjectId: string;
+  purpose: string;
+  scope?: string;
+  status: string;
+  grantedAt: string;
+  revokedAt?: string;
+  expiresAt?: string;
+  notes?: string;
+  recordedBy?: string;
+  revokedBy?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type DataSubjectRequestRecord = {
+  id: string;
+  tenantId: string;
+  subjectType: string;
+  subjectId: string;
+  requestType: string;
+  status: string;
+  requestedAt: string;
+  resolvedAt?: string;
+  responseSummary?: string;
+  notes?: string;
+  requestedBy?: string;
+  resolvedBy?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type RecruitmentVacancyRequestRecord = {
   id: string;
   tenantId: string;
@@ -1537,6 +1572,240 @@ export class SliceStore implements OnModuleDestroy {
     });
 
     return this.toEmployeeDependentRecord(inactive);
+  }
+
+  async listPrivacyConsents(tenantId: string): Promise<PrivacyConsentRecord[]> {
+    await this.requireTenant(tenantId);
+
+    const consents = await this.prisma.privacyConsent.findMany({
+      where: { tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return consents.map((consent) => this.toPrivacyConsentRecord(consent));
+  }
+
+  async createPrivacyConsent(
+    tenantId: string,
+    payload: {
+      subjectType: string;
+      subjectId: string;
+      purpose: string;
+      scope?: string;
+      status?: string;
+      expiresAt?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<PrivacyConsentRecord> {
+    await this.requireTenant(tenantId);
+
+    const status = payload.status ?? 'accepted';
+    if (!['accepted', 'refused'].includes(status)) {
+      throw new ConflictException(`invalid consent status ${status}`);
+    }
+
+    const expiresAt = payload.expiresAt ? new Date(payload.expiresAt) : undefined;
+    if (payload.expiresAt && Number.isNaN(expiresAt!.getTime())) {
+      throw new ConflictException(`invalid consent expiresAt ${payload.expiresAt}`);
+    }
+
+    const now = new Date();
+    const consent = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.privacyConsent.create({
+        data: {
+          tenantId,
+          subjectType: payload.subjectType,
+          subjectId: payload.subjectId,
+          purpose: payload.purpose,
+          scope: payload.scope ?? null,
+          status,
+          grantedAt: now,
+          expiresAt: status === 'accepted' ? expiresAt ?? null : null,
+          notes: payload.notes ?? null,
+          recordedBy: actor ?? null,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          status === 'accepted' ? 'privacy.consent.recorded' : 'privacy.consent.refused',
+          'privacyConsent',
+          created.id,
+          { subjectType: payload.subjectType, subjectId: payload.subjectId, purpose: payload.purpose, status, actor },
+          now,
+        ),
+      });
+
+      return created;
+    });
+
+    return this.toPrivacyConsentRecord(consent);
+  }
+
+  async revokePrivacyConsent(
+    tenantId: string,
+    consentId: string,
+    actor?: string,
+    notes?: string,
+  ): Promise<PrivacyConsentRecord> {
+    await this.requireTenant(tenantId);
+
+    const current = await this.requirePrivacyConsent(tenantId, consentId);
+    if (current.status === 'revoked') {
+      throw new ConflictException(`consent ${consentId} is already revoked`);
+    }
+    if (current.status === 'refused') {
+      throw new ConflictException(`consent ${consentId} was refused and cannot be revoked`);
+    }
+
+    const now = new Date();
+    const revoked = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.privacyConsent.update({
+        where: { id: consentId },
+        data: {
+          status: 'revoked',
+          revokedAt: now,
+          revokedBy: actor ?? null,
+          notes: notes ?? current.notes,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'privacy.consent.revoked',
+          'privacyConsent',
+          next.id,
+          {
+            subjectType: next.subjectType,
+            subjectId: next.subjectId,
+            purpose: next.purpose,
+            status: 'revoked',
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toPrivacyConsentRecord(revoked);
+  }
+
+  async listDataSubjectRequests(tenantId: string): Promise<DataSubjectRequestRecord[]> {
+    await this.requireTenant(tenantId);
+
+    const requests = await this.prisma.dataSubjectRequest.findMany({
+      where: { tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return requests.map((request) => this.toDataSubjectRequestRecord(request));
+  }
+
+  async createDataSubjectRequest(
+    tenantId: string,
+    payload: {
+      subjectType: string;
+      subjectId: string;
+      requestType: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<DataSubjectRequestRecord> {
+    await this.requireTenant(tenantId);
+
+    const now = new Date();
+    const request = await this.prisma.$transaction(async (tx) => {
+      const created = await tx.dataSubjectRequest.create({
+        data: {
+          tenantId,
+          subjectType: payload.subjectType,
+          subjectId: payload.subjectId,
+          requestType: payload.requestType,
+          status: 'open',
+          requestedAt: now,
+          notes: payload.notes ?? null,
+          requestedBy: actor ?? null,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'privacy.request.created',
+          'dataSubjectRequest',
+          created.id,
+          { subjectType: payload.subjectType, subjectId: payload.subjectId, requestType: payload.requestType, actor },
+          now,
+        ),
+      });
+
+      return created;
+    });
+
+    return this.toDataSubjectRequestRecord(request);
+  }
+
+  async resolveDataSubjectRequest(
+    tenantId: string,
+    requestId: string,
+    payload: {
+      status?: string;
+      responseSummary?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<DataSubjectRequestRecord> {
+    await this.requireTenant(tenantId);
+
+    const current = await this.requireDataSubjectRequest(tenantId, requestId);
+    if (current.status !== 'open') {
+      throw new ConflictException(`data subject request ${requestId} is already ${current.status}`);
+    }
+
+    const status = payload.status ?? 'completed';
+    if (!['completed', 'rejected'].includes(status)) {
+      throw new ConflictException(`invalid data subject request status ${status}`);
+    }
+
+    const now = new Date();
+    const resolved = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.dataSubjectRequest.update({
+        where: { id: requestId },
+        data: {
+          status,
+          resolvedAt: now,
+          responseSummary: payload.responseSummary ?? current.responseSummary ?? null,
+          notes: payload.notes ?? current.notes,
+          resolvedBy: actor ?? null,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          status === 'completed' ? 'privacy.request.resolved' : 'privacy.request.rejected',
+          'dataSubjectRequest',
+          next.id,
+          {
+            subjectType: next.subjectType,
+            subjectId: next.subjectId,
+            requestType: next.requestType,
+            status,
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toDataSubjectRequestRecord(resolved);
   }
 
   async createRecruitmentVacancyRequest(
@@ -11133,6 +11402,24 @@ export class SliceStore implements OnModuleDestroy {
     return rescission;
   }
 
+  private async requirePrivacyConsent(tenantId: string, consentId: string) {
+    const consent = await this.prisma.privacyConsent.findFirst({ where: { id: consentId, tenantId } });
+    if (!consent) {
+      throw new NotFoundException(`consent ${consentId} not found`);
+    }
+
+    return consent;
+  }
+
+  private async requireDataSubjectRequest(tenantId: string, requestId: string) {
+    const request = await this.prisma.dataSubjectRequest.findFirst({ where: { id: requestId, tenantId } });
+    if (!request) {
+      throw new NotFoundException(`data subject request ${requestId} not found`);
+    }
+
+    return request;
+  }
+
   private auditData(
     tenantId: string,
     action: string,
@@ -11223,6 +11510,80 @@ export class SliceStore implements OnModuleDestroy {
       notes: dependent.notes ?? undefined,
       createdAt: dependent.createdAt.toISOString(),
       updatedAt: dependent.updatedAt.toISOString(),
+    };
+  }
+
+  private toPrivacyConsentRecord(
+    consent: {
+      id: string;
+      tenantId: string;
+      subjectType: string;
+      subjectId: string;
+      purpose: string;
+      scope: string | null;
+      status: string;
+      grantedAt: Date;
+      revokedAt: Date | null;
+      expiresAt: Date | null;
+      notes: string | null;
+      recordedBy: string | null;
+      revokedBy: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+  ): PrivacyConsentRecord {
+    return {
+      id: consent.id,
+      tenantId: consent.tenantId,
+      subjectType: consent.subjectType,
+      subjectId: consent.subjectId,
+      purpose: consent.purpose,
+      scope: consent.scope ?? undefined,
+      status: consent.status,
+      grantedAt: consent.grantedAt.toISOString(),
+      revokedAt: consent.revokedAt?.toISOString(),
+      expiresAt: consent.expiresAt?.toISOString(),
+      notes: consent.notes ?? undefined,
+      recordedBy: consent.recordedBy ?? undefined,
+      revokedBy: consent.revokedBy ?? undefined,
+      createdAt: consent.createdAt.toISOString(),
+      updatedAt: consent.updatedAt.toISOString(),
+    };
+  }
+
+  private toDataSubjectRequestRecord(
+    request: {
+      id: string;
+      tenantId: string;
+      subjectType: string;
+      subjectId: string;
+      requestType: string;
+      status: string;
+      requestedAt: Date;
+      resolvedAt: Date | null;
+      responseSummary: string | null;
+      notes: string | null;
+      requestedBy: string | null;
+      resolvedBy: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+  ): DataSubjectRequestRecord {
+    return {
+      id: request.id,
+      tenantId: request.tenantId,
+      subjectType: request.subjectType,
+      subjectId: request.subjectId,
+      requestType: request.requestType,
+      status: request.status,
+      requestedAt: request.requestedAt.toISOString(),
+      resolvedAt: request.resolvedAt?.toISOString(),
+      responseSummary: request.responseSummary ?? undefined,
+      notes: request.notes ?? undefined,
+      requestedBy: request.requestedBy ?? undefined,
+      resolvedBy: request.resolvedBy ?? undefined,
+      createdAt: request.createdAt.toISOString(),
+      updatedAt: request.updatedAt.toISOString(),
     };
   }
 

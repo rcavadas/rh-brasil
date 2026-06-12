@@ -317,3 +317,5 @@ Sistema de RH corporativo para o mercado brasileiro.
 - O runtime agora tambem possui o agregado minimo de dependentes do colaborador, com CRUD, inativacao e auditoria.
 - O review de UC-SEC apontou que consentimento do titular e atendimento de solicitacao do titular continuam sem runtime dedicado e seguem como proximo gap real de governanca/LGPD.
 - `docs/PRODUCT.md` foi corrigido para dizer explicitamente que a base executavel inicial usa PostgreSQL, nao mais um store em arquivo.
+- O runtime minimo de UC-SEC agora tambem cobre consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
+- O proximo gap real de UC-SEC passou a ser a camada de anonimização e politica de retencao.

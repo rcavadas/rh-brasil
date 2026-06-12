@@ -34,6 +34,8 @@ model Tenant {
   terminationEsocialTransmissions TerminationEsocialTransmission[]
   benefitCatalogs BenefitCatalog[]
   employeeBenefits EmployeeBenefit[]
+  privacyConsents PrivacyConsent[]
+  dataSubjectRequests DataSubjectRequest[]
   vacationBalances VacationBalance[]
   vacationRequests VacationRequest[]
   vacationRequestPeriods VacationRequestPeriod[]
@@ -189,6 +191,51 @@ model EmployeeDependent {
   @@index([tenantId, employeeId])
   @@index([tenantId, status])
   @@map("employee_dependents")
+}
+
+model PrivacyConsent {
+  id           String   @id @default(uuid())
+  tenantId     String
+  subjectType  String
+  subjectId    String
+  purpose      String
+  scope        String?
+  status       String   @default("accepted")
+  grantedAt    DateTime  @default(now())
+  revokedAt    DateTime?
+  expiresAt    DateTime?
+  notes        String?
+  recordedBy   String?
+  revokedBy    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, subjectType, subjectId])
+  @@index([tenantId, status])
+  @@map("privacy_consents")
+}
+
+model DataSubjectRequest {
+  id              String   @id @default(uuid())
+  tenantId        String
+  subjectType     String
+  subjectId       String
+  requestType     String
+  status          String   @default("open")
+  requestedAt     DateTime @default(now())
+  resolvedAt      DateTime?
+  responseSummary String?
+  notes           String?
+  requestedBy     String?
+  resolvedBy      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, subjectType, subjectId])
+  @@index([tenantId, status])
+  @@map("data_subject_requests")
 }
 
 model BenefitCatalog {

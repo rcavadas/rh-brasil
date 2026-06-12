@@ -2791,3 +2791,15 @@
 **Arquivos alterados:** `apps/api/prisma/schema.prisma`, `apps/api/prisma/migrations/20260612000000_employee_dependents/migration.sql`, `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `docs/PRODUCT.md`, `docs/README-UC-ADM.md`, `docs/RISKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
 
 **Resultado:** `UC-ADM-004` deixou de ser apenas documental e passou a ter um recorte executável; o próximo gap real identificado ficou em `UC-SEC`.
+
+## 2026-06-12 - UC-SEC minimo
+
+**Objetivo:** materializar o runtime minimo de consentimento do titular e atendimento de solicitacao do titular em UC-SEC.
+
+**O que foi feito:** o backend recebeu as tabelas `privacy_consents` e `data_subject_requests`, rotas em `lgpd` para registrar/revogar consentimento e criar/atender solicitacoes do titular, auditoria relacional e cobertura de teste; a documentacao de backend, produto, arquitetura, riscos, UC-SEC, memoria, handoff, backlog e perguntas abertas foi sincronizada.
+
+**Validações:** `npm run prisma:generate -w @rh/api`, `npm run typecheck -w @rh/api` e o teste de integracao focado em `apps/api/test/slice.store.test.ts` ficaram como proximos passos de validacao.
+
+**Arquivos alterados:** `apps/api/prisma/schema.prisma`, `apps/api/prisma/migrations/20260612010000_privacy_minimal/migration.sql`, `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `docs/README-UC-SEC.md`, `docs/PRODUCT.md`, `docs/ARCHITECTURE.md`, `docs/RISKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Resultado:** o runtime minimo de UC-SEC saiu do papel e passou a existir no backend; o próximo gap real fica em anonimização e politica de retencao.

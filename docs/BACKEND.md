@@ -124,6 +124,12 @@ Regra operacional: o retry SST de `UC-ESO` somente deve ser exercitado com trans
 - `GET /api/v1/tenants/:tenantId/benefits/assignments`
 - `POST /api/v1/tenants/:tenantId/benefits/assignments/:assignmentId/suspend`
 - `POST /api/v1/tenants/:tenantId/benefits/assignments/:assignmentId/cancel`
+- `GET /api/v1/tenants/:tenantId/lgpd/consents`
+- `POST /api/v1/tenants/:tenantId/lgpd/consents`
+- `POST /api/v1/tenants/:tenantId/lgpd/consents/:consentId/revoke`
+- `GET /api/v1/tenants/:tenantId/lgpd/requests`
+- `POST /api/v1/tenants/:tenantId/lgpd/requests`
+- `POST /api/v1/tenants/:tenantId/lgpd/requests/:requestId/resolve`
 - `POST /api/v1/tenants/:tenantId/vacations/balances`
 - `GET /api/v1/tenants/:tenantId/vacations/balances`
 - `POST /api/v1/tenants/:tenantId/vacations/requests`
@@ -171,6 +177,7 @@ Regra operacional: o retry SST de `UC-ESO` somente deve ser exercitado com trans
 
 O slice inicial agora usa Prisma com PostgreSQL para persistencia relacional.
 A base executavel de admissao agora tambem inclui o agregado minimo de dependentes do colaborador, com CRUD, inativacao e auditoria.
+A camada minima de UC-SEC agora inclui consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional, trilha de auditoria e rotas dedicadas em `lgpd`.
 A etapa 1 da admissao ja esta implementada no backend como solicitacao rastreavel por tenant, com cancelamento controlado e auditoria.
 O checklist documental minimo da admissao tambem entrou no runtime, com lista dos itens obrigatorios, recebimento item a item e transicao automatica para pendencia ou revisao.
 A formalizacao contratual separada tambem entrou no runtime como snapshot proprio, com vigencia, tipo de contrato e transicao da admissao para `completed`.

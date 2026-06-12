@@ -90,7 +90,8 @@
 - [x] Implementar a edição mínima de ambientes e riscos ocupacionais do SST.
 - [x] Implementar a edição mínima de PGR e PCMSO do SST.
 - [x] Implementar o agregado minimo de dependentes do colaborador com CRUD, inativacao e auditoria.
-- [ ] Implementar um runtime minimo para consentimento do titular e atendimento de solicitacao do titular em UC-SEC.
+- [x] Implementar um runtime minimo para consentimento do titular e atendimento de solicitacao do titular em UC-SEC.
+- [ ] Implementar runtime minimo de anonimização e politica de retencao em UC-SEC.
 
 ## Concluídas
 

@@ -50,6 +50,7 @@ A camada funcional catalogada foi expandida e consolidada em UC-JOR, UC-FOL, UC-
 - O backend recebeu persistencia minima para calendarios de feriados, regras de tolerancia, dispositivos de ponto, calculo/aprovacao de adicional noturno, calculo/aprovacao de DSR e lote auditavel de consolidacao para folha.
 No slice executavel atual, `Employee` e a projecao operacional de `VinculoTrabalhista`; o modelo conceitual fica reservado para a evolucao posterior do dominio.
 - O backend tambem possui a primeira camada funcional de beneficios, com catalogo por tenant e atribuicao, suspensao e cancelamento de beneficios para colaboradores.
+- O backend tambem possui runtime minimo de UC-SEC para consentimento do titular e atendimento de solicitacao do titular, com tabelas proprias, auditoria e rotas dedicadas em `lgpd`.
 - O backend tambem possui a primeira camada funcional de ferias, com saldo por periodo, solicitacao, aprovacao e cancelamento auditavel.
 - O backend tambem possui um dossie documental de admissao, com documentos de onboarding versionados e assinatura auditavel, acoplado ao fluxo de formalizacao contratual.
 - O backend tambem valida a janela concessiva derivada e bloqueia solicitacoes de ferias com conflito de datas, mantendo a memoria do periodo aquisitivo no runtime.

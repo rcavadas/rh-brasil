@@ -74,3 +74,7 @@ O `UC-SEC` e a camada transversal de seguranca, privacidade e governanca que pro
 - Consentimento e solicitacoes do titular devem ser rastreaveis e auditaveis.
 - Anonimizacao e retencao exigem finalidade, escopo e versionamento.
 - Incidentes e auditoria devem preservar a trilha sem expor dados sensiveis indevidos.
+
+## Atualizacao de runtime
+
+- Consentimento do titular e atendimento de solicitacao do titular agora possuem runtime minimo no backend, com persistencia relacional e auditoria.

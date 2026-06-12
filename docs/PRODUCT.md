@@ -31,6 +31,7 @@ RH Brasil e uma plataforma SaaS de gestao do ciclo de vida do colaborador para e
 - A Onda 6 agora tambem possui uma trilha de roadmap no portal, com os dominios complementares e a sequencia de expansao explicitadas para o tenant ativo.
 - O pacote de ponto agora tambem possui persistencia minima para calendarios de feriados, regras de tolerancia e dispositivos.
 - O cadastro-base do colaborador agora tambem possui o agregado minimo de dependentes, com CRUD, inativacao e auditoria.
+- O pacote UC-SEC agora tambem possui runtime minimo para consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
 - O adicional noturno do pacote UC-JOR agora tambem possui calculo, aprovacao e trilha de auditoria em runtime, com memoria por competencia.
 - O DSR e o descanso semanal do pacote UC-JOR agora tambem possuem calculo, aprovacao e trilha de auditoria em runtime, com memoria por competencia.
 - A consolidacao de eventos de ponto para folha do pacote UC-JOR agora tambem possui lote auditavel em runtime, com mapeamento versionado para rubricas de folha.

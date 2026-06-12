@@ -61,6 +61,8 @@ async function resetDatabase(): Promise<void> {
       "point_marks",
       "employees",
       "employee_dependents",
+      "privacy_consents",
+      "data_subject_requests",
       "persons",
       "companies",
       "tenants"
@@ -145,6 +147,65 @@ test('slice relacional manages employee dependents with audit trail', async () =
   assert.equal(updated.fullName, 'Dependente Teste Atualizado');
   assert.equal(inactive.status, 'inactive');
   assert.equal(events.at(-1)?.action, 'dependent.inactivated');
+
+  await store.close();
+});
+
+test('slice relacional manages lgpd consent and subject requests with audit trail', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa LGPD', 'empresa-lgpd');
+  const company = await store.createCompany(tenant.id, 'Empresa LGPD LTDA', 'LGPD', '11223344000166');
+  const person = await store.createPerson(tenant.id, 'Pessoa LGPD', '98765432100');
+  const employee = await store.createEmployee(tenant.id, company.id, person.id, 'LGPD-001');
+
+  const consent = await store.createPrivacyConsent(
+    tenant.id,
+    {
+      subjectType: 'employee',
+      subjectId: employee.id,
+      purpose: 'benefits administration',
+      scope: 'health-plan-processing',
+      status: 'accepted',
+      expiresAt: '2027-01-01T00:00:00.000Z',
+      notes: 'initial consent',
+    },
+    'oidc-subject-consent',
+  );
+
+  const consents = await store.listPrivacyConsents(tenant.id);
+  const revoked = await store.revokePrivacyConsent(tenant.id, consent.id, 'oidc-subject-consent', 'revoked on request');
+  const request = await store.createDataSubjectRequest(
+    tenant.id,
+    {
+      subjectType: 'employee',
+      subjectId: employee.id,
+      requestType: 'access',
+      notes: 'needs a copy of the stored personal data',
+    },
+    'oidc-subject-request',
+  );
+  const requests = await store.listDataSubjectRequests(tenant.id);
+  const resolved = await store.resolveDataSubjectRequest(
+    tenant.id,
+    request.id,
+    {
+      status: 'completed',
+      responseSummary: 'data export prepared and delivered',
+      notes: 'request closed',
+    },
+    'oidc-subject-request',
+  );
+  const events = await store.listAuditEvents(tenant.id);
+
+  assert.equal(consents.length, 1);
+  assert.equal(consents[0]?.status, 'accepted');
+  assert.equal(revoked.status, 'revoked');
+  assert.equal(requests.length, 1);
+  assert.equal(resolved.status, 'completed');
+  assert.equal(resolved.responseSummary, 'data export prepared and delivered');
+  assert.equal(events.at(-1)?.action, 'privacy.request.resolved');
+  assert.equal(events.length, 8);
 
   await store.close();
 });

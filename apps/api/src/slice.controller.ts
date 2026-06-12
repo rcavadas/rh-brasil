@@ -112,6 +112,76 @@ class UpdateEmployeeDependentDto {
   notes?: string;
 }
 
+class CreatePrivacyConsentDto {
+  @IsString()
+  @IsNotEmpty()
+  subjectType!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  subjectId!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  purpose!: string;
+
+  @IsOptional()
+  @IsString()
+  scope?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['accepted', 'refused'])
+  status?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  expiresAt?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class RevokePrivacyConsentDto {
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class CreateDataSubjectRequestDto {
+  @IsString()
+  @IsNotEmpty()
+  subjectType!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  subjectId!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  requestType!: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class ResolveDataSubjectRequestDto {
+  @IsOptional()
+  @IsString()
+  @IsIn(['completed', 'rejected'])
+  status?: string;
+
+  @IsOptional()
+  @IsString()
+  responseSummary?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class CreateRecruitmentVacancyRequestDto {
   @IsOptional()
   @IsString()
@@ -2748,6 +2818,95 @@ export class SliceController {
       tenantId,
       employeeId,
       dependentId,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/lgpd/consents')
+  listPrivacyConsents(@Param('tenantId') tenantId: string) {
+    return this.store.listPrivacyConsents(tenantId);
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor', 'employee')
+  @Post(':tenantId/lgpd/consents')
+  createPrivacyConsent(
+    @Param('tenantId') tenantId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreatePrivacyConsentDto,
+  ) {
+    return this.store.createPrivacyConsent(
+      tenantId,
+      {
+        subjectType: body.subjectType,
+        subjectId: body.subjectId,
+        purpose: body.purpose,
+        scope: body.scope,
+        status: body.status,
+        expiresAt: body.expiresAt,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'employee')
+  @Post(':tenantId/lgpd/consents/:consentId/revoke')
+  revokePrivacyConsent(
+    @Param('tenantId') tenantId: string,
+    @Param('consentId') consentId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: RevokePrivacyConsentDto,
+  ) {
+    return this.store.revokePrivacyConsent(
+      tenantId,
+      consentId,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+      body.notes,
+    );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/lgpd/requests')
+  listDataSubjectRequests(@Param('tenantId') tenantId: string) {
+    return this.store.listDataSubjectRequests(tenantId);
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor', 'employee')
+  @Post(':tenantId/lgpd/requests')
+  createDataSubjectRequest(
+    @Param('tenantId') tenantId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreateDataSubjectRequestDto,
+  ) {
+    return this.store.createDataSubjectRequest(
+      tenantId,
+      {
+        subjectType: body.subjectType,
+        subjectId: body.subjectId,
+        requestType: body.requestType,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/requests/:requestId/resolve')
+  resolveDataSubjectRequest(
+    @Param('tenantId') tenantId: string,
+    @Param('requestId') requestId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: ResolveDataSubjectRequestDto,
+  ) {
+    return this.store.resolveDataSubjectRequest(
+      tenantId,
+      requestId,
+      {
+        status: body.status,
+        responseSummary: body.responseSummary,
+        notes: body.notes,
+      },
       auth?.source === 'oidc' ? auth.subject : undefined,
     );
   }
