@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm ci && npm run build -w @rh/worker
+RUN npm ci && npx prisma generate --schema apps/api/prisma/schema.prisma && npm run build -w @rh/worker
 
 CMD ["node", "apps/worker/dist/main.js"]
