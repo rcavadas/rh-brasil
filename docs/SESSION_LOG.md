@@ -2738,3 +2738,17 @@
 **Riscos:** o retry SST de `UC-ESO` pode aceitar um contexto de rota inconsistente porque o backend revalida apenas `transmissionId`.
 
 **Próxima ação:** se a cobertura de eSocial SST for priorizada, endurecer a checagem do recurso pai nos endpoints de retry.
+
+## 2026-06-12 - Endurecimento e redeploy da stack RH
+
+**Objetivo:** publicar o endurecimento do retry SST em homologacao e validar o runtime apos o deploy.
+
+**O que foi feito:** o commit `4ea25cc` foi enviado para `origin/main`; a stack `rh` no endpoint `10` foi redeployada no Portainer; o smoke `npm run smoke:sst` passou novamente; a transmissao criada pelo smoke foi consultada no runtime publicado; e a chamada de retry pela rota errada retornou `409` porque o registro ainda estava em `sent`, nao em `failed`.
+
+**Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `npm run smoke:sst` passou contra `http://172.17.0.3:3000`; a stack `rh` voltou para `Status = 1` no Portainer; a listagem de transmissao mostrou o envio do smoke com `status: sent`; e a rota de retry com pai incorreto respondeu `409` por regra de estado.
+
+**Riscos:** a verificacao exata do ramo `not found for <parent>` continua dependente de uma transmissao `failed` no runtime publicado; nesta sessao a transmissao de smoke permaneceu `sent`.
+
+**Próxima ação:** se for necessario provar o ramo exato de mismatch em runtime, produzir uma transmissao ocupacional em `failed` e repetir o retry pela rota errada.

@@ -966,3 +966,6 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - Data: 2026-06-12
 - O que foi feito: `npm run smoke:sst` passou a executar o smoke basal de SST contra a stack RH publicada.
 - Reforco de revisao: os retries SST de `UC-ESO` agora validam o identificador do recurso pai da rota antes de reprocessar a transmissao.
+- O commit `4ea25cc` foi enviado para `origin/main` e a stack `rh` no endpoint `10` foi redeployada no Portainer com sucesso.
+- O smoke `npm run smoke:sst` passou novamente apos o redeploy.
+- A transmissao do smoke permaneceu em `sent`; o retry pela rota errada respondeu `409` por nao estar em `failed`, entao a verificacao exata do ramo de mismatch de pai continua coberta pelo teste unitario, nao pelo runtime desta sessao.

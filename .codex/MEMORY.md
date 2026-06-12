@@ -308,3 +308,6 @@ Sistema de RH corporativo para o mercado brasileiro.
 - Em 2026-06-12, a frente de SST foi validada em runtime na stack `RH` de homologacao com um smoke HTTP real cobrindo ambiente, risco, PGR, PCMSO, CAT, EPI, exame/ASO, treinamento e transmissao eSocial basal.
 - O comando `npm run smoke:sst` foi adicionado como guardrail reutilizavel da trilha basal de SST na homologacao.
 - A validacao de retry de eSocial SST em `UC-ESO` foi endurecida para comparar `transmissionId` com o recurso pai esperado na rota.
+- O commit `4ea25cc` foi publicado em `main`, a stack `rh` no endpoint `10` foi redeployada no Portainer e voltou para `Status = 1`.
+- O smoke `npm run smoke:sst` voltou a passar apos o redeploy; a transmissao SST do smoke ficou em `sent`.
+- A chamada de retry pela rota errada contra essa transmissao respondeu `409` por o registro nao estar em estado `failed`; a ramificacao de mismatch de pai segue coberta no teste de unidade, mas nao foi exercitada em runtime nesta sessao.
