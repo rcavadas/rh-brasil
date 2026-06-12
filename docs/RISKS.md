@@ -86,6 +86,7 @@
 - A frente de publicacao em GHCR foi destravada: o repo ficou publico, as imagens `rh-brasil-public-*` passaram a ser puxaveis anonimamente e a stack `rh-brasil-public-hom-final` sobe com sucesso no Portainer.
 - O worker da homologacao exigiu correcao no `apps/worker/Dockerfile` para gerar o Prisma Client durante o build; sem isso a imagem subia e o processo morria com `@prisma/client did not initialize yet`.
 - O mapa de endpoints agora usa portas altas para evitar colisao com outros projetos do host compartilhado: `38080` para Keycloak e `29000/29001` para MinIO.
+- O realm `rh` nao foi servido apenas pelo import automatico do Keycloak; ele precisou ser criado explicitamente pela admin API na instancia de homologacao antes do smoke OIDC passar. Isso indica que futuros redeploys devem manter o seeding de realm como passo verificavel, nao presumido.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.

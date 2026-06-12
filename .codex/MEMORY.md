@@ -303,3 +303,4 @@ Sistema de RH corporativo para o mercado brasileiro.
 - A frente de GHCR e homologacao foi fechada: o repo foi tornado publico, as imagens `rh-brasil-public-*` passaram a ser puxaveis anonimamente e a stack `rh-brasil-public-hom-final` no endpoint `10` subiu com sucesso.
 - O worker da homologacao precisava de `npx prisma generate --schema apps/api/prisma/schema.prisma` no build da imagem; sem isso o processo morria com `@prisma/client did not initialize yet`.
 - O manifesto de homologacao na raiz passou a evitar conflitos de porta no host compartilhado com `postgres`/`redis` internos e portas publicas `38080` (Keycloak) e `29000/29001` (MinIO).
+- O realm `rh` do Keycloak nao ficou disponivel apenas com o import do container; nesta sessao foi provisionado explicitamente pela admin API do Keycloak e o smoke OIDC passou depois disso.
