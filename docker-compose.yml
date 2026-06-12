@@ -7,8 +7,8 @@ services:
       KEYCLOAK_URL: http://keycloak:8080
       AUTH_MODE: mixed
       ESOCIAL_QUEUE_ENABLED: "true"
-      OIDC_ISSUER_URL: ${OIDC_ISSUER_URL:-https://172.17.0.3:8080/realms/rh}
-      OIDC_JWKS_URL: ${OIDC_JWKS_URL:-https://172.17.0.3:8080/realms/rh/protocol/openid-connect/certs}
+      OIDC_ISSUER_URL: ${OIDC_ISSUER_URL:-https://172.17.0.3:18080/realms/rh}
+      OIDC_JWKS_URL: ${OIDC_JWKS_URL:-https://172.17.0.3:18080/realms/rh/protocol/openid-connect/certs}
       OIDC_AUDIENCE: ""
       CORS_ORIGINS: ${CORS_ORIGINS:-https://172.17.0.3:5173}
     depends_on:
@@ -31,7 +31,7 @@ services:
       WEB_PUBLIC_ORIGIN: ${WEB_PUBLIC_ORIGIN:-https://172.17.0.3:5173}
       API_INTERNAL_URL: http://api:3000
       WEB_REDIS_URL: redis://redis:6379
-      KEYCLOAK_BROWSER_URL: ${KEYCLOAK_BROWSER_URL:-https://172.17.0.3:8080}
+      KEYCLOAK_BROWSER_URL: ${KEYCLOAK_BROWSER_URL:-https://172.17.0.3:18080}
       KEYCLOAK_INTERNAL_URL: http://keycloak:8080
       KEYCLOAK_REALM: rh
       KEYCLOAK_CLIENT_ID: rh-web
@@ -98,12 +98,12 @@ services:
       KC_DB_URL_DATABASE: rh
       KC_DB_USERNAME: rh
       KC_DB_PASSWORD: rh
-      KC_HOSTNAME: ${KC_HOSTNAME:-https://172.17.0.3:8080}
+      KC_HOSTNAME: ${KC_HOSTNAME:-https://172.17.0.3:18080}
       KC_HOSTNAME_STRICT: "false"
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8080:8080"
+      - "18080:8080"
     volumes:
       - ./infra/keycloak:/opt/keycloak/data/import:ro
     depends_on:
