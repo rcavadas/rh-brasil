@@ -2764,3 +2764,5 @@
 **Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
 
 **Resultado:** o ramo exato que faltava ficou validado em runtime e nao restaram pontas soltas na trilha basal de SST.
+
+**Observacao:** a nota operacional do contrato SST foi registrada em `docs/BACKEND.md`, deixando explicito que `mark-failed` e retry com pai incorreto so fazem sentido com transmissao previamente em `failed`.

@@ -91,6 +91,7 @@ Para validar ou forcar o ciclo de reprocessamento em homologacao, a API tambem e
 - `POST /api/v1/tenants/:tenantId/sst/exams/:examId/esocial-transmissions/:transmissionId/mark-failed`
 
 Esses endpoints de marcação de falha servem para operacao controlada e validacao do contrato de retry com contexto de rota.
+Regra operacional: o retry SST de `UC-ESO` somente deve ser exercitado com transmissao em `failed`; se o estado ainda nao for `failed`, a API responde pela regra de estado antes de avaliar o pai da rota. Quando a transmissao estiver em `failed`, o parent da rota continua obrigatorio e um pai incorreto deve retornar `404 not found for <parent>`.
 - `POST /api/v1/tenants/:tenantId/night-shift-allowance/calculate`
 - `GET /api/v1/tenants/:tenantId/night-shift-allowance/calculations/:calculationId`
 - `POST /api/v1/tenants/:tenantId/night-shift-allowance/calculations/:calculationId/approve`
