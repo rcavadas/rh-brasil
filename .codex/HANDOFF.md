@@ -949,3 +949,4 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - Arquivos alterados: `docker-compose.yml`, `apps/worker/Dockerfile`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/HOMOLOGATION_ENDPOINT_MAP.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
 - Resultado: a homologacao ficou funcional, com worker vivo e sem dependencias manuais de credencial GHCR.
 - O realm `rh` do Keycloak nao apareceu apenas com o import do container; ele foi criado explicitamente via admin API em `38080`, e o smoke OIDC passou depois disso.
+- O endpoint `10` foi limpo dos stacks RH antigos quebrados e a stack final ativa agora se chama `RH`.

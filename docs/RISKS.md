@@ -87,6 +87,7 @@
 - O worker da homologacao exigiu correcao no `apps/worker/Dockerfile` para gerar o Prisma Client durante o build; sem isso a imagem subia e o processo morria com `@prisma/client did not initialize yet`.
 - O mapa de endpoints agora usa portas altas para evitar colisao com outros projetos do host compartilhado: `38080` para Keycloak e `29000/29001` para MinIO.
 - O realm `rh` nao foi servido apenas pelo import automatico do Keycloak; ele precisou ser criado explicitamente pela admin API na instancia de homologacao antes do smoke OIDC passar. Isso indica que futuros redeploys devem manter o seeding de realm como passo verificavel, nao presumido.
+- O endpoint `10` foi limpo dos stacks RH antigos quebrados e agora tem apenas a stack final `RH`, reduzindo a chance de escolher o alvo errado em novas sessoes.
 ## Atualizacao tecnica
 - A stack recomendada ja foi validada em build e runtime no monorepo local.
 - O primeiro vertical slice ja usa Prisma/PostgreSQL no codigo, tem auth/RBAC hibrida com suporte a OIDC/JWKS e foi validado com um fluxo relacional ponta a ponta no compose local, sem dependencia de `x-rh-tenant-id` no caminho feliz OIDC.

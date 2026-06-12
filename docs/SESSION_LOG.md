@@ -2701,12 +2701,12 @@
 
 **Objetivo:** fechar o smoke funcional da homologacao com API, web e Keycloak reais.
 
-**O que foi feito:** a stack `rh-brasil-public-hom-final` permaneceu ativa no Portainer; API e web responderam `200` nos endpoints publicados; o discovery OIDC do realm `rh` retornou `404` inicialmente, entao o realm foi criado explicitamente via admin API do Keycloak em `http://172.17.0.3:38080/admin/realms`; depois disso, `http://172.17.0.3:38080/realms/rh/.well-known/openid-configuration` passou a responder `200`.
+**O que foi feito:** a stack `RH` foi criada no Portainer e passou a ser a unica stack RH ativa no endpoint `10`; API e web responderam `200` nos endpoints publicados; o discovery OIDC do realm `rh` retornou `404` inicialmente, entao o realm foi criado explicitamente via admin API do Keycloak em `http://172.17.0.3:38080/admin/realms`; depois disso, `http://172.17.0.3:38080/realms/rh/.well-known/openid-configuration` passou a responder `200`.
 
 **Arquivos alterados:** `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/HOMOLOGATION_ENDPOINT_MAP.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
 
 **Validações:** `curl http://172.17.0.3:3000/api/health` -> `200`; `curl http://172.17.0.3:5173/health` -> `200`; `curl http://172.17.0.3:38080/realms/rh/.well-known/openid-configuration` -> `200` apos provisionamento do realm; `curl http://172.17.0.3:38080/admin/realms` confirmou que o realm `rh` estava presente.
 
-**Riscos:** o realm depende de seeding explicito na instancia de homologacao; nao assumir que o import do container o manterá disponivel sozinho em futuros redeploys.
+**Riscos:** o realm depende de seeding explicito na instancia de homologacao; nao assumir que o import do container o manterá disponivel sozinho em futuros redeploys. Os stacks RH antigos quebrados foram removidos do endpoint `10` para evitar confusao operacional.
 
 **Próxima ação:** manter esse smoke como guardrail minimo sempre que a stack de homologacao for recriada ou o Keycloak for reiniciado.
