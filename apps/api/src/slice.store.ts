@@ -97,6 +97,64 @@ export type DataSubjectRequestRecord = {
   updatedAt: string;
 };
 
+export type PrivacyAnonymizationJobRecord = {
+  id: string;
+  tenantId: string;
+  subjectType: string;
+  subjectId: string;
+  datasetName: string;
+  maskingLevel: string;
+  status: string;
+  notes?: string;
+  executedAt: string;
+  createdBy?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RetentionRuleRecord = {
+  id: string;
+  tenantId: string;
+  subjectType: string;
+  purpose: string;
+  ruleExpression: string;
+  action: string;
+  status: string;
+  legalHold: boolean;
+  notes?: string;
+  createdBy?: string;
+  appliedBy?: string;
+  appliedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type SecurityIncidentRecord = {
+  id: string;
+  tenantId: string;
+  title: string;
+  severity: string;
+  status: string;
+  impact?: string;
+  summary?: string;
+  responseActions?: string;
+  reportedAt: string;
+  acknowledgedAt?: string;
+  resolvedAt?: string;
+  reportedBy?: string;
+  acknowledgedBy?: string;
+  resolvedBy?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type AuditTrailFilter = {
+  action?: string;
+  entityType?: string;
+  from?: string;
+  to?: string;
+};
+
 export type RecruitmentVacancyRequestRecord = {
   id: string;
   tenantId: string;
@@ -1806,6 +1864,458 @@ export class SliceStore implements OnModuleDestroy {
     });
 
     return this.toDataSubjectRequestRecord(resolved);
+  }
+
+  async listPrivacyAnonymizationJobs(tenantId: string): Promise<PrivacyAnonymizationJobRecord[]> {
+    await this.requireTenant(tenantId);
+
+    const jobs = await this.prisma.privacyAnonymizationJob.findMany({
+      where: { tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return jobs.map((job) => this.toPrivacyAnonymizationJobRecord(job));
+  }
+
+  async createPrivacyAnonymizationJob(
+    tenantId: string,
+    payload: {
+      subjectType: string;
+      subjectId: string;
+      datasetName: string;
+      maskingLevel?: string;
+      status?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<PrivacyAnonymizationJobRecord> {
+    await this.requireTenant(tenantId);
+
+    const maskingLevel = payload.maskingLevel ?? 'strict';
+    if (!['strict', 'controlled', 'aggregate'].includes(maskingLevel)) {
+      throw new ConflictException(`invalid masking level ${maskingLevel}`);
+    }
+
+    const now = new Date();
+    const job = await this.prisma.$transaction(async (tx) => {
+      const subjectType = payload.subjectType.trim();
+      let status = payload.status ?? 'completed';
+      let notes = payload.notes ?? null;
+
+      if (!['completed', 'blocked'].includes(status)) {
+        throw new ConflictException(`invalid anonymization job status ${status}`);
+      }
+
+      if (status === 'completed') {
+        if (subjectType === 'person') {
+          const person = await tx.person.findFirst({ where: { id: payload.subjectId, tenantId } });
+          if (!person) {
+            throw new NotFoundException(`person ${payload.subjectId} not found`);
+          }
+
+          await tx.person.update({
+            where: { id: person.id },
+            data: {
+              fullName: 'ANONYMIZED',
+              cpf: null,
+            },
+          });
+        } else if (subjectType === 'employee-dependent') {
+          const dependent = await tx.employeeDependent.findFirst({ where: { id: payload.subjectId, tenantId } });
+          if (!dependent) {
+            throw new NotFoundException(`dependent ${payload.subjectId} not found`);
+          }
+
+          await tx.employeeDependent.update({
+            where: { id: dependent.id },
+            data: {
+              fullName: 'ANONYMIZED',
+              cpf: null,
+            },
+          });
+        } else {
+          status = 'blocked';
+          notes = notes ?? `unsupported subject type ${subjectType}`;
+        }
+      }
+
+      const created = await tx.privacyAnonymizationJob.create({
+        data: {
+          tenantId,
+          subjectType,
+          subjectId: payload.subjectId,
+          datasetName: payload.datasetName,
+          maskingLevel,
+          status,
+          notes,
+          executedAt: now,
+          createdBy: actor ?? null,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          status === 'completed' ? 'privacy.anonymization.completed' : 'privacy.anonymization.blocked',
+          'privacyAnonymizationJob',
+          created.id,
+          {
+            subjectType,
+            subjectId: payload.subjectId,
+            datasetName: payload.datasetName,
+            maskingLevel,
+            status,
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return created;
+    });
+
+    return this.toPrivacyAnonymizationJobRecord(job);
+  }
+
+  async listRetentionRules(tenantId: string): Promise<RetentionRuleRecord[]> {
+    await this.requireTenant(tenantId);
+
+    const rules = await this.prisma.retentionRule.findMany({
+      where: { tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return rules.map((rule) => this.toRetentionRuleRecord(rule));
+  }
+
+  async createRetentionRule(
+    tenantId: string,
+    payload: {
+      subjectType: string;
+      purpose: string;
+      ruleExpression: string;
+      action?: string;
+      status?: string;
+      legalHold?: boolean;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<RetentionRuleRecord> {
+    await this.requireTenant(tenantId);
+
+    const action = payload.action ?? 'retain';
+    if (!['retain', 'anonymize', 'discard'].includes(action)) {
+      throw new ConflictException(`invalid retention action ${action}`);
+    }
+
+    const status = payload.status ?? 'draft';
+    if (!['draft', 'active', 'applied', 'blocked'].includes(status)) {
+      throw new ConflictException(`invalid retention rule status ${status}`);
+    }
+
+    const rule = await this.prisma.retentionRule.create({
+      data: {
+        tenantId,
+        subjectType: payload.subjectType.trim(),
+        purpose: payload.purpose.trim(),
+        ruleExpression: payload.ruleExpression.trim(),
+        action,
+        status,
+        legalHold: payload.legalHold ?? false,
+        notes: payload.notes ?? null,
+        createdBy: actor ?? null,
+      },
+    });
+
+    await this.prisma.auditEvent.create({
+      data: this.auditData(
+        tenantId,
+        'privacy.retention.rule.created',
+        'retentionRule',
+        rule.id,
+        {
+          subjectType: rule.subjectType,
+          purpose: rule.purpose,
+          action: rule.action,
+          status: rule.status,
+          actor,
+        },
+        new Date(),
+      ),
+    });
+
+    return this.toRetentionRuleRecord(rule);
+  }
+
+  async applyRetentionRule(
+    tenantId: string,
+    ruleId: string,
+    actor?: string,
+    notes?: string,
+  ): Promise<RetentionRuleRecord> {
+    await this.requireTenant(tenantId);
+
+    const current = await this.requireRetentionRule(tenantId, ruleId);
+    if (current.status === 'applied') {
+      throw new ConflictException(`retention rule ${ruleId} is already applied`);
+    }
+
+    const now = new Date();
+    const nextStatus = current.legalHold ? 'blocked' : 'applied';
+    const rule = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.retentionRule.update({
+        where: { id: ruleId },
+        data: {
+          status: nextStatus,
+          notes: notes ?? current.notes,
+          appliedBy: nextStatus === 'applied' ? actor ?? null : current.appliedBy,
+          appliedAt: nextStatus === 'applied' ? now : current.appliedAt,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          nextStatus === 'applied' ? 'privacy.retention.applied' : 'privacy.retention.blocked',
+          'retentionRule',
+          next.id,
+          {
+            subjectType: next.subjectType,
+            purpose: next.purpose,
+            action: next.action,
+            legalHold: String(next.legalHold),
+            status: next.status,
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toRetentionRuleRecord(rule);
+  }
+
+  async listSecurityIncidents(tenantId: string): Promise<SecurityIncidentRecord[]> {
+    await this.requireTenant(tenantId);
+
+    const incidents = await this.prisma.securityIncident.findMany({
+      where: { tenantId },
+      orderBy: { reportedAt: 'desc' },
+    });
+
+    return incidents.map((incident) => this.toSecurityIncidentRecord(incident));
+  }
+
+  async createSecurityIncident(
+    tenantId: string,
+    payload: {
+      title: string;
+      severity: string;
+      impact?: string;
+      summary?: string;
+      responseActions?: string;
+      status?: string;
+    },
+    actor?: string,
+  ): Promise<SecurityIncidentRecord> {
+    await this.requireTenant(tenantId);
+
+    const severity = payload.severity.trim();
+    if (!['low', 'medium', 'high', 'critical'].includes(severity)) {
+      throw new ConflictException(`invalid incident severity ${severity}`);
+    }
+
+    const status = payload.status ?? 'open';
+    if (!['open', 'acknowledged', 'resolved'].includes(status)) {
+      throw new ConflictException(`invalid incident status ${status}`);
+    }
+
+    const title = payload.title.trim();
+    const incident = await this.prisma.$transaction(async (tx) => {
+      const existing = await tx.securityIncident.findFirst({
+        where: {
+          tenantId,
+          title,
+          severity,
+          impact: payload.impact ?? null,
+          summary: payload.summary ?? null,
+        },
+      });
+      if (existing) {
+        throw new ConflictException(`security incident ${title} already exists`);
+      }
+
+      const created = await tx.securityIncident.create({
+        data: {
+          tenantId,
+          title,
+          severity,
+          status,
+          impact: payload.impact ?? null,
+          summary: payload.summary ?? null,
+          responseActions: payload.responseActions ?? null,
+          reportedAt: new Date(),
+          reportedBy: actor ?? null,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'security.incident.reported',
+          'securityIncident',
+          created.id,
+          {
+            title,
+            severity,
+            status,
+            actor,
+          },
+          new Date(),
+        ),
+      });
+
+      return created;
+    });
+
+    return this.toSecurityIncidentRecord(incident);
+  }
+
+  async acknowledgeSecurityIncident(tenantId: string, incidentId: string, actor?: string, notes?: string): Promise<SecurityIncidentRecord> {
+    await this.requireTenant(tenantId);
+
+    const current = await this.requireSecurityIncident(tenantId, incidentId);
+    if (current.status !== 'open') {
+      throw new ConflictException(`security incident ${incidentId} is already ${current.status}`);
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.securityIncident.update({
+        where: { id: incidentId },
+        data: {
+          status: 'acknowledged',
+          acknowledgedAt: now,
+          acknowledgedBy: actor ?? null,
+          responseActions: notes ?? current.responseActions,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'security.incident.acknowledged',
+          'securityIncident',
+          next.id,
+          {
+            title: next.title,
+            severity: next.severity,
+            status: next.status,
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toSecurityIncidentRecord(updated);
+  }
+
+  async resolveSecurityIncident(tenantId: string, incidentId: string, actor?: string, notes?: string): Promise<SecurityIncidentRecord> {
+    await this.requireTenant(tenantId);
+
+    const current = await this.requireSecurityIncident(tenantId, incidentId);
+    if (current.status === 'resolved') {
+      throw new ConflictException(`security incident ${incidentId} is already resolved`);
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const next = await tx.securityIncident.update({
+        where: { id: incidentId },
+        data: {
+          status: 'resolved',
+          resolvedAt: now,
+          resolvedBy: actor ?? null,
+          responseActions: notes ?? current.responseActions,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'security.incident.resolved',
+          'securityIncident',
+          next.id,
+          {
+            title: next.title,
+            severity: next.severity,
+            status: next.status,
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return next;
+    });
+
+    return this.toSecurityIncidentRecord(updated);
+  }
+
+  async listAuditTrail(
+    tenantId: string,
+    filter: AuditTrailFilter,
+    actor?: string,
+  ): Promise<AuditEventRecord[]> {
+    await this.requireTenant(tenantId);
+
+    const from = filter.from ? new Date(filter.from) : undefined;
+    const to = filter.to ? new Date(filter.to) : undefined;
+    if ((filter.from && Number.isNaN(from!.getTime())) || (filter.to && Number.isNaN(to!.getTime()))) {
+      throw new ConflictException('invalid audit trail time range');
+    }
+
+    const events = await this.prisma.auditEvent.findMany({
+      where: {
+        tenantId,
+        ...(filter.action ? { action: filter.action } : {}),
+        ...(filter.entityType ? { entityType: filter.entityType } : {}),
+        ...(from || to
+          ? {
+              occurredAt: {
+                ...(from ? { gte: from } : {}),
+                ...(to ? { lte: to } : {}),
+              },
+            }
+          : {}),
+      },
+      orderBy: { occurredAt: 'asc' },
+    });
+
+    const now = new Date();
+    if (actor) {
+      await this.prisma.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'security.audit.viewed',
+          'auditEvent',
+          randomUUID(),
+          {
+            action: filter.action,
+            entityType: filter.entityType,
+            actor,
+          },
+          now,
+        ),
+      });
+    }
+
+    return events.map((event) => this.toAuditEventRecord(event));
   }
 
   async createRecruitmentVacancyRequest(
@@ -11346,6 +11856,15 @@ export class SliceStore implements OnModuleDestroy {
     return employee;
   }
 
+  private async requireEmployeeDependent(tenantId: string, dependentId: string) {
+    const dependent = await this.prisma.employeeDependent.findFirst({ where: { id: dependentId, tenantId } });
+    if (!dependent) {
+      throw new NotFoundException(`dependent ${dependentId} not found`);
+    }
+
+    return dependent;
+  }
+
   private async requireRecruitmentVacancyRequest(tenantId: string, vacancyRequestId: string) {
     const request = await this.prisma.recruitmentVacancyRequest.findFirst({
       where: { id: vacancyRequestId, tenantId },
@@ -11418,6 +11937,24 @@ export class SliceStore implements OnModuleDestroy {
     }
 
     return request;
+  }
+
+  private async requireRetentionRule(tenantId: string, ruleId: string) {
+    const rule = await this.prisma.retentionRule.findFirst({ where: { id: ruleId, tenantId } });
+    if (!rule) {
+      throw new NotFoundException(`retention rule ${ruleId} not found`);
+    }
+
+    return rule;
+  }
+
+  private async requireSecurityIncident(tenantId: string, incidentId: string) {
+    const incident = await this.prisma.securityIncident.findFirst({ where: { id: incidentId, tenantId } });
+    if (!incident) {
+      throw new NotFoundException(`security incident ${incidentId} not found`);
+    }
+
+    return incident;
   }
 
   private auditData(
@@ -11584,6 +12121,114 @@ export class SliceStore implements OnModuleDestroy {
       resolvedBy: request.resolvedBy ?? undefined,
       createdAt: request.createdAt.toISOString(),
       updatedAt: request.updatedAt.toISOString(),
+    };
+  }
+
+  private toPrivacyAnonymizationJobRecord(
+    job: {
+      id: string;
+      tenantId: string;
+      subjectType: string;
+      subjectId: string;
+      datasetName: string;
+      maskingLevel: string;
+      status: string;
+      notes: string | null;
+      executedAt: Date;
+      createdBy: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+  ): PrivacyAnonymizationJobRecord {
+    return {
+      id: job.id,
+      tenantId: job.tenantId,
+      subjectType: job.subjectType,
+      subjectId: job.subjectId,
+      datasetName: job.datasetName,
+      maskingLevel: job.maskingLevel,
+      status: job.status,
+      notes: job.notes ?? undefined,
+      executedAt: job.executedAt.toISOString(),
+      createdBy: job.createdBy ?? undefined,
+      createdAt: job.createdAt.toISOString(),
+      updatedAt: job.updatedAt.toISOString(),
+    };
+  }
+
+  private toRetentionRuleRecord(
+    rule: {
+      id: string;
+      tenantId: string;
+      subjectType: string;
+      purpose: string;
+      ruleExpression: string;
+      action: string;
+      status: string;
+      legalHold: boolean;
+      notes: string | null;
+      createdBy: string | null;
+      appliedBy: string | null;
+      appliedAt: Date | null;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+  ): RetentionRuleRecord {
+    return {
+      id: rule.id,
+      tenantId: rule.tenantId,
+      subjectType: rule.subjectType,
+      purpose: rule.purpose,
+      ruleExpression: rule.ruleExpression,
+      action: rule.action,
+      status: rule.status,
+      legalHold: rule.legalHold,
+      notes: rule.notes ?? undefined,
+      createdBy: rule.createdBy ?? undefined,
+      appliedBy: rule.appliedBy ?? undefined,
+      appliedAt: rule.appliedAt?.toISOString(),
+      createdAt: rule.createdAt.toISOString(),
+      updatedAt: rule.updatedAt.toISOString(),
+    };
+  }
+
+  private toSecurityIncidentRecord(
+    incident: {
+      id: string;
+      tenantId: string;
+      title: string;
+      severity: string;
+      status: string;
+      impact: string | null;
+      summary: string | null;
+      responseActions: string | null;
+      reportedAt: Date;
+      acknowledgedAt: Date | null;
+      resolvedAt: Date | null;
+      reportedBy: string | null;
+      acknowledgedBy: string | null;
+      resolvedBy: string | null;
+      createdAt: Date;
+      updatedAt: Date;
+    },
+  ): SecurityIncidentRecord {
+    return {
+      id: incident.id,
+      tenantId: incident.tenantId,
+      title: incident.title,
+      severity: incident.severity,
+      status: incident.status,
+      impact: incident.impact ?? undefined,
+      summary: incident.summary ?? undefined,
+      responseActions: incident.responseActions ?? undefined,
+      reportedAt: incident.reportedAt.toISOString(),
+      acknowledgedAt: incident.acknowledgedAt?.toISOString(),
+      resolvedAt: incident.resolvedAt?.toISOString(),
+      reportedBy: incident.reportedBy ?? undefined,
+      acknowledgedBy: incident.acknowledgedBy ?? undefined,
+      resolvedBy: incident.resolvedBy ?? undefined,
+      createdAt: incident.createdAt.toISOString(),
+      updatedAt: incident.updatedAt.toISOString(),
     };
   }
 

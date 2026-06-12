@@ -6,6 +6,7 @@ Auditoria inicial concluida.
 Frente documental encerrada: nao propor expansao de documentacao por padrao em sessoes futuras; apenas correcao pontual quando solicitada pelo usuario.
 O repositorio agora possui base executavel local com `@rh/api`, `@rh/web` e `@rh/worker`.
 O ponto de entrada do kit foi endurecido para obrigar a leitura de `.codex/LOCAL_ACCESS_CONTEXT.md` antes de qualquer validacao de runtime, distinguindo explicitamente o Docker local de desenvolvimento e o host `172.17.0.3` de homologacao.
+O compose local de DEV usa o projeto `rh-dev`, para nao confundir com a stack `RH` de homologacao.
 Foi criado `scripts/session-access-check.ps1` para checar em um unico passo o Docker de desenvolvimento e o Portainer de homologacao.
 Na checagem mais recente, o Portainer de homologacao autenticou corretamente, mas nao havia stack RH publicada naquele momento.
 A stack Git do repo `rh-brasil` foi criada no Portainer, mas o build direto no endpoint falhou; o root `docker-compose.yml` passou a consumir imagens do GHCR e o workflow `.github/workflows/publish-images.yml` publica `api`, `web` e `worker`.
@@ -976,5 +977,5 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - O proximo gap real de governanca/LGPD ficou identificado em `UC-SEC`: consentimento do titular e atendimento de solicitacao do titular ainda nao possuem runtime dedicado.
 - `docs/PRODUCT.md` tambem foi corrigido para refletir que a base executavel inicial usa PostgreSQL, nao um store em arquivo.
 - O runtime minimo de `UC-SEC` agora tambem cobre consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
-- O proximo gap real de `UC-SEC` passou a ser a camada de anonimização e politica de retencao.
+- O runtime minimo de `UC-SEC` agora tambem cobre anonimização executavel de dados elegiveis e aplicacao de politica de retencao com legal hold.
 - O compose local de DEV foi rebuildado e ficou saudável com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak`, `minio` e `bff-maintenance`; o serviço auxiliar deixou de reiniciar apos o ajuste dos imports para `@rh/shared`.

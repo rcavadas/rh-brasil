@@ -10,7 +10,7 @@ import { AuthzGuard } from '../src/authz.guard.js';
 import { AppModule } from '../src/app.module.js';
 import { SliceStore } from '../src/slice.store.js';
 
-process.env.DATABASE_URL ??= 'postgresql://rh:rh@localhost:5432/rh';
+process.env.DATABASE_URL ??= 'postgresql://rh:rh@localhost:5432/rh_app';
 
 const prisma = new PrismaClient();
 
@@ -57,6 +57,9 @@ async function resetDatabase(): Promise<void> {
       "employees",
       "persons",
       "companies",
+      "privacy_anonymization_jobs",
+      "retention_rules",
+      "security_incidents",
       "tenants"
     RESTART IDENTITY CASCADE;
   `);

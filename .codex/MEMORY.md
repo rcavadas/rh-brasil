@@ -8,6 +8,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 
 - O repositório atual e majoritariamente documental; nao foi localizado codigo executavel, manifests de stack ou servicos runtime.
 - O ambiente de desenvolvimento e o Docker local do workspace; se estiver indisponivel, precisa ser subido antes de qualquer teste para nao poluir a homologacao.
+- O compose de DEV usa o projeto `rh-dev`, deixando claro que nao e o stack de homologacao.
 - O ambiente de homologacao continua sendo o Portainer no host compartilhado `172.17.0.3`.
 - A stack de DEV do compose local foi subida e validada com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak`, `minio` e `bff-maintenance`; o bff-maintenance foi corrigido para resolver `@rh/shared` por caminho local.
 - A frente documental de decomposicao por pacotes, README de pacote, casos de uso e docs de homologacao foi encerrada; nao propor expansao documental por padrao em sessoes futuras, apenas correcao pontual quando o usuario pedir.
@@ -321,4 +322,4 @@ Sistema de RH corporativo para o mercado brasileiro.
 - O review de UC-SEC apontou que consentimento do titular e atendimento de solicitacao do titular continuam sem runtime dedicado e seguem como proximo gap real de governanca/LGPD.
 - `docs/PRODUCT.md` foi corrigido para dizer explicitamente que a base executavel inicial usa PostgreSQL, nao mais um store em arquivo.
 - O runtime minimo de UC-SEC agora tambem cobre consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
-- O proximo gap real de UC-SEC passou a ser a camada de anonimização e politica de retencao.
+- O runtime minimo de UC-SEC agora tambem cobre anonimização executavel de dados elegiveis e aplicacao de politica de retencao com legal hold.

@@ -54,7 +54,7 @@
 - O painel de BI/LGPD/auditoria do portal e um snapshot agregado e auditavel, mas ainda nao substitui analitica historica, filtros complexos ou exportacoes parametrizadas por finalidade.
 - A timeline da Onda 6 e apenas um roadmap visual; os dominios complementares ainda nao tem motor funcional implementado e continuam dependentes de modelagem e contratos dedicados.
 - Os blocos UC-BI, UC-SEC, UC-API e UC-PLT foram expandidos, mas ainda podem exigir validacao operacional e juridica fina antes de congelar comportamento final.
-- Em UC-SEC, consentimento do titular e atendimento de solicitacao do titular agora possuem runtime minimo, mas o detalhamento juridico-operacional e a validacao de compliance continuam pendentes.
+- Em UC-SEC, consentimento do titular, atendimento de solicitacao do titular, anonimização e retencao agora possuem runtime minimo, mas o detalhamento juridico-operacional e a validacao de compliance continuam pendentes.
 ## Medios
 - Ainda nao existe validacao de carga, concorrencia e isolamento multi-tenant real em runtime, embora o BFF agora revogue tenant ativo que deixou de estar autorizado.
 - A estrategia minima de observabilidade e backup/restore da plataforma local agora existe, com telemetria operacional e check de alertas, mas ainda nao cobre telemetria completa do ambiente alvo.

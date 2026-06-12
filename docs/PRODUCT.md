@@ -58,6 +58,7 @@ RH Brasil e uma plataforma SaaS de gestao do ciclo de vida do colaborador para e
 - A transmissao minima de eSocial de desligamento tambem ja esta implementada com fila, worker e persistencia de estados.
 - O fluxo minimo de rescisao tambem ja esta implementado, vinculado a um desligamento efetivo, com memoria de calculo, prazo de pagamento, documentos rescisorios assinaveis, criacao, consulta, assinatura, fechamento e cancelamento.
 - A politica base de LGPD tambem foi consolidada por classe de dado, com retencao por finalidade, exportacao controlada e expurgo de artefatos temporarios.
+- A camada minima de LGPD tambem possui runtime para consentimento, solicitacao do titular, anonimização de dados elegiveis e aplicacao de politica de retencao com bloqueio por legal hold.
 - A assinatura dos documentos rescisorios usa `govbr_advanced` como padrao operacional e admite `icp_brasil` como excecao valida quando exigida.
 - O runtime atual opera com os roles `admin`, `rh`, `manager`, `auditor` e `employee`, usando `tenant_id`, `rh_roles` e `sub` como base do OIDC local.
 - A primeira versao armazena dados de identificacao e operacao do colaborador e da empresa, incluindo CPF, CNPJ, contato, eventos de ponto, documentos, memoria de calculo, trilhas de auditoria e dados remuneratorios quando aplicaveis ao processo.

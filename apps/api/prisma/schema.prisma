@@ -36,6 +36,9 @@ model Tenant {
   employeeBenefits EmployeeBenefit[]
   privacyConsents PrivacyConsent[]
   dataSubjectRequests DataSubjectRequest[]
+  privacyAnonymizationJobs PrivacyAnonymizationJob[]
+  retentionRules RetentionRule[]
+  securityIncidents SecurityIncident[]
   vacationBalances VacationBalance[]
   vacationRequests VacationRequest[]
   vacationRequestPeriods VacationRequestPeriod[]
@@ -236,6 +239,72 @@ model DataSubjectRequest {
   @@index([tenantId, subjectType, subjectId])
   @@index([tenantId, status])
   @@map("data_subject_requests")
+}
+
+model PrivacyAnonymizationJob {
+  id           String   @id @default(uuid())
+  tenantId     String
+  subjectType  String
+  subjectId    String
+  datasetName  String
+  maskingLevel String   @default("strict")
+  status       String   @default("completed")
+  notes        String?
+  executedAt   DateTime @default(now())
+  createdBy    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tenant       Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, subjectType, subjectId])
+  @@index([tenantId, status])
+  @@map("privacy_anonymization_jobs")
+}
+
+model RetentionRule {
+  id             String   @id @default(uuid())
+  tenantId       String
+  subjectType    String
+  purpose        String
+  ruleExpression String
+  action         String   @default("retain")
+  status         String   @default("draft")
+  legalHold      Boolean  @default(false)
+  notes          String?
+  createdBy      String?
+  appliedBy      String?
+  appliedAt      DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  tenant         Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, subjectType, purpose])
+  @@index([tenantId, status])
+  @@map("retention_rules")
+}
+
+model SecurityIncident {
+  id              String   @id @default(uuid())
+  tenantId        String
+  title           String
+  severity        String
+  status          String   @default("open")
+  impact          String?
+  summary         String?
+  responseActions String?
+  reportedAt      DateTime @default(now())
+  acknowledgedAt  DateTime?
+  resolvedAt      DateTime?
+  reportedBy      String?
+  acknowledgedBy  String?
+  resolvedBy      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, severity])
+  @@index([tenantId, status])
+  @@map("security_incidents")
 }
 
 model BenefitCatalog {

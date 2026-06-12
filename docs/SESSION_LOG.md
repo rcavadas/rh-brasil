@@ -2815,3 +2815,27 @@
 **Arquivos alterados:** `.codex/LOCAL_ACCESS_CONTEXT.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `scripts/bff-maintenance-policy.mjs`, `scripts/platform-backup-format.mjs`, `scripts/platform-health.mjs`, `scripts/platform-restore-format.mjs`, `scripts/redis-platform-policy.mjs`, `docs/SESSION_LOG.md` e scripts associados ao compose local por rebuild.
 
 **Resultado:** ficou registrado que DEV é o compose local e HOMOLOG é o Portainer; o DEV agora está operacional e deve ser o alvo obrigatório para validação antes de qualquer publicação em homologacao.
+
+## 2026-06-12 - UC-SEC anonimização e retenção
+
+**Objetivo:** fechar a ultima fatia pendente de LGPD em UC-SEC com runtime minimo para anonimização e aplicação de politica de retenção no DEV local antes de qualquer validação em homologacao.
+
+**O que foi feito:** o schema Prisma ganhou `privacy_anonymization_jobs` e `retention_rules`; o backend expôs `GET/POST /api/v1/tenants/:tenantId/lgpd/anonymizations`, `GET/POST /api/v1/tenants/:tenantId/lgpd/retention-rules` e `POST /api/v1/tenants/:tenantId/lgpd/retention-rules/:ruleId/apply`; a anonimização minima atua sobre `person` e `employee-dependent`; a aplicacao da politica de retencao registra `applied` ou `blocked` quando ha `legal hold`; a stack DEV recebeu a migration nova em `rh_app`; e a documentacao viva foi sincronizada com o novo contrato.
+
+**Validações:** `npm run prisma:generate -w @rh/api`, `npm run typecheck -w @rh/api`, `npm run test -w @rh/api` com 76 testes verdes e `npm run test:platform` com 14 testes verdes; a migration `20260612020000_lgpd_anonymization_retention` foi aplicada em `rh_app` via `prisma migrate deploy`.
+
+**Arquivos alterados:** `apps/api/prisma/schema.prisma`, `apps/api/prisma/migrations/20260612020000_lgpd_anonymization_retention/migration.sql`, `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/authz.http.test.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `docs/README-UC-SEC.md`, `docs/LGPD_SECURITY.md`, `docs/PRODUCT.md`, `docs/ARCHITECTURE.md`, `docs/RISKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `.codex/TASKS.md`, `docs/SESSION_LOG.md`, `infra/docker-compose.yml`, `infra/.env.development.example` e `infra/postgres/init/01-create-keycloak-db.sql`.
+
+**Resultado:** o runtime minimo de UC-SEC agora cobre consentimento, solicitacao do titular, anonimização e politica de retencao, sem pontas soltas no DEV local.
+
+## 2026-06-12 - Nome do projeto de DEV
+
+**Objetivo:** eliminar a ambiguidade entre o compose local de desenvolvimento e a stack de homologacao.
+
+**O que foi feito:** o projeto Compose de DEV foi renomeado para `rh-dev` em `infra/docker-compose.yml`; a documentacao de ambientes, infraestrutura, memoria, handoff, perguntas abertas e session log foi sincronizada para deixar claro que o local de desenvolvimento nao usa o nome da stack de homologacao.
+
+**Validações:** conferência da declaracao `name:` no compose local e cruzamento com a nomenclatura da stack `RH` de homologacao.
+
+**Arquivos alterados:** `infra/docker-compose.yml`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Resultado:** o DEV ficou explicitamente identificado como `rh-dev`, reduzindo a chance de confusao operacional com a homologacao.

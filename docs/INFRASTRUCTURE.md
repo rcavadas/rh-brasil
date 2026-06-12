@@ -4,6 +4,8 @@
 
 - Veja também: [docs/ENVIRONMENTS.md](/F:/projetos/RH/docs/ENVIRONMENTS.md).
 - Desenvolvimento: Docker local com `docker compose` no workspace, usando api, web, worker, postgres, redis, keycloak e minio.
+- O projeto Compose do DEV agora se chama `rh-dev`, para evitar confusao com homologacao.
+- No DEV, a API usa `rh_app` e o Keycloak usa `rh_keycloak` no mesmo Postgres para evitar que o bootstrap do IdP contamine o schema do Prisma.
 - Homologação: stack compartilhada gerenciada no Portainer do host `172.17.0.3`.
 - O Docker Desktop local do Windows nao e a origem autoritativa para smokes da stack.
 - O ambiente compartilhado deve ser tratado como alvo de validacao runtime, nao de desenvolvimento diario.
@@ -12,6 +14,7 @@
 ## Docker/containers
 
 - `apps/api/Dockerfile` sobe a API NestJS real com Prisma.
+- `infra/postgres/init/01-create-keycloak-db.sql` cria o banco `rh_keycloak` no bootstrap do DEV.
 - `apps/web/Dockerfile` builda o portal React/Vite e sobe o servidor BFF do portal.
 - `infra/docker-compose.yml` tambem sobe `bff-maintenance`, que executa backup, verify e limpeza de snapshots locais da store do BFF.
 - `apps/worker/Dockerfile` executa o worker em Node.
@@ -105,6 +108,7 @@
 
 - `Dockerfile` para `api`, `web` e `worker`.
 - `docker-compose.yml` com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak` e `minio`.
+- O compose local separa `rh_app` e `rh_keycloak` no Postgres do DEV.
 - `docker-compose.yml` na raiz do repo para a publicação Git no Portainer, consumindo imagens do GHCR.
 - arquivo `.env.development.example` com variáveis sem segredos, incluindo `AUTH_MODE`, `CORS_ORIGINS` e parâmetros OIDC.
 - import local de realm em `infra/keycloak/rh-realm.json`.

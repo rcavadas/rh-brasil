@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Inject, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Param, Patch, Post, Query } from '@nestjs/common';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -180,6 +180,124 @@ class ResolveDataSubjectRequestDto {
   @IsOptional()
   @IsString()
   notes?: string;
+}
+
+class CreatePrivacyAnonymizationJobDto {
+  @IsString()
+  @IsNotEmpty()
+  subjectType!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  subjectId!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  datasetName!: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['strict', 'controlled', 'aggregate'])
+  maskingLevel?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['completed', 'blocked'])
+  status?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class CreateRetentionRuleDto {
+  @IsString()
+  @IsNotEmpty()
+  subjectType!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  purpose!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  ruleExpression!: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['retain', 'anonymize', 'discard'])
+  action?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['draft', 'active', 'applied', 'blocked'])
+  status?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  legalHold?: boolean;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class ApplyRetentionRuleDto {
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class CreateSecurityIncidentDto {
+  @IsString()
+  @IsNotEmpty()
+  title!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(['low', 'medium', 'high', 'critical'])
+  severity!: string;
+
+  @IsOptional()
+  @IsString()
+  impact?: string;
+
+  @IsOptional()
+  @IsString()
+  summary?: string;
+
+  @IsOptional()
+  @IsString()
+  responseActions?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['open', 'acknowledged', 'resolved'])
+  status?: string;
+}
+
+class UpdateSecurityIncidentDto {
+  @IsOptional()
+  @IsString()
+  responseActions?: string;
+}
+
+class AuditTrailQueryDto {
+  @IsOptional()
+  @IsString()
+  action?: string;
+
+  @IsOptional()
+  @IsString()
+  entityType?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  from?: string;
+
+  @IsOptional()
+  @IsISO8601()
+  to?: string;
 }
 
 class CreateRecruitmentVacancyRequestDto {
@@ -2196,6 +2314,84 @@ export class SliceController {
     return this.store.listAuditEvents(tenantId);
   }
 
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/lgpd/audit-trail')
+  auditTrail(
+    @Param('tenantId') tenantId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Query() query: AuditTrailQueryDto,
+  ) {
+    return this.store.listAuditTrail(
+      tenantId,
+      {
+        action: query.action,
+        entityType: query.entityType,
+        from: query.from,
+        to: query.to,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/lgpd/incidents')
+  listSecurityIncidents(@Param('tenantId') tenantId: string) {
+    return this.store.listSecurityIncidents(tenantId);
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/incidents')
+  createSecurityIncident(
+    @Param('tenantId') tenantId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreateSecurityIncidentDto,
+  ) {
+    return this.store.createSecurityIncident(
+      tenantId,
+      {
+        title: body.title,
+        severity: body.severity,
+        impact: body.impact,
+        summary: body.summary,
+        responseActions: body.responseActions,
+        status: body.status,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/incidents/:incidentId/acknowledge')
+  acknowledgeSecurityIncident(
+    @Param('tenantId') tenantId: string,
+    @Param('incidentId') incidentId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateSecurityIncidentDto,
+  ) {
+    return this.store.acknowledgeSecurityIncident(
+      tenantId,
+      incidentId,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+      body.responseActions,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/incidents/:incidentId/resolve')
+  resolveSecurityIncident(
+    @Param('tenantId') tenantId: string,
+    @Param('incidentId') incidentId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateSecurityIncidentDto,
+  ) {
+    return this.store.resolveSecurityIncident(
+      tenantId,
+      incidentId,
+      auth?.source === 'oidc' ? auth.subject : undefined,
+      body.responseActions,
+    );
+  }
+
   @Roles('admin', 'rh')
   @Post(':tenantId/vacations/balances')
   createVacationBalance(
@@ -2889,6 +3085,72 @@ export class SliceController {
       },
       auth?.source === 'oidc' ? auth.subject : undefined,
     );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/lgpd/anonymizations')
+  listPrivacyAnonymizationJobs(@Param('tenantId') tenantId: string) {
+    return this.store.listPrivacyAnonymizationJobs(tenantId);
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/anonymizations')
+  createPrivacyAnonymizationJob(
+    @Param('tenantId') tenantId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreatePrivacyAnonymizationJobDto,
+  ) {
+    return this.store.createPrivacyAnonymizationJob(
+      tenantId,
+      {
+        subjectType: body.subjectType,
+        subjectId: body.subjectId,
+        datasetName: body.datasetName,
+        maskingLevel: body.maskingLevel,
+        status: body.status,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/lgpd/retention-rules')
+  listRetentionRules(@Param('tenantId') tenantId: string) {
+    return this.store.listRetentionRules(tenantId);
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/retention-rules')
+  createRetentionRule(
+    @Param('tenantId') tenantId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreateRetentionRuleDto,
+  ) {
+    return this.store.createRetentionRule(
+      tenantId,
+      {
+        subjectType: body.subjectType,
+        purpose: body.purpose,
+        ruleExpression: body.ruleExpression,
+        action: body.action,
+        status: body.status,
+        legalHold: body.legalHold,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh')
+  @Post(':tenantId/lgpd/retention-rules/:ruleId/apply')
+  applyRetentionRule(
+    @Param('tenantId') tenantId: string,
+    @Param('ruleId') ruleId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: ApplyRetentionRuleDto,
+  ) {
+    return this.store.applyRetentionRule(tenantId, ruleId, auth?.source === 'oidc' ? auth.subject : undefined, body.notes);
   }
 
   @Roles('admin', 'rh')

@@ -130,6 +130,11 @@ Regra operacional: o retry SST de `UC-ESO` somente deve ser exercitado com trans
 - `GET /api/v1/tenants/:tenantId/lgpd/requests`
 - `POST /api/v1/tenants/:tenantId/lgpd/requests`
 - `POST /api/v1/tenants/:tenantId/lgpd/requests/:requestId/resolve`
+- `GET /api/v1/tenants/:tenantId/lgpd/anonymizations`
+- `POST /api/v1/tenants/:tenantId/lgpd/anonymizations`
+- `GET /api/v1/tenants/:tenantId/lgpd/retention-rules`
+- `POST /api/v1/tenants/:tenantId/lgpd/retention-rules`
+- `POST /api/v1/tenants/:tenantId/lgpd/retention-rules/:ruleId/apply`
 - `POST /api/v1/tenants/:tenantId/vacations/balances`
 - `GET /api/v1/tenants/:tenantId/vacations/balances`
 - `POST /api/v1/tenants/:tenantId/vacations/requests`

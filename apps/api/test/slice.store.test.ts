@@ -3,7 +3,7 @@ import { afterEach, beforeEach, test } from 'node:test';
 import { PrismaClient } from '@prisma/client';
 import { SliceStore } from '../src/slice.store.js';
 
-process.env.DATABASE_URL ??= 'postgresql://rh:rh@localhost:5432/rh';
+process.env.DATABASE_URL ??= 'postgresql://rh:rh@localhost:5432/rh_app';
 
 const prisma = new PrismaClient();
 
@@ -63,6 +63,9 @@ async function resetDatabase(): Promise<void> {
       "employee_dependents",
       "privacy_consents",
       "data_subject_requests",
+      "privacy_anonymization_jobs",
+      "retention_rules",
+      "security_incidents",
       "persons",
       "companies",
       "tenants"
@@ -206,6 +209,157 @@ test('slice relacional manages lgpd consent and subject requests with audit trai
   assert.equal(resolved.responseSummary, 'data export prepared and delivered');
   assert.equal(events.at(-1)?.action, 'privacy.request.resolved');
   assert.equal(events.length, 8);
+
+  await store.close();
+});
+
+test('slice relacional anonymizes eligible data and applies retention rules with legal hold guard', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa LGPD Anonimização', 'empresa-lgpd-anonimizacao');
+  const company = await store.createCompany(tenant.id, 'Empresa LGPD Anonimização LTDA', 'LGPD Anon', '22334455000188');
+  const person = await store.createPerson(tenant.id, 'Pessoa Sensível', '12345000199');
+  const employee = await store.createEmployee(tenant.id, company.id, person.id, 'LGPD-ANON-001');
+  const dependent = await store.createEmployeeDependent(
+    tenant.id,
+    employee.id,
+    {
+      fullName: 'Dependente Sensível',
+      cpf: '99988877766',
+      birthDate: '2014-01-01T00:00:00.000Z',
+      relationshipType: 'filho(a)',
+    },
+    'oidc-user-1',
+  );
+
+  const anonymizedPersonJob = await store.createPrivacyAnonymizationJob(
+    tenant.id,
+    {
+      subjectType: 'person',
+      subjectId: person.id,
+      datasetName: 'person',
+      maskingLevel: 'strict',
+      notes: 'anonimização por solicitação do titular',
+    },
+    'oidc-user-1',
+  );
+
+  const anonymizedDependentJob = await store.createPrivacyAnonymizationJob(
+    tenant.id,
+    {
+      subjectType: 'employee-dependent',
+      subjectId: dependent.id,
+      datasetName: 'employee-dependent',
+      maskingLevel: 'controlled',
+      notes: 'anonimização de dependente sensível',
+    },
+    'oidc-user-1',
+  );
+
+  const anonymizationJobs = await store.listPrivacyAnonymizationJobs(tenant.id);
+  const personAfter = await prisma.person.findUnique({ where: { id: person.id } });
+  const dependentAfter = await prisma.employeeDependent.findUnique({ where: { id: dependent.id } });
+
+  const retentionRule = await store.createRetentionRule(
+    tenant.id,
+    {
+      subjectType: 'person',
+      purpose: 'lgpd-retention',
+      ruleExpression: 'retain while employment is active',
+      action: 'retain',
+      status: 'draft',
+      notes: 'regra base de retenção',
+    },
+    'oidc-user-1',
+  );
+  const appliedRule = await store.applyRetentionRule(tenant.id, retentionRule.id, 'oidc-user-1', 'aplicação inicial');
+
+  const blockedRule = await store.createRetentionRule(
+    tenant.id,
+    {
+      subjectType: 'person',
+      purpose: 'legal-hold',
+      ruleExpression: 'preserve while legal hold is active',
+      action: 'discard',
+      legalHold: true,
+      status: 'draft',
+      notes: 'regra em preservacao obrigatoria',
+    },
+    'oidc-user-1',
+  );
+  const blockedApplication = await store.applyRetentionRule(
+    tenant.id,
+    blockedRule.id,
+    'oidc-user-1',
+    'tentativa bloqueada por legal hold',
+  );
+  const events = await store.listAuditEvents(tenant.id);
+
+  assert.equal(anonymizationJobs.length, 2);
+  assert.equal(anonymizedPersonJob.status, 'completed');
+  assert.equal(anonymizedDependentJob.status, 'completed');
+  assert.equal(personAfter?.fullName, 'ANONYMIZED');
+  assert.equal(personAfter?.cpf, null);
+  assert.equal(dependentAfter?.fullName, 'ANONYMIZED');
+  assert.equal(dependentAfter?.cpf, null);
+  assert.equal(appliedRule.status, 'applied');
+  assert.equal(appliedRule.appliedBy, 'oidc-user-1');
+  assert.equal(blockedApplication.status, 'blocked');
+  assert.equal(events.some((event) => event.action === 'privacy.anonymization.completed'), true);
+  assert.equal(events.some((event) => event.action === 'privacy.retention.applied'), true);
+  assert.equal(events.at(-1)?.action, 'privacy.retention.blocked');
+
+  await store.close();
+});
+
+test('slice relacional records security incidents and audit trail views', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa Incidentes', 'empresa-incidentes');
+  await store.createCompany(tenant.id, 'Empresa Incidentes LTDA', 'Incidentes', '66445511000122');
+
+  const incident = await store.createSecurityIncident(
+    tenant.id,
+    {
+      title: 'Acesso indevido a relatório',
+      severity: 'high',
+      impact: 'Potential exposure of employee metadata',
+      summary: 'Tentativa de acesso fora do perfil',
+      responseActions: 'Conta bloqueada e logs preservados',
+      status: 'open',
+    },
+    'oidc-user-1',
+  );
+
+  const acknowledged = await store.acknowledgeSecurityIncident(
+    tenant.id,
+    incident.id,
+    'oidc-user-1',
+    'Equipe notificada',
+  );
+  const resolved = await store.resolveSecurityIncident(
+    tenant.id,
+    incident.id,
+    'oidc-user-1',
+    'Contenção concluída e monitoramento reforçado',
+  );
+
+  const auditTrail = await store.listAuditTrail(
+    tenant.id,
+    { action: 'security.incident.resolved', entityType: 'securityIncident' },
+    'oidc-user-1',
+  );
+  const incidents = await store.listSecurityIncidents(tenant.id);
+  const events = await store.listAuditEvents(tenant.id);
+
+  assert.equal(incident.status, 'open');
+  assert.equal(acknowledged.status, 'acknowledged');
+  assert.equal(resolved.status, 'resolved');
+  assert.equal(incidents.length, 1);
+  assert.equal(incidents[0]?.status, 'resolved');
+  assert.equal(auditTrail.length, 1);
+  assert.equal(auditTrail[0]?.action, 'security.incident.resolved');
+  assert.equal(events.at(-1)?.action, 'security.audit.viewed');
 
   await store.close();
 });

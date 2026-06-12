@@ -88,6 +88,7 @@ No slice executavel atual, `Employee` e a projecao operacional de `VinculoTrabal
 - O pacote de ponto agora conta com tabelas proprias para calendario de feriados, tolerancia, dispositivos, adicional noturno, DSR e consolidacao para folha, ainda sem validacao completa em carga.
 - Ainda nao existe evidencia de isolamento fisico ou logico entre empresas validado em carga ou multi-tenant real, apesar do schema Prisma suportar a fronteira e o BFF já impedir uso de tenant ativo revogado.
 - Controles de auditoria, logs e retencao/exportacao ja possuem politica base, com formatos de exportacao definidos, mas ainda precisam de implementacao automatizada e testes de integracao e carga.
+- O runtime de LGPD agora possui persistencia relacional para consentimento, solicitacao do titular, anonimização executavel para dados elegiveis e aplicacao de politica de retencao com legal hold.
 - O proximo passo arquitetural e provisionar o realm/client do Keycloak e preparar testes automatizados adicionais do fluxo relacional.
 - O Topico 04 foi decomposto em um plano tecnico com backlog minimo para admissao, checklist documental, formalizacao contratual, eSocial e desligamento administrativo.
 - O Topico 06 agora tambem se materializa parcialmente no runtime com beneficios operacionais minimos.

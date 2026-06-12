@@ -1,3 +1,5 @@
+name: rh-dev
+
 services:
   api:
     build:
@@ -6,7 +8,7 @@ services:
     env_file:
       - .env.development.example
     environment:
-      DATABASE_URL: postgresql://rh:rh@postgres:5432/rh
+      DATABASE_URL: postgresql://rh:rh@postgres:5432/rh_app
       REDIS_URL: redis://redis:6379
       KEYCLOAK_URL: http://keycloak:8080
       AUTH_MODE: mixed
@@ -16,10 +18,14 @@ services:
       OIDC_AUDIENCE: ""
       CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
     depends_on:
-      - postgres
-      - redis
-      - keycloak
-      - minio
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+      minio:
+        condition: service_started
     ports:
       - "3000:3000"
     healthcheck:
@@ -48,8 +54,10 @@ services:
       WEB_SESSION_IDLE_TIMEOUT_SECONDS: 28800
       WEB_SESSION_STORE_PATH: /app/data/web-sessions.json
     depends_on:
-      - api
-      - keycloak
+      api:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
     ports:
       - "5173:5173"
     volumes:
@@ -75,7 +83,8 @@ services:
       BFF_SESSION_MAINTENANCE_STATE_PATH: /app/backups/bff-session-maintenance-state.json
     command: ["npm", "run", "maintenance:bff-sessions"]
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     volumes:
       - bff_backup_data:/app/backups
     restart: unless-stopped
@@ -87,26 +96,29 @@ services:
     env_file:
       - .env.development.example
     environment:
-      DATABASE_URL: postgresql://rh:rh@postgres:5432/rh
+      DATABASE_URL: postgresql://rh:rh@postgres:5432/rh_app
       REDIS_URL: redis://redis:6379
       KEYCLOAK_URL: http://keycloak:8080
       ESOCIAL_QUEUE_ENABLED: "true"
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
 
   postgres:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: rh
+      POSTGRES_DB: rh_app
       POSTGRES_USER: rh
       POSTGRES_PASSWORD: rh
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rh -d rh"]
+      test: ["CMD-SHELL", "pg_isready -U rh -d rh_app"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -131,7 +143,7 @@ services:
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: postgres
-      KC_DB_URL_DATABASE: rh
+      KC_DB_URL_DATABASE: rh_keycloak
       KC_DB_USERNAME: rh
       KC_DB_PASSWORD: rh
       KC_HOSTNAME: http://localhost:8080
@@ -143,7 +155,8 @@ services:
     volumes:
       - ./keycloak:/opt/keycloak/data/import:ro
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   minio:
     image: minio/minio:latest

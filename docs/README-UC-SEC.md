@@ -77,4 +77,5 @@ O `UC-SEC` e a camada transversal de seguranca, privacidade e governanca que pro
 
 ## Atualizacao de runtime
 
-- Consentimento do titular e atendimento de solicitacao do titular agora possuem runtime minimo no backend, com persistencia relacional e auditoria.
+- Consentimento do titular, atendimento de solicitacao do titular, anonimização e política de retenção agora possuem runtime minimo no backend, com persistencia relacional e auditoria.
+- A anonimização mínima atua sobre `person` e `employee-dependent`, e a política de retenção bloqueia aplicacao quando existe `legal hold`.

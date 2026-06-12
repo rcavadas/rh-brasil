@@ -9,9 +9,11 @@ Separar explicitamente o ambiente de desenvolvimento do ambiente de homologaçã
 - Base operacional: Docker local com `docker compose` dentro do workspace.
 - Uso: execucao diaria, build, testes, smoke local e iteracao rapida.
 - Contrato: o compose local e a referencia para desenvolvimento de codigo e validacao funcional imediata.
+- Nome do projeto Compose: `rh-dev`.
 - Template de variaveis: [infra/.env.development.example](/F:/projetos/RH/infra/.env.development.example).
 - Comandos principais: `npm run compose:dev`, `npm run compose:dev:down` e `npm run compose:dev:ps`.
 - Servicos esperados: `api`, `web`, `worker`, `postgres`, `redis`, `keycloak` e `minio`.
+- Banco do DEV: `rh_app` para a API/worker e `rh_keycloak` para o Keycloak, ambos no mesmo Postgres local.
 
 ## Homologacao
 

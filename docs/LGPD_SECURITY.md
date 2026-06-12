@@ -34,6 +34,10 @@
   - trilhas de auditoria: retencao enquanto houver finalidade de rastreio, defesa, compliance ou legal hold;
   - documentos rescisorios e contratuais: retencao conforme a natureza documental e a obrigacao legal aplicavel;
   - artefatos temporarios de exportacao: retencao curta, apenas para disponibilizacao segura e descarte automatico.
+- Runtime minimo atual:
+  - anonimização executavel para `person` e `employee-dependent`, com trilha de auditoria;
+  - aplicacao de regra de retencao persistida em `retention_rules`;
+  - bloqueio de aplicacao quando `legal hold` estiver ativo.
 
 ## Exportacao de dados
 
