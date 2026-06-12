@@ -977,3 +977,4 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - `docs/PRODUCT.md` tambem foi corrigido para refletir que a base executavel inicial usa PostgreSQL, nao um store em arquivo.
 - O runtime minimo de `UC-SEC` agora tambem cobre consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
 - O proximo gap real de `UC-SEC` passou a ser a camada de anonimização e politica de retencao.
+- O compose local de DEV foi rebuildado e ficou saudável com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak`, `minio` e `bff-maintenance`; o serviço auxiliar deixou de reiniciar apos o ajuste dos imports para `@rh/shared`.

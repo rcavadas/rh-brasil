@@ -7,6 +7,9 @@ Sistema de RH corporativo para o mercado brasileiro.
 ## Fatos consolidados
 
 - O repositório atual e majoritariamente documental; nao foi localizado codigo executavel, manifests de stack ou servicos runtime.
+- O ambiente de desenvolvimento e o Docker local do workspace; se estiver indisponivel, precisa ser subido antes de qualquer teste para nao poluir a homologacao.
+- O ambiente de homologacao continua sendo o Portainer no host compartilhado `172.17.0.3`.
+- A stack de DEV do compose local foi subida e validada com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak`, `minio` e `bff-maintenance`; o bff-maintenance foi corrigido para resolver `@rh/shared` por caminho local.
 - A frente documental de decomposicao por pacotes, README de pacote, casos de uso e docs de homologacao foi encerrada; nao propor expansao documental por padrao em sessoes futuras, apenas correcao pontual quando o usuario pedir.
 - O produto e um SaaS de RH para empresas brasileiras, com foco no ciclo de vida do colaborador e no conceito Pessoa -> VinculoTrabalhista -> Empresa.
 - A documentacao ja descreve modulos para ATS/recrutamento, admissao, cadastro, documentos, ponto/jornada, banco de horas, ferias, beneficios, afastamentos, desligamento, eSocial, portais e workflow.

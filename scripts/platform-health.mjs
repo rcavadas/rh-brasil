@@ -4,4 +4,4 @@ export {
   fetchTextJson,
   isServiceHealthy,
   parseComposePs,
-} from '@rh/shared';
+} from '../packages/shared/index.js';

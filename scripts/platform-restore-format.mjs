@@ -1,4 +1,4 @@
 export {
   formatPlatformRestoreDryRun,
   validatePlatformBackupManifest,
-} from '@rh/shared';
+} from '../packages/shared/index.js';

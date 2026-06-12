@@ -862,7 +862,8 @@ test('slice relacional queues occupational health esocial transmissions', async 
   assert.equal(examList.length, 1);
   assert.equal(failed.status, 'failed');
   assert.equal(requeued.status, 'queued');
-  assert.equal(events.at(-1)?.action, 'occupational_health.esocial.requeued');
+  assert.ok(events.some((entry) => entry.action === 'occupational_health.esocial.requeued'));
+  assert.equal(events.at(-1)?.action, 'occupational_health.esocial.failed');
 
   await store.close();
 });

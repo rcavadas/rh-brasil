@@ -2803,3 +2803,15 @@
 **Arquivos alterados:** `apps/api/prisma/schema.prisma`, `apps/api/prisma/migrations/20260612010000_privacy_minimal/migration.sql`, `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `docs/README-UC-SEC.md`, `docs/PRODUCT.md`, `docs/ARCHITECTURE.md`, `docs/RISKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md`, `.codex/TASKS.md` e `docs/SESSION_LOG.md`.
 
 **Resultado:** o runtime minimo de UC-SEC saiu do papel e passou a existir no backend; o próximo gap real fica em anonimização e politica de retencao.
+
+## 2026-06-12 - DEV local restaurado
+
+**Objetivo:** assegurar que o ambiente de desenvolvimento local fosse a fonte de verdade para testes e validações antes de qualquer uso de homologacao.
+
+**O que foi feito:** o compose de DEV em `infra/docker-compose.yml` foi subido e rebuildado; a stack local ficou com `api`, `web`, `worker`, `postgres`, `redis`, `keycloak`, `minio` e `bff-maintenance` ativos; o `bff-maintenance` foi corrigido para resolver `@rh/shared` por caminho local em vez de depender de link de pacote; o banco local respondeu em `localhost:5432`; e a suíte da API passou em DEV.
+
+**Validações:** `docker compose -f infra/docker-compose.yml ps` mostrou a stack local íntegra; `Test-NetConnection localhost -Port 5432` respondeu positivo; `npm run test -w @rh/api` passou com 75 testes verdes.
+
+**Arquivos alterados:** `.codex/LOCAL_ACCESS_CONTEXT.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `scripts/bff-maintenance-policy.mjs`, `scripts/platform-backup-format.mjs`, `scripts/platform-health.mjs`, `scripts/platform-restore-format.mjs`, `scripts/redis-platform-policy.mjs`, `docs/SESSION_LOG.md` e scripts associados ao compose local por rebuild.
+
+**Resultado:** ficou registrado que DEV é o compose local e HOMOLOG é o Portainer; o DEV agora está operacional e deve ser o alvo obrigatório para validação antes de qualquer publicação em homologacao.

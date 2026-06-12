@@ -2,4 +2,4 @@ export {
   selectStaleSnapshots,
   shouldRunBackup,
   shouldRunVerify,
-} from '@rh/shared';
+} from '../packages/shared/index.js';

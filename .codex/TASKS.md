@@ -91,6 +91,7 @@
 - [x] Implementar a edição mínima de PGR e PCMSO do SST.
 - [x] Implementar o agregado minimo de dependentes do colaborador com CRUD, inativacao e auditoria.
 - [x] Implementar um runtime minimo para consentimento do titular e atendimento de solicitacao do titular em UC-SEC.
+- [x] Restaurar e validar a stack de DEV local como ambiente obrigatorio de testes antes da homologacao.
 - [ ] Implementar runtime minimo de anonimização e politica de retencao em UC-SEC.
 
 ## Concluídas

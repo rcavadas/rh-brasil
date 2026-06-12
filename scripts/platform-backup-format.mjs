@@ -3,4 +3,4 @@ export {
   derivePlatformBackupArtifacts,
   derivePlatformBackupDir,
   derivePlatformBackupRoot,
-} from '@rh/shared';
+} from '../packages/shared/index.js';
