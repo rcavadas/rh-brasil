@@ -115,11 +115,11 @@ services:
     environment:
       MINIO_ROOT_USER: minio
       MINIO_ROOT_PASSWORD: minio123
-      MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL:-https://172.17.0.3:9000}
-      MINIO_CONSOLE_URL: ${MINIO_CONSOLE_URL:-https://172.17.0.3:9001}
+      MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL:-https://172.17.0.3:19000}
+      MINIO_CONSOLE_URL: ${MINIO_CONSOLE_URL:-https://172.17.0.3:19001}
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "19000:9000"
+      - "19001:9001"
     volumes:
       - minio_data:/data
 
