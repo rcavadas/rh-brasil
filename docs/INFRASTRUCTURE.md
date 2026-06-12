@@ -25,7 +25,7 @@
 - Incluem `AUTH_MODE`, parâmetros OIDC, `CORS_ORIGINS`, URLs internas/externas do BFF, Redis e credenciais locais de infraestrutura.
 - O stack de homologação usa `infra/docker-compose.homologation.yml` como base de referência para o Portainer.
 - O Portainer Git stack usa o `docker-compose.yml` na raiz do repo como ponto de entrada; esse arquivo consome imagens do GHCR para evitar build no endpoint de homologacao.
-- O workflow `.github/workflows/publish-images.yml` publica as imagens `api`, `web` e `worker` em `ghcr.io/rcavadas/`.
+- O workflow `.github/workflows/publish-images.yml` publica as imagens `api`, `web` e `worker` em `ghcr.io/rcavadas/` com nomes publicos `rh-brasil-public-*`.
 - O checklist operacional de homologação esta em `docs/HOMOLOGATION_CHECKLIST.md`.
 - O mapa de endpoints publicados esta em `docs/HOMOLOGATION_ENDPOINT_MAP.md`.
 - Os smokes por serviço estão em `docs/HOMOLOGATION_SMOKES.md`.

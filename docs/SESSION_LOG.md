@@ -2668,3 +2668,17 @@
 **Riscos:** enquanto as imagens GHCR nao estiverem publicadas, o redeploy da stack Git continuara falhando.
 
 **Próxima ação:** aguardar o workflow de publish das imagens, confirmar a disponibilidade no GHCR e redeployar a stack Git no Portainer.
+
+## 2026-06-11 - GHCR publicado, mas pull sem packages scope
+
+**Objetivo:** destravar o acesso das imagens publicadas para o Portainer.
+
+**O que foi feito:** o workflow `.github/workflows/publish-images.yml` publicou as imagens `api`, `web` e `worker` no GHCR com sucesso; foi confirmado que o token GitHub atual autentica no `docker login`, mas o `docker pull` e o deploy da stack Git retornam `403 Forbidden` no `HEAD` do GHCR por falta de acesso `packages`.
+
+**Arquivos alterados:** `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md`, `docs/RISKS.md` e `docs/SESSION_LOG.md`.
+
+**Validações:** `gh run watch` concluiu com sucesso o workflow de publish; `docker login ghcr.io` funcionou; `docker pull ghcr.io/rcavadas/rh-brasil-api:main` falhou com `403 Forbidden`; a stack Git `rh-brasil-final-regs` falhou ao puxar `ghcr.io/rcavadas/rh-brasil-worker:main`.
+
+**Riscos:** a homologacao continua bloqueada enquanto o Portainer nao tiver uma credencial com `packages` scope ou enquanto as imagens nao forem publicadas como publicas.
+
+**Próxima ação:** obter uma credencial GHCR com `read:packages` ou publicar os pacotes como publicos e então redeployar a stack Git.

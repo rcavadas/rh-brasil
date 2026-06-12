@@ -9,6 +9,7 @@ O ponto de entrada do kit foi endurecido para obrigar a leitura de `.codex/LOCAL
 Foi criado `scripts/session-access-check.ps1` para checar em um unico passo o Docker de desenvolvimento e o Portainer de homologacao.
 Na checagem mais recente, o Portainer de homologacao autenticou corretamente, mas nao havia stack RH publicada naquele momento.
 A stack Git do repo `rh-brasil` foi criada no Portainer, mas o build direto no endpoint falhou; o root `docker-compose.yml` passou a consumir imagens do GHCR e o workflow `.github/workflows/publish-images.yml` publica `api`, `web` e `worker`.
+A publicacao das imagens concluiu, mas o deploy do Portainer ainda falha no pull do GHCR porque o token atual nao possui `packages` scope suficiente.
 A trilha minima de eSocial da admissao ja esta no runtime, com fila, worker, consulta de transmissao e persistencia de estados.
 Foi criado o documento de continuidade com revisao critica do UC-JOR e inicio detalhado do UC-FOL-001.
 UC-FOL-002 foi detalhado em arquivo proprio, separando cadastro estrutural da rubrica da parametrizacao de incidencias.

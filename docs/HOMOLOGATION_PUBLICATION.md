@@ -36,7 +36,7 @@ Descrever o fluxo pratico para publicar a stack do RH no Portainer usando o mani
 - O manifesto base e o contrato.
 - O `docker-compose.yml` na raiz do repo e o ponto de entrada do Portainer para a stack Git de homologacao.
 - O root compose consome as imagens publicadas no GHCR e evita build direto no endpoint de homologacao.
-- O workflow [.github/workflows/publish-images.yml](/F:/projetos/RH/.github/workflows/publish-images.yml) publica `api`, `web` e `worker` em `ghcr.io/rcavadas/`.
+- O workflow [.github/workflows/publish-images.yml](/F:/projetos/RH/.github/workflows/publish-images.yml) publica `api`, `web` e `worker` em `ghcr.io/rcavadas/` com os nomes publicos `rh-brasil-public-*`.
 - O checklist e o criterio de aceite.
 - O Portainer e o mecanismo de publicacao.
 - O Docker Desktop local do Windows nao faz parte desse fluxo.
