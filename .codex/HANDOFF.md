@@ -975,6 +975,7 @@ Ao retomar, revisar primeiro `docs/RISKS.md`, `docs/SESSION_LOG.md` e `docs/CONT
 - A pendencia obsoleta de `docs/PRODUCT.md` sobre "store em arquivo para persistencia relacional" foi removida, para evitar que a proxima leitura trate a persistencia relacional como algo ainda aberto.
 - O runtime agora tambem possui o agregado minimo de dependentes do colaborador, com CRUD, inativacao e auditoria.
 - O proximo gap real de governanca/LGPD ficou identificado em `UC-SEC`: consentimento do titular e atendimento de solicitacao do titular ainda nao possuem runtime dedicado.
+- O runtime agora tambem possui elegibilidade minima de beneficios por empresa e colaborador, aplicada antes da concessao do beneficio.
 - `docs/PRODUCT.md` tambem foi corrigido para refletir que a base executavel inicial usa PostgreSQL, nao um store em arquivo.
 - O runtime minimo de `UC-SEC` agora tambem cobre consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
 - O runtime minimo de `UC-SEC` agora tambem cobre anonimização executavel de dados elegiveis e aplicacao de politica de retencao com legal hold.

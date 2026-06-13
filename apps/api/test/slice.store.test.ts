@@ -23,6 +23,7 @@ async function resetDatabase(): Promise<void> {
       "termination_esocial_transmissions",
       "api_integration_request_histories",
       "api_integration_requests",
+      "benefit_eligibility_rules",
       "employee_benefits",
       "benefit_catalogs",
       "recruitment_candidates",
@@ -634,6 +635,67 @@ test('slice relacional manages benefit catalog and employee assignments', async 
   assert.equal(benefits.length, 1);
   assert.equal(benefits[0]?.benefitCatalog?.name, 'Vale-transporte');
   assert.equal(events.at(-1)?.action, 'benefit.cancelled');
+
+  await store.close();
+});
+
+test('slice relacional enforces benefit eligibility rules by company scope', async () => {
+  const store = new SliceStore();
+
+  const tenant = await store.createTenant('Empresa Elegibilidade', 'empresa-elegibilidade');
+  const companyA = await store.createCompany(tenant.id, 'Empresa Elegibilidade A LTDA', 'Elegibilidade A', '99001122000134');
+  const companyB = await store.createCompany(tenant.id, 'Empresa Elegibilidade B LTDA', 'Elegibilidade B', '99001122000135');
+  const person = await store.createPerson(tenant.id, 'Pessoa Elegibilidade', '50505050506');
+  const employee = await store.createEmployee(tenant.id, companyA.id, person.id, 'BEN-ELI-001');
+
+  const catalog = await store.createBenefitCatalog(
+    tenant.id,
+    'VR-001',
+    'Vale-refeicao',
+    'meal',
+    'oidc-user-1',
+    'Beneficio de alimentacao',
+  );
+  const rule = await store.createBenefitEligibilityRule(
+    tenant.id,
+    catalog.id,
+    {
+      companyId: companyB.id,
+      status: 'active',
+      notes: 'Regra inicial para outra empresa',
+    },
+    'oidc-user-1',
+  );
+
+  await assert.rejects(
+    () => store.grantBenefitToEmployee(tenant.id, employee.id, catalog.id, 'oidc-user-1', 'Concessao bloqueada'),
+    /is not eligible for benefit catalog/,
+  );
+
+  const updatedRule = await store.updateBenefitEligibilityRule(
+    tenant.id,
+    catalog.id,
+    rule.id,
+    {
+      status: 'inactive',
+      notes: 'Regra desativada',
+    },
+    'oidc-user-1',
+  );
+
+  const granted = await store.grantBenefitToEmployee(
+    tenant.id,
+    employee.id,
+    catalog.id,
+    'oidc-user-1',
+    'Concessao liberada',
+  );
+  const rules = await store.listBenefitEligibilityRules(tenant.id, catalog.id);
+
+  assert.equal(updatedRule.status, 'inactive');
+  assert.equal(granted.status, 'active');
+  assert.equal(rules.length, 1);
+  assert.equal(rules[0]?.companyId, companyB.id);
 
   await store.close();
 });

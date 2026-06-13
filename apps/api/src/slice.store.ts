@@ -898,6 +898,20 @@ export type BenefitCatalogRecord = {
   updatedAt: string;
 };
 
+export type BenefitEligibilityRuleRecord = {
+  id: string;
+  tenantId: string;
+  benefitCatalogId: string;
+  companyId?: string;
+  employeeId?: string;
+  status: string;
+  notes?: string;
+  createdBy?: string;
+  updatedBy?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type EmployeeBenefitRecord = {
   id: string;
   tenantId: string;
@@ -10520,6 +10534,196 @@ export class SliceStore implements OnModuleDestroy {
     return catalogs.map((catalog) => this.toBenefitCatalogRecord(catalog));
   }
 
+  async createBenefitEligibilityRule(
+    tenantId: string,
+    benefitCatalogId: string,
+    payload: {
+      companyId?: string;
+      employeeId?: string;
+      status?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<BenefitEligibilityRuleRecord> {
+    await this.requireTenant(tenantId);
+    const catalog = await this.prisma.benefitCatalog.findFirst({ where: { id: benefitCatalogId, tenantId } });
+    if (!catalog) {
+      throw new NotFoundException(`benefit catalog ${benefitCatalogId} not found`);
+    }
+
+    if (payload.companyId) {
+      const company = await this.prisma.company.findFirst({
+        where: { id: payload.companyId, tenantId },
+        select: { id: true },
+      });
+      if (!company) {
+        throw new NotFoundException(`company ${payload.companyId} not found`);
+      }
+    }
+
+    if (payload.employeeId) {
+      const employee = await this.prisma.employee.findFirst({
+        where: { id: payload.employeeId, tenantId },
+        select: { id: true, companyId: true },
+      });
+      if (!employee) {
+        throw new NotFoundException(`employee ${payload.employeeId} not found`);
+      }
+      if (payload.companyId && employee.companyId !== payload.companyId) {
+        throw new ConflictException(`employee ${payload.employeeId} does not belong to company ${payload.companyId}`);
+      }
+    }
+
+    const now = new Date();
+    const created = await this.prisma.$transaction(async (tx) => {
+      const existing = await tx.benefitEligibilityRule.findFirst({
+        where: {
+          tenantId,
+          benefitCatalogId,
+          companyId: payload.companyId ?? null,
+          employeeId: payload.employeeId ?? null,
+        },
+      });
+      const record = existing
+        ? await tx.benefitEligibilityRule.update({
+            where: { id: existing.id },
+            data: {
+              status: payload.status ?? existing.status,
+              notes: payload.notes ?? existing.notes,
+              updatedBy: actor,
+            },
+          })
+        : await tx.benefitEligibilityRule.create({
+            data: {
+              tenantId,
+              benefitCatalogId,
+              companyId: payload.companyId,
+              employeeId: payload.employeeId,
+              status: payload.status ?? 'active',
+              notes: payload.notes,
+              createdBy: actor,
+              updatedBy: actor,
+            },
+          });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'benefit_eligibility_rule.created',
+          'benefitEligibilityRule',
+          record.id,
+          {
+            benefitCatalogId,
+            companyId: payload.companyId,
+            employeeId: payload.employeeId,
+            status: payload.status ?? 'active',
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return record;
+    });
+
+    return this.toBenefitEligibilityRuleRecord(created);
+  }
+
+  async listBenefitEligibilityRules(
+    tenantId: string,
+    benefitCatalogId: string,
+  ): Promise<BenefitEligibilityRuleRecord[]> {
+    await this.requireTenant(tenantId);
+    const rules = await this.prisma.benefitEligibilityRule.findMany({
+      where: { tenantId, benefitCatalogId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    return rules.map((rule) => this.toBenefitEligibilityRuleRecord(rule));
+  }
+
+  async updateBenefitEligibilityRule(
+    tenantId: string,
+    benefitCatalogId: string,
+    ruleId: string,
+    payload: {
+      companyId?: string;
+      employeeId?: string;
+      status?: string;
+      notes?: string;
+    },
+    actor?: string,
+  ): Promise<BenefitEligibilityRuleRecord> {
+    await this.requireTenant(tenantId);
+    const rule = await this.prisma.benefitEligibilityRule.findFirst({
+      where: { id: ruleId, tenantId, benefitCatalogId },
+    });
+    if (!rule) {
+      throw new NotFoundException(`benefit eligibility rule ${ruleId} not found`);
+    }
+
+    const targetCompanyId = payload.companyId ?? rule.companyId ?? undefined;
+    const targetEmployeeId = payload.employeeId ?? rule.employeeId ?? undefined;
+
+    if (targetCompanyId) {
+      const company = await this.prisma.company.findFirst({
+        where: { id: targetCompanyId, tenantId },
+        select: { id: true },
+      });
+      if (!company) {
+        throw new NotFoundException(`company ${targetCompanyId} not found`);
+      }
+    }
+
+    if (targetEmployeeId) {
+      const employee = await this.prisma.employee.findFirst({
+        where: { id: targetEmployeeId, tenantId },
+        select: { id: true, companyId: true },
+      });
+      if (!employee) {
+        throw new NotFoundException(`employee ${targetEmployeeId} not found`);
+      }
+      if (targetCompanyId && employee.companyId !== targetCompanyId) {
+        throw new ConflictException(`employee ${targetEmployeeId} does not belong to company ${targetCompanyId}`);
+      }
+    }
+
+    const now = new Date();
+    const updated = await this.prisma.$transaction(async (tx) => {
+      const record = await tx.benefitEligibilityRule.update({
+        where: { id: ruleId },
+        data: {
+          companyId: payload.companyId ?? rule.companyId,
+          employeeId: payload.employeeId ?? rule.employeeId,
+          status: payload.status ?? rule.status,
+          notes: payload.notes ?? rule.notes,
+          updatedBy: actor,
+        },
+      });
+
+      await tx.auditEvent.create({
+        data: this.auditData(
+          tenantId,
+          'benefit_eligibility_rule.updated',
+          'benefitEligibilityRule',
+          record.id,
+          {
+            benefitCatalogId: record.benefitCatalogId,
+            companyId: record.companyId ?? undefined,
+            employeeId: record.employeeId ?? undefined,
+            status: record.status,
+            actor,
+          },
+          now,
+        ),
+      });
+
+      return record;
+    });
+
+    return this.toBenefitEligibilityRuleRecord(updated);
+  }
+
   async grantBenefitToEmployee(
     tenantId: string,
     employeeId: string,
@@ -10529,10 +10733,24 @@ export class SliceStore implements OnModuleDestroy {
     startsAt?: string,
   ): Promise<EmployeeBenefitRecord> {
     await this.requireTenant(tenantId);
-    await this.requireEmployee(tenantId, employeeId);
+    const employee = await this.requireEmployee(tenantId, employeeId);
     const catalog = await this.prisma.benefitCatalog.findFirst({ where: { id: benefitCatalogId, tenantId } });
     if (!catalog) {
       throw new NotFoundException(`benefit catalog ${benefitCatalogId} not found`);
+    }
+    if (!catalog.active) {
+      throw new ConflictException(`benefit catalog ${benefitCatalogId} is inactive`);
+    }
+
+    const eligibilityRules = await this.prisma.benefitEligibilityRule.findMany({
+      where: {
+        tenantId,
+        benefitCatalogId,
+        status: 'active',
+      },
+    });
+    if (eligibilityRules.length > 0 && !eligibilityRules.some((rule) => this.matchesBenefitEligibilityRule(rule, employee))) {
+      throw new ConflictException(`employee ${employeeId} is not eligible for benefit catalog ${benefitCatalogId}`);
     }
 
     const effectiveStartsAt = startsAt ? new Date(startsAt) : new Date();
@@ -12431,6 +12649,55 @@ export class SliceStore implements OnModuleDestroy {
       createdBy: catalog.createdBy ?? undefined,
       createdAt: catalog.createdAt.toISOString(),
       updatedAt: catalog.updatedAt.toISOString(),
+    };
+  }
+
+  private matchesBenefitEligibilityRule(
+    rule: {
+      companyId: string | null;
+      employeeId: string | null;
+    },
+    employee: {
+      companyId: string;
+      id: string;
+    },
+  ): boolean {
+    if (rule.companyId && rule.companyId !== employee.companyId) {
+      return false;
+    }
+
+    if (rule.employeeId && rule.employeeId !== employee.id) {
+      return false;
+    }
+
+    return true;
+  }
+
+  private toBenefitEligibilityRuleRecord(rule: {
+    id: string;
+    tenantId: string;
+    benefitCatalogId: string;
+    companyId: string | null;
+    employeeId: string | null;
+    status: string;
+    notes: string | null;
+    createdBy: string | null;
+    updatedBy: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  }): BenefitEligibilityRuleRecord {
+    return {
+      id: rule.id,
+      tenantId: rule.tenantId,
+      benefitCatalogId: rule.benefitCatalogId,
+      companyId: rule.companyId ?? undefined,
+      employeeId: rule.employeeId ?? undefined,
+      status: rule.status,
+      notes: rule.notes ?? undefined,
+      createdBy: rule.createdBy ?? undefined,
+      updatedBy: rule.updatedBy ?? undefined,
+      createdAt: rule.createdAt.toISOString(),
+      updatedAt: rule.updatedAt.toISOString(),
     };
   }
 

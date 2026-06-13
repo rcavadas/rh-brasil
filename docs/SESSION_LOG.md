@@ -2839,3 +2839,23 @@
 **Arquivos alterados:** `infra/docker-compose.yml`, `docs/ENVIRONMENTS.md`, `docs/INFRASTRUCTURE.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
 
 **Resultado:** o DEV ficou explicitamente identificado como `rh-dev`, reduzindo a chance de confusao operacional com a homologacao.
+
+## 2026-06-12 - UC-BEN elegibilidade minima
+
+**Objetivo:** fechar o runtime minimo de elegibilidade de beneficios no DEV local antes de qualquer validacao em homologacao.
+
+**O que foi feito:** o schema Prisma ganhou `benefit_eligibility_rules`; o backend passou a expor regras de elegibilidade por catalogo em `GET/POST/PATCH /api/v1/tenants/:tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules`; a concessao de beneficios agora aplica allowlist relacional por empresa e colaborador antes de ativar a assinatura; e a documentacao viva foi sincronizada com o novo contrato.
+
+**Arquivos alterados:** `apps/api/prisma/schema.prisma`, `apps/api/prisma/migrations/20260612040000_benefit_eligibility_rules/migration.sql`, `apps/api/src/slice.controller.ts`, `apps/api/src/slice.store.ts`, `apps/api/test/authz.http.test.ts`, `apps/api/test/slice.store.test.ts`, `docs/BACKEND.md`, `docs/README-UC-BEN.md`, `docs/ARCHITECTURE.md`, `docs/PRODUCT.md`, `docs/RISKS.md`, `.codex/MEMORY.md`, `.codex/HANDOFF.md`, `.codex/TASKS.md`, `.codex/OPEN_QUESTIONS.md` e `docs/SESSION_LOG.md`.
+
+**Próxima ação:** aplicar a migration em `rh_app`, validar `npm run prisma:generate -w @rh/api`, `npm run typecheck -w @rh/api` e a suíte da API no DEV.
+
+## 2026-06-12 - Encerramento de sessão
+
+**Objetivo:** congelar o estado da entrega antes da interrupcao solicitada.
+
+**O que foi feito:** a migration de elegibilidade de beneficios foi aplicada em `rh_app`; `npm run prisma:generate -w @rh/api` passou; `npm run typecheck -w @rh/api` passou; os testes focados de `slice.store.test.ts` e `authz.http.test.ts` passaram; a suíte completa da API ainda ficou acima da janela de tempo desta sessao, sem novos erros funcionais observados nos testes isolados.
+
+**Arquivos alterados:** `docs/SESSION_LOG.md`.
+
+**Estado final:** o DEV ficou salvo com `rh-dev`, a elegibilidade minima de beneficios ficou executavel e o restante da validacao pode ser retomado na proxima sessao a partir deste ponto.

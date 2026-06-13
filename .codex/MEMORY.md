@@ -320,6 +320,7 @@ Sistema de RH corporativo para o mercado brasileiro.
 - `docs/PRODUCT.md` foi ajustado para remover a pendencia obsoleta de "store em arquivo para persistencia relacional"; a fonte de verdade agora trata a persistencia relacional como consolidada.
 - O runtime agora tambem possui o agregado minimo de dependentes do colaborador, com CRUD, inativacao e auditoria.
 - O review de UC-SEC apontou que consentimento do titular e atendimento de solicitacao do titular continuam sem runtime dedicado e seguem como proximo gap real de governanca/LGPD.
+- O runtime agora tambem possui elegibilidade minima de beneficios por empresa e colaborador, aplicada antes da concessao do beneficio.
 - `docs/PRODUCT.md` foi corrigido para dizer explicitamente que a base executavel inicial usa PostgreSQL, nao mais um store em arquivo.
 - O runtime minimo de UC-SEC agora tambem cobre consentimento do titular e atendimento de solicitacao do titular, com persistencia relacional e auditoria.
 - O runtime minimo de UC-SEC agora tambem cobre anonimização executavel de dados elegiveis e aplicacao de politica de retencao com legal hold.

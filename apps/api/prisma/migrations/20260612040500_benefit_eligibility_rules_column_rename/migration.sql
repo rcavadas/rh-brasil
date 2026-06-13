@@ -1,0 +1,9 @@
+-- Rename columns to match Prisma model casing
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "tenant_id" TO "tenantId";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "benefit_catalog_id" TO "benefitCatalogId";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "company_id" TO "companyId";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "employee_id" TO "employeeId";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "created_by" TO "createdBy";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "updated_by" TO "updatedBy";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "created_at" TO "createdAt";
+ALTER TABLE "benefit_eligibility_rules" RENAME COLUMN "updated_at" TO "updatedAt";

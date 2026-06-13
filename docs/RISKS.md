@@ -28,7 +28,7 @@
 - A sincronizacao minima com ERP tambem usa recibo sintetico e nao substitui contrato tecnico, idempotencia real nem conciliacao financeira.
 - A sincronizacao minima com banco tambem usa recibo sintetico e nao substitui contrato tecnico, arquivos de remessa/retorno nem conciliacao financeira real.
 - As integracoes minimas de beneficios e identidade ainda usam uma camada genérica de requests persistidos; contratos externos reais, campos obrigatorios e conciliacao operacional continuam dependentes de validacao especializada.
-- O dominio de beneficios ja tem uma primeira camada funcional, mas elegibilidade, descontos, cobertura e integrações com operadoras continuam pendentes.
+- O dominio de beneficios ja tem uma primeira camada funcional, e a elegibilidade minima por empresa/colaborador ja esta no runtime; descontos, cobertura e integrações com operadoras continuam pendentes.
 - O dominio de ferias ja tem uma primeira camada funcional, com fracionamento e abono pecuniario, e agora tambem integra folha e eSocial; o risco restante e somente validacao operacional/juridica residual.
 - O dominio de ferias agora tambem bloqueia solicitacoes fora da janela concessiva e conflitos de datas e registra aviso/pagamento/envio para folha/eSocial.
 - O dominio de 13o salario agora cobre medias variaveis, encargos e ponte para folha; os refinamentos futuros serao de governanca e integracao, nao de base funcional.

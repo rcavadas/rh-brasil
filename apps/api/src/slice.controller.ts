@@ -909,6 +909,44 @@ class CreateBenefitCatalogDto {
   description?: string;
 }
 
+class CreateBenefitEligibilityRuleDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  employeeId?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['active', 'inactive'])
+  status?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+class UpdateBenefitEligibilityRuleDto {
+  @IsOptional()
+  @IsString()
+  companyId?: string;
+
+  @IsOptional()
+  @IsString()
+  employeeId?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['active', 'inactive'])
+  status?: string;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
 class GrantBenefitDto {
   @IsString()
   @IsNotEmpty()
@@ -2587,6 +2625,56 @@ export class SliceController {
   @Get(':tenantId/benefits/catalog')
   listBenefitCatalogs(@Param('tenantId') tenantId: string) {
     return this.store.listBenefitCatalogs(tenantId);
+  }
+
+  @Roles('admin', 'rh', 'auditor')
+  @Post(':tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules')
+  createBenefitEligibilityRule(
+    @Param('tenantId') tenantId: string,
+    @Param('benefitCatalogId') benefitCatalogId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: CreateBenefitEligibilityRuleDto,
+  ) {
+    return this.store.createBenefitEligibilityRule(
+      tenantId,
+      benefitCatalogId,
+      {
+        companyId: body.companyId,
+        employeeId: body.employeeId,
+        status: body.status,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
+  }
+
+  @Roles('admin', 'rh', 'manager', 'auditor')
+  @Get(':tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules')
+  listBenefitEligibilityRules(@Param('tenantId') tenantId: string, @Param('benefitCatalogId') benefitCatalogId: string) {
+    return this.store.listBenefitEligibilityRules(tenantId, benefitCatalogId);
+  }
+
+  @Roles('admin', 'rh')
+  @Patch(':tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules/:ruleId')
+  updateBenefitEligibilityRule(
+    @Param('tenantId') tenantId: string,
+    @Param('benefitCatalogId') benefitCatalogId: string,
+    @Param('ruleId') ruleId: string,
+    @CurrentAuth() auth: AuthContext | undefined,
+    @Body() body: UpdateBenefitEligibilityRuleDto,
+  ) {
+    return this.store.updateBenefitEligibilityRule(
+      tenantId,
+      benefitCatalogId,
+      ruleId,
+      {
+        companyId: body.companyId,
+        employeeId: body.employeeId,
+        status: body.status,
+        notes: body.notes,
+      },
+      auth?.source === 'oidc' ? auth.subject : undefined,
+    );
   }
 
   @Roles('admin', 'rh')

@@ -30,6 +30,7 @@ async function resetDatabase(): Promise<void> {
       "termination_esocial_transmissions",
       "api_integration_request_histories",
       "api_integration_requests",
+      "benefit_eligibility_rules",
       "employee_benefits",
       "benefit_catalogs",
       "recruitment_candidates",
@@ -364,6 +365,67 @@ test('authenticated admin can manage benefit catalogs and assignments', async ()
   assert.equal(catalogResponse.status, 201);
   const catalog = (await catalogResponse.json()) as { id: string };
 
+  const ruleResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/benefits/catalog/${catalog.id}/eligibility-rules`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      companyId: company.id,
+      status: 'active',
+      notes: 'Elegibilidade por empresa',
+    }),
+  });
+  assert.equal(ruleResponse.status, 201);
+  const rule = (await ruleResponse.json()) as { id: string; status: string };
+  assert.equal(rule.status, 'active');
+
+  const rulesResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/benefits/catalog/${catalog.id}/eligibility-rules`, {
+    headers: {
+      'x-rh-user-id': 'user-1',
+      'x-rh-role': 'auditor',
+      'x-rh-tenant-id': tenant.id,
+    },
+  });
+  assert.equal(rulesResponse.status, 200);
+  const rules = (await rulesResponse.json()) as Array<{ id: string; status: string }>;
+  assert.equal(rules.length, 1);
+  assert.equal(rules[0]?.status, 'active');
+
+  const companyBResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/companies`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      legalName: 'Empresa Beneficios B LTDA',
+      tradeName: 'Beneficios B',
+      cnpj: '99001122000134',
+    }),
+  });
+  assert.equal(companyBResponse.status, 201);
+  const companyB = (await companyBResponse.json()) as { id: string };
+
+  const blockedEmployeeResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/employees`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      companyId: companyB.id,
+      personId: person.id,
+      code: 'BEN-002',
+    }),
+  });
+  assert.equal(blockedEmployeeResponse.status, 201);
+  const blockedEmployee = (await blockedEmployeeResponse.json()) as { id: string };
+
+  const blockedGrantResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/benefits/assignments`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      employeeId: blockedEmployee.id,
+      benefitCatalogId: catalog.id,
+      startsAt: '2026-06-01T00:00:00.000Z',
+      notes: 'Concessao bloqueada por elegibilidade',
+    }),
+  });
+  assert.equal(blockedGrantResponse.status, 409);
+
   const grantResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/benefits/assignments`, {
     method: 'POST',
     headers: commonHeaders,
@@ -407,6 +469,32 @@ test('authenticated admin can manage benefit catalogs and assignments', async ()
   assert.equal(cancelResponse.status, 201);
   const cancelled = (await cancelResponse.json()) as { status: string };
   assert.equal(cancelled.status, 'cancelled');
+
+  const deactivateResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/benefits/catalog/${catalog.id}/eligibility-rules/${rule.id}`, {
+    method: 'PATCH',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      status: 'inactive',
+      notes: 'Elegibilidade desativada',
+    }),
+  });
+  assert.equal(deactivateResponse.status, 200);
+  const deactivated = (await deactivateResponse.json()) as { status: string };
+  assert.equal(deactivated.status, 'inactive');
+
+  const retryGrantResponse = await fetch(`${baseUrl}/api/v1/tenants/${tenant.id}/benefits/assignments`, {
+    method: 'POST',
+    headers: commonHeaders,
+    body: JSON.stringify({
+      employeeId: blockedEmployee.id,
+      benefitCatalogId: catalog.id,
+      startsAt: '2026-06-02T00:00:00.000Z',
+      notes: 'Concessao liberada apos inativacao',
+    }),
+  });
+  assert.equal(retryGrantResponse.status, 201);
+  const retryGrant = (await retryGrantResponse.json()) as { status: string };
+  assert.equal(retryGrant.status, 'active');
 });
 
 test('authenticated admin can manage ats vacancy requests and candidates', async () => {

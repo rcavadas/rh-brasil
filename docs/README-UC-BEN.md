@@ -62,7 +62,7 @@ O `UC-BEN` trata de concessao e manutencao de beneficios que reverberam em folha
 - A segunda camada deve cobrir concessao, suspensao e cancelamento com rastreabilidade.
 - A terceira camada deve tratar os beneficios mais comuns de operacao, como VT, VR/VA e plano de saude.
 - A quarta camada deve consolidar coparticipacao e reflexo em folha.
-- O runtime atual ja possui uma primeira camada funcional de beneficios, entao os gaps prioritarios estao na elegibilidade mais fina, na manutencao de catalogo e no reflexo consistente em folha.
+- O runtime atual ja possui uma primeira camada funcional de beneficios, e a elegibilidade minima por empresa e colaborador tambem foi implementada; os gaps prioritarios restantes estao na elegibilidade mais fina, na manutencao de catalogo e no reflexo consistente em folha.
 
 ## Pontos de Atencao
 

@@ -33,6 +33,7 @@ model Tenant {
   terminationOffboardingHistories TerminationOffboardingHistory[]
   terminationEsocialTransmissions TerminationEsocialTransmission[]
   benefitCatalogs BenefitCatalog[]
+  benefitEligibilityRules BenefitEligibilityRule[]
   employeeBenefits EmployeeBenefit[]
   privacyConsents PrivacyConsent[]
   dataSubjectRequests DataSubjectRequest[]
@@ -320,10 +321,34 @@ model BenefitCatalog {
   updatedAt   DateTime @updatedAt
   tenant      Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   assignments EmployeeBenefit[]
+  eligibilityRules BenefitEligibilityRule[]
 
   @@unique([tenantId, code])
   @@index([tenantId, benefitType])
   @@map("benefit_catalogs")
+}
+
+model BenefitEligibilityRule {
+  id              String   @id @default(uuid())
+  tenantId        String
+  benefitCatalogId String
+  companyId       String?
+  employeeId      String?
+  status          String   @default("active")
+  notes           String?
+  createdBy       String?
+  updatedBy       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  tenant          Tenant   @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  benefitCatalog  BenefitCatalog @relation(fields: [benefitCatalogId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, benefitCatalogId])
+  @@index([tenantId, status])
+  @@index([tenantId, companyId])
+  @@index([tenantId, employeeId])
+  @@unique([tenantId, benefitCatalogId, companyId, employeeId])
+  @@map("benefit_eligibility_rules")
 }
 
 model EmployeeBenefit {

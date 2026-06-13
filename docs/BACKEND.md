@@ -120,6 +120,9 @@ Regra operacional: o retry SST de `UC-ESO` somente deve ser exercitado com trans
 - `POST /api/v1/tenants/:tenantId/integrations/:requestId/dlq`
 - `POST /api/v1/tenants/:tenantId/benefits/catalog`
 - `GET /api/v1/tenants/:tenantId/benefits/catalog`
+- `POST /api/v1/tenants/:tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules`
+- `GET /api/v1/tenants/:tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules`
+- `PATCH /api/v1/tenants/:tenantId/benefits/catalog/:benefitCatalogId/eligibility-rules/:ruleId`
 - `POST /api/v1/tenants/:tenantId/benefits/assignments`
 - `GET /api/v1/tenants/:tenantId/benefits/assignments`
 - `POST /api/v1/tenants/:tenantId/benefits/assignments/:assignmentId/suspend`

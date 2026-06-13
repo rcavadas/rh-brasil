@@ -62,7 +62,7 @@ RH Brasil e uma plataforma SaaS de gestao do ciclo de vida do colaborador para e
 - A assinatura dos documentos rescisorios usa `govbr_advanced` como padrao operacional e admite `icp_brasil` como excecao valida quando exigida.
 - O runtime atual opera com os roles `admin`, `rh`, `manager`, `auditor` e `employee`, usando `tenant_id`, `rh_roles` e `sub` como base do OIDC local.
 - A primeira versao armazena dados de identificacao e operacao do colaborador e da empresa, incluindo CPF, CNPJ, contato, eventos de ponto, documentos, memoria de calculo, trilhas de auditoria e dados remuneratorios quando aplicaveis ao processo.
-- O dominio de beneficios agora possui a primeira camada funcional, com catalogo por tenant e atribuicao, suspensao e cancelamento de beneficios por colaborador.
+- O dominio de beneficios agora possui a primeira camada funcional, com catalogo por tenant e atribuicao, suspensao e cancelamento de beneficios por colaborador, e tambem aplicacao minima de elegibilidade por empresa e colaborador.
 - O dominio de ferias agora possui a primeira camada funcional, com saldo por periodo, solicitacao, aprovacao e cancelamento auditavel.
 - O dominio de ferias agora tambem valida a janela concessiva derivada do periodo aquisitivo e bloqueia solicitacoes com conflito de datas.
 - O dominio de ferias agora tambem registra aviso formal, pagamento, envio para folha e transmissao ao eSocial como etapas executaveis do ciclo minimo.
